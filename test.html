@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>LF02: Arbeitsplatz nach Kundenwunsch ausstatten – Test</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #eef2f5; color: #333; }
+        .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 850px; margin: auto; }
+        h1 { text-align: center; color: #0056b3; margin-bottom: 20px; border-bottom: 2px solid #0056b3; padding-bottom: 10px; }
+        .progress { font-weight: bold; color: #666; margin-bottom: 15px; font-size: 1.1em; }
+        .question-text { font-size: 1.2em; font-weight: 600; margin-bottom: 20px; line-height: 1.4; }
+        .option { display: block; width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; text-align: left; font-size: 16px; transition: background 0.2s; }
+        .option:hover { background: #eef2f5; }
+        .correct { background: #d4edda !important; border-color: #c3e6cb !important; color: #155724; font-weight: bold; }
+        .incorrect { background: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24; font-weight: bold; }
+        .text-input { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; margin-bottom: 15px; }
+        .submit-btn, #next-btn { background: #0056b3; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; margin-top: 15px; transition: background 0.2s; }
+        .submit-btn:hover, #next-btn:hover { background: #004085; }
+        #next-btn { display: none; }
+        table.kalkulation-table, table.rangliste-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        table.kalkulation-table th, table.kalkulation-table td, table.rangliste-table th, table.rangliste-table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        table.kalkulation-table th, table.rangliste-table th { background: #f2f2f2; }
+        table.kalkulation-table input { width: 100%; padding: 6px; font-size: 14px; box-sizing: border-box; }
+        .feedback { margin-top: 15px; font-size: 1em; padding: 12px; border-radius: 6px; line-height: 1.4; }
+        .feedback-correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback-incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        #score-board { text-align: center; }
+        .feedback-img { margin-top: 15px; text-align: center; }
+        .feedback-img img { max-width: 280px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .img-container { margin-top: 20px; text-align: center; }
+        .img-container img { max-width: 400px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); border: 3px solid #0056b3; }
+        .meme-text { font-size: 1.3em; font-weight: bold; margin-top: 15px; color: #222; }
+        
+        /* Rangliste CSS */
+        .rangliste-container { margin-top: 30px; text-align: left; background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
+        .rangliste-form { display: flex; gap: 10px; margin-bottom: 20px; }
+        .rangliste-form input { flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+        .highlight-row { background-color: #d1ecf1 !important; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="quiz-card">
+    <h1>LF02: Arbeitsplatz nach Kundenwunsch ausstatten – Test</h1>
+    <div id="progress" class="progress"></div>
+    <div id="question-content"></div>
+    <div id="feedback-area"></div>
+    <button id="next-btn" onclick="nextQuestion()">Nächste Frage</button>
+</div>
+
+<script>
+function levenshtein(a, b) {
+    var matrix = [];
+    var i, j;
+    if (a.length === 0) return b.length;
+    if (b.length === 0) return a.length;
+    for (i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+    for (j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+    for (i = 1; i <= b.length; i++) {
+        for (j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,
+                    Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+                );
+            }
+        }
+    }
+    return matrix[b.length][a.length];
+}
+
+function isSimilar(input, target) {
+    if (!input || input.trim() === "") return false;
+    let cleanInput = input.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    let cleanTarget = target.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (cleanInput === "" || cleanTarget === "") return false;
+    if (cleanInput === cleanTarget) return true;
+    let distance = levenshtein(cleanInput, cleanTarget);
+    return distance <= (cleanTarget.length <= 4 ? 0 : 2);
+}
+
+function shuffleArray(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+// Richtig-Gifs
+const correctMemes = [
+    "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7qE2VAxuXWeyvJIY/giphy.webp",
+    "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/11sBLVxNs7v6WA/100.webp",
+    "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/UAIg3J4OzepmYxQeAT/giphy.webp",
+    "https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dXpmczNxaWNlZWg5cjh0MTNrMGlqamkxdmRzbnk5bmMyMnB2dGppMyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Q66ZEIpjEQddUOOKGW/200.webp",
+    "https://media0.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NDl4eXlzcXY3Z3BpMmVkcWJkeDh3N3hpaG9zNTdrOW9scWhja2xoYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/rjkJD1v80CjYs/giphy.webp",
+    "https://media2.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OWRmaWxqbmk5Y2xzdDlneGFxeGRicGowZWVzMWU2YnFlOTZoNWsxbiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/okfvUCpgArv3y/200.webp"
+];
+
+// Falsch-Gifs
+const incorrectMemes = [
+    "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzgxbGplZnkzdnFhanE2M3d5bDIybTZiN2J1Zm1qbzk4OHppdGdudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9u3TZfpmeDLkD6/giphy.gif",
+    "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWhsazE0eW56OGRkNXk1MzVzeTNsMGYxOGNmcWZmYmswaGJxamJpMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MLhIi4DoxeUjC/giphy.gif",
+    "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDM5YWlpdHYwc3BhMTZjZ2NzcTdhbGp4YW9odjByMnRvdXhlY3RycyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4qx6IRdg26uZ3MTtRn/giphy.gif",
+    "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMG15d2p6M2s3eXY2MzVmaWt6anIwYXU5OGt6M3VqbHNkdmtuYjlhdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/10ECejNtM1GyRy/giphy.gif",
+    "https://media0.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2p4NTJ1Y3A4NTllMjVsbnZpYm0ybWhqcmgyNjcxZ2x5dDluZDFocSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/hNFCbBi0lzodujjg8l/giphy.webp",
+    "https://media3.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MWYwZzI0ZDFheXM4eGNvcWo0ZGM0djkzMGs0Z3owaXRqbzJvcXJoNiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/hHPStl3w2ZU41qjKq2/giphy.webp"
+];
+
+const rawQuestions = [
+    // --- KALKULATIONEN MIT NEUEN ZAHLEN ---
+    { 
+        type: "table", 
+        q: "Rückwärtskalkulation: Ein IT-Händler verkauft Monitore für 120 € (Barverkaufspreis netto). Gewinnzuschlag = 20%, Handlungskosten = 25%. Berechnen Sie Selbstkosten und Bezugspreis von unten nach oben:",
+        exp: "Rückwärtsrechnung: Selbstkosten = 120 / 1,2 = 100 €. Bezugspreis = 100 / 1,25 = 80 €.",
+        rows: [
+            { label: "Barverkaufspreis (netto)", val: "120", readonly: true },
+            { label: "- Gewinnzuschlag (20% auf Selbstkosten)", val: "20", readonly: true },
+            { label: "= Selbstkosten", key: "100" },
+            { label: "- Handlungskosten (25% auf Bezugspreis)", val: "20", readonly: true },
+            { label: "= Bezugspreis", key: "80" }
+        ]
+    },
+    { 
+        type: "table", 
+        q: "Rückwärtskalkulation: Der Barverkaufspreis beträgt 220 €. Gewinnzuschlag = 10%, Handlungskosten = 25%. Berechnen Sie Selbstkosten und Bezugspreis von unten nach oben:",
+        exp: "Rückwärtsrechnung: Selbstkosten = 220 / 1,1 = 200 €. Bezugspreis = 200 / 1,25 = 160 €.",
+        rows: [
+            { label: "Barverkaufspreis (netto)", val: "220", readonly: true },
+            { label: "- Gewinnzuschlag (10%)", val: "20", readonly: true },
+            { label: "= Selbstkosten", key: "200" },
+            { label: "- Handlungskosten (25%)", val: "40", readonly: true },
+            { label: "= Bezugspreis", key: "160" }
+        ]
+    },
+    { 
+        type: "table", 
+        q: "Vorwärtskalkulation: Füllen Sie die verbleibenden Felder aus (Zahlenwert):",
+        exp: "ZEP = 1500 - 150 = 1350. Bezugspreis = 1350 + 50 = 1400.",
+        rows: [
+            { label: "Listeneinkaufspreis (LEP)", val: "1500", readonly: true },
+            { label: "- Lieferrabatt (10%)", val: "150", readonly: true },
+            { label: "= Zieleinkaufspreis (ZEP)", key: "1350" },
+            { label: "+ Bezugskosten", val: "50", readonly: true },
+            { label: "= Bezugspreis", key: "1400" }
+        ]
+    },
+    { 
+        type: "table", 
+        q: "Vorwärtskalkulation: Füllen Sie die weiteren Schritte aus (Zahlenwert):",
+        exp: "Handlungskosten (20%) = 200. Selbstkosten = 1200. Gewinn (15%) = 180. Barverkaufspreis = 1380.",
+        rows: [
+            { label: "Bezugspreis", val: "1000", readonly: true },
+            { label: "+ Handlungskosten (20%)", key: "200" },
+            { label: "= Selbstkosten", key: "1200" },
+            { label: "+ Gewinnzuschlag (15%)", key: "180" },
+            { label: "= Barverkaufspreis", key: "1380" }
+        ]
+    },
+
+    // --- ANWENDUNG DER KERN-BEGRIFFE ---
+    { type: "mc", q: "Ein Kunde möchte wissen, welches Dokument alle seine funktionellen Anforderungen an das neue IT-System enthält. Welches Dokument ist das?", options: ["Das Lastenheft des Kunden", "Das Pflichtenheft vom Dienstleister", "Die offizielle Arbeitsstättenverordnung", "Das unterschriebene Übergabeprotokoll"], answer: "Das Lastenheft des Kunden", exp: "Das Lastenheft definiert alle Anforderungen aus Kundensicht." },
+    { type: "mc", q: "Der IT-Dienstleister beschreibt im Detail, mit welchen Komponenten und Technologien er die Wünsche umsetzt. Welches Dokument übergibt er?", options: ["Ein formloses Lastenheft", "Das detaillierte Pflichtenheft", "Den aktuellen Handelsregisterauszug", "Die allgemeine DSGVO-Erklärung"], answer: "Das detaillierte Pflichtenheft", exp: "Das Pflichtenheft beschreibt die technische Lösung des Auftragnehmers." },
+    { type: "mc", q: "Welches Bauteil stellt die physikalische Verbindung und Kommunikationswege für CPU, RAM und Erweiterungskarten bereit?", options: ["Das externe Netzteil", "Das zentrale Mainboard", "Die interne NVMe-SSD", "Der integrierte Router"], answer: "Das zentrale Mainboard", exp: "Das Mainboard ist die zentrale Schaltzentrale im PC." },
+    { type: "mc", q: "Welche Komponente führt Befehle aus und bildet das Rechenzentrum eines Computers?", options: ["Der flüchtige RAM", "Die zentrale CPU", "Das BIOS-Chipset", "Die Grafikkarte"], answer: "Die zentrale CPU", exp: "Die CPU ist der Hauptprozessor." },
+    { type: "mc", q: "Warum benötigt ein Computer RAM neben der Festplatte?", options: ["Zur dauerhaften Datenarchivierung im System", "Als schnellen flüchtigen Arbeitsspeicher", "Zur stabilen Stromversorgung der CPU", "Zum Schutz vor bösartigen Virenarten"], answer: "Als schnellen flüchtigen Arbeitsspeicher", exp: "RAM bietet extrem schnelle Lese- und Schreibzugriffe." },
+    { type: "mc", q: "Was ist der Hauptvorteil einer SSD gegenüber einer klassischen HDD?", options: ["Schnelle Datenübertragung ohne Mechanik", "Niedrigerer Anschaffungspreis pro Terabyte", "Höheres Gesamtgewicht aller Bauteile", "Mechanische Bauteile für Langlebigkeit"], answer: "Schnelle Datenübertragung ohne Mechanik", exp: "SSDs arbeiten voll-elektronisch ohne Mechanik." },
+    { type: "mc", q: "Welche Eigenschaft trifft auf eine IPv4-Adresse zu?", options: ["Besteht aus 128-Bit Hexadezimalzahlen", "Nutzt 32-Bit in Punkt-Dezimal-Notation", "Ist eine physische MAC-Adresse", "Wird ausschließlich im WLAN genutzt"], answer: "Nutzt 32-Bit in Punkt-Dezimal-Notation", exp: "IPv4 nutzt 4 Blöcke à 8 Bits (32 Bits)." },
+    { type: "mc", q: "Warum wird das IPv6-Protokoll zunehmend eingesetzt?", options: ["Knappe IPv4-Adressen und 128-Bit Adressraum", "Weil IPv6 keine Router mehr benötigt", "Weil es drastisch billiger im Einkauf ist", "Weil es nur noch Kabelverbindungen unterstützt"], answer: "Knappe IPv4-Adressen und 128-Bit Adressraum", exp: "IPv6 bietet nahezu unendlich viele IP-Adressen." },
+    { type: "mc", q: "Auf welcher Ebene arbeitet die MAC-Adresse im Netzwerk?", options: ["Layer 3 (Internet-Protokoll)", "Layer 2 (Netzwerkkarten-Adresse)", "Layer 7 (Anwendungsschicht)", "Layer 1 (Physikalisches Kabel)"], answer: "Layer 2 (Netzwerkkarten-Adresse)", exp: "Die MAC-Adresse ist die physikalische Adresse der Netzwerkkarte." },
+    { type: "mc", q: "Welcher Standard regelt drahtlose lokale Netzwerke (WLAN)?", options: ["Der Standard IEEE 802.11", "Die Qualitätsnorm ISO 9001", "Die Bürostandardnorm DIN 5008", "Die Gebäudenorm EN 50173"], answer: "Der Standard IEEE 802.11", exp: "IEEE 802.11 definiert WLAN-Standards." },
+
+    // --- LÜCKENTEXT- & OPEN ENDED FRAGEN ---
+    { type: "open", q: "Vervollständigen Sie den Satz: Das Dokument des Auftraggebers heißt _______.", answer: ["Lastenheft"], exp: "Das Lastenheft enthält die Kundenanforderungen." },
+    { type: "open", q: "Vervollständigen Sie den Satz: Das technische Umsetzungskonzept des Auftragnehmers heißt _______.", answer: ["Pflichtenheft"], exp: "Das Pflichtenheft beschreibt die technische Realisierung." },
+    { type: "open", q: "Ergänzen Sie den Begriff: Die Hauptplatine eines Rechners ist das _______.", answer: ["Mainboard"], exp: "Mainboard verbindet alle Systemteile." },
+    { type: "open", q: "Ergänzen Sie die Abkürzung: Der Hauptprozessor heißt _______.", answer: ["Cpu", "CPU"], exp: "CPU ist die Central Processing Unit." },
+    { type: "open", q: "Ergänzen Sie den Begriff: Der flüchtige Arbeitsspeicher heißt _______.", answer: ["Ram", "RAM"], exp: "RAM speichert Daten temporär." },
+    { type: "open", q: "Ergänzen Sie die Abkürzung: Ein lautloser Flash-Datenträger ist eine _______.", answer: ["Ssd", "SSD"], exp: "SSDs nutzen Halbleiterspeicher." },
+    { type: "open", q: "Ergänzen Sie das Protokoll: Das 32-Bit Adressformat heißt _______.", answer: ["Ipv4", "IPv4"], exp: "IPv4 nutzt 32 Bits." },
+    { type: "open", q: "Ergänzen Sie das Protokoll: Das 128-Bit Adressformat heißt _______.", answer: ["Ipv6", "IPv6"], exp: "IPv6 nutzt 128 Bits." },
+    { type: "open", q: "Ergänzen Sie den Begriff: Die Eindeutige Hardware-Adresse heißt _______-Adresse.", answer: ["Mac", "MAC"], exp: "MAC-Adresse ist die physikalische Kennung." },
+    { type: "open", q: "Ergänzen Sie den Begriff: Drahtloses Netzwerk wird als _______ bezeichnet.", answer: ["Wlan", "WLAN"], exp: "WLAN steht für Wireless LAN." },
+    { type: "open", q: "Ergänzen Sie den Standard: Netzwerk-Kupferkabel der Kategorie 5 heißen kurz _______.", answer: ["Cat5", "CAT5"], exp: "Cat 5 ist bis 100 MHz spezifiziert." },
+    { type: "open", q: "Ergänzen Sie den Begriff: Die grundlegende Firmware auf dem Mainboard heißt _______.", answer: ["Bios", "BIOS"], exp: "Das BIOS führt den POST aus." },
+    { type: "open", q: "Ergänzen Sie den Standard: Die USB-Schnittstelle mit 5 Gbit/s Übertragung heißt _______.", answer: ["Usb 3.0", "USB 3.0"], exp: "USB 3.0 ist blau gekennzeichnet." },
+
+    // --- RELEVANTE IHK-FRAGEN ---
+    { type: "mc", q: "Welches Schutzziel schützt Daten vor unbefugter Manipulation?", options: ["Integrität", "Vertraulichkeit", "Verfügbarkeit", "Authentizität"], answer: "Integrität", exp: "Integrität garantiert Datenunversehrtheit." },
+    { type: "mc", q: "Welches Schutzziel schützt vor unbefugtem Lesen?", options: ["Vertraulichkeit", "Integrität", "Verfügbarkeit", "Authentizität"], answer: "Vertraulichkeit", exp: "Vertraulichkeit verhindert unbefugte Einsicht." },
+    { type: "mc", q: "Welches Schutzziel garantiert ständige Erreichbarkeit?", options: ["Verfügbarkeit", "Integrität", "Vertraulichkeit", "Redundanz"], answer: "Verfügbarkeit", exp: "Verfügbarkeit stellt Nutzung sicher." },
+    { type: "mc", q: "Mangel nach § 434 BGB bei Zu-Wenig-Lieferung?", options: ["Quantitätsmangel", "Qualitätsmangel", "Rechtsmangel", "Montagemangel"], answer: "Quantitätsmangel", exp: "Eksik teslimat = Quantitätsmangel." },
+    { type: "mc", q: "Mangel nach § 435 BGB bei fehlenden Software-Lizenzen?", options: ["Rechtsmangel", "Sachmangel", "Lieferverzug", "Garantiefall"], answer: "Rechtsmangel", exp: "Verletzung von Rechten Dritter." },
+    { type: "mc", q: "Falschlieferung einer völlig anderen Ware (Aliud)?", options: ["Sachmangel", "Garantiefall", "Kein Mangel", "Mietmangel"], answer: "Sachmangel", exp: "§ 434 Abs. 3 BGB stellt Aliud Sachmängeln gleich." },
+    { type: "mc", q: "Pflicht für Auszubildende nach BBiG?", options: ["Berichtsheftführung", "Gehaltszahlung", "Urlaubsgewährung", "Prüfungsorganisation"], answer: "Berichtsheftführung", exp: "Ausbildungsnachweis führen." },
+    { type: "mc", q: "Gesetz für Arbeitszeiten von U18-Auszubildenden?", options: ["JArbSchG", "ArbStättV", "BGB", "HGB"], answer: "JArbSchG", exp: "Jugendarbeitsschutzgesetz." },
+    { type: "mc", q: "Mindest-Gewährleistungsfrist nach BGB für Neuwaren?", options: ["24 Monate", "12 Monate", "36 Monate", "06 Monate"], answer: "24 Monate", exp: "2 Jahre gesetzliche Verjährung." },
+    { type: "mc", q: "Regelung für Bildschirmarbeitsplätze?", options: ["ArbStättV", "DSGVO", "HGB", "BGB"], answer: "ArbStättV", exp: "Arbeitsstättenverordnung Anhang 6." },
+    { type: "mc", q: "Winkelregel für Gelenke beim Ergonomischen Sitzen?", options: ["90 Grad", "45 Grad", "120 Grad", "180 Grad"], answer: "90 Grad", exp: "90-Grad-Regel." },
+    { type: "mc", q: "Blickrichtung zum Fenster zur Vermeidung von Blendung?", options: ["90 Grad", "Frontal", "Rücken", "Beliebig"], answer: "90 Grad", exp: "Vermeidet direktes Licht auf Schirm." },
+    { type: "mc", q: "Umweltzeichen für nachhaltige IT-Geräte?", options: ["Blauer Engel", "CE-Zeichen", "TÜV-Süd", "GS-Siegel"], answer: "Blauer Engel", exp: "Umweltgütesiegel." },
+    { type: "mc", q: "Hot-Swap Funktion bei Servern bedeutet...", options: ["Tausch im laufenden Betrieb", "Wasserkühlung der Festplatten", "Übertaktung aller Prozessoren", "Automatischer Stromsparmodus"], answer: "Tausch im laufenden Betrieb", exp: "Komponenten ohne Shutdown wechseln." },
+    { type: "mc", q: "ECC-RAM Funktion im Serverbereich?", options: ["Automatische Fehlerkorrektur", "Integriertes RGB-Farblicht", "Höhere Taktfrequenz im Bus", "Niedriger Anschaffungspreis"], answer: "Automatische Fehlerkorrektur", exp: "ECC korrigiert Einzelbit-Fehler." },
+    { type: "mc", q: "RAID 1 Spiegelung dient der...", options: ["Ausfallsicherheit", "Geschwindigkeit", "Kapazität", "Stromersparnis"], answer: "Ausfallsicherheit", exp: "Spiegelung schützt vor Plattenausfall." },
+    { type: "mc", q: "RAID 5 Mindestanzahl an Festplatten?", options: ["3 Festplatten", "2 Festplatten", "4 Festplatten", "1 Festplatte"], answer: "3 Festplatten", exp: "RAID 5 erfordert min. 3 Platten." },
+    { type: "mc", q: "Gerät zur Datenweiterleitung anhand der MAC-Adresse?", options: ["Switch", "Router", "Hub", "Repeater"], answer: "Switch", exp: "Switch arbeitet auf Layer 2." },
+    { type: "mc", q: "Gerät zur Verbindung verschiedener IP-Netze?", options: ["Router", "Switch", "Hub", "Bridge"], answer: "Router", exp: "Router arbeitet auf Layer 3." },
+    { type: "mc", q: "Server zur automatischen IP-Adressvergabe?", options: ["DHCP", "DNS", "FTP", "HTTP"], answer: "DHCP", exp: "DHCP verteilt Netzwerkeinstellungen." },
+    { type: "mc", q: "Server zur Auflösung von Namen in IP-Adressen?", options: ["DNS", "DHCP", "Proxy", "SMTP"], answer: "DNS", exp: "DNS übersetzt Domainnamen." },
+    { type: "mc", q: "Verschlüsseltes Webprotokoll?", options: ["HTTPS", "HTTP", "FTP", "TELNET"], answer: "HTTPS", exp: "HTTPS nutzt TLS/SSL." },
+    { type: "mc", q: "Verschlüsseltes Konsolen-Fernwartungsprotokoll?", options: ["SSH", "Telnet", "FTP", "HTTP"], answer: "SSH", exp: "SSH ist die sichere Shell." },
+    { type: "mc", q: "Bedeutung USV?", options: ["Unterbrechungsfreie Stromversorgung", "Universal Server Connection Link", "Ultra Security Encryption System", "Umwelt Schutz Richtlinie"], answer: "Unterbrechungsfreie Stromversorgung", exp: "Sichert Stromausfälle ab." },
+    { type: "mc", q: "3-2-1 Backup Regel bedeutet...", options: ["3 Kopien, 2 Medien, 1 extern", "3 Server, 2 Switches, 1 Router", "3 Tage, 2 Wochen, 1 Monat", "3 Admins, 2 Passwörter, 1 Key"], answer: "3 Kopien, 2 Medien, 1 extern", exp: "Standard Backup-Regel." },
+    { type: "mc", q: "Schadsoftware, die Lösegeld erpresst?", options: ["Ransomware", "Adware", "Spyware", "Rootkit"], answer: "Ransomware", exp: "Verschlüsselt Daten für Lösegeld." },
+    { type: "mc", q: "Gefälschte E-Mails zur Datenerfassung?", options: ["Phishing", "Spam", "Scanning", "Routing"], answer: "Phishing", exp: "Täuscht Identität vor." },
+    { type: "mc", q: "Netzwerkschutz-System nach Regeln?", options: ["Firewall", "USV", "Router", "Switch"], answer: "Firewall", exp: "Filtert Datenverkehr." },
+    { type: "mc", q: "Tätigkeitsschulden ohne Erfolgsgarantie?", options: ["Dienstvertrag", "Werkvertrag", "Mietvertrag", "Leihvertrag"], answer: "Dienstvertrag", exp: "Schuldet reine Dienstleistung." },
+    { type: "mc", q: "Zieleinkaufspreis Berechnung?", options: ["LEP minus Rabatt", "LEP plus Skonto", "Bezugspreis minus Fracht", "Selbstkosten plus Gewinn"], answer: "LEP minus Rabatt", exp: "ZEP = LEP - Rabatt." },
+    { type: "mc", q: "Bezugskosten im Wareneinkauf?", options: ["Fracht und Zoll", "Lieferrabatt", "Liefererskonto", "Gewinnzuschlag"], answer: "Fracht und Zoll", exp: "Erhöht den Einkaufswert." },
+    { type: "mc", q: "E-V-A Prinzip Bedeutung?", options: ["Eingabe-Verarbeitung-Ausgabe", "Energie-Verbrauch-Analyse", "Einbau-Verbindung-Ablauf", "Emulation-Code-Ausgabe"], answer: "Eingabe-Verarbeitung-Ausgabe", exp: "Grundstruktur der IT." },
+    { type: "mc", q: "M.2 Steckplatz Anbindung?", options: ["PCIe Lanes", "SATA 1.0", "USB 2.0", "VGA"], answer: "PCIe Lanes", exp: "Bindet schnelle SSDs an." },
+    { type: "mc", q: "POST Prüfaufgabe des BIOS?", options: ["Hardware-Test", "Windows-Update", "Virensuche", "Netzwerkspeed"], answer: "Hardware-Test", exp: "Power-On Self-Test." },
+    { type: "mc", q: "Formular zur fehlerfreien Übergabe an den Kunden?", options: ["Übergabeprotokoll", "Lieferschein", "Rechnung", "Mahnung"], answer: "Übergabeprotokoll", exp: "Hält Zustand bei Übergabe fest." },
+    { type: "mc", q: "Virtuelle Desktops aus der Cloud?", options: ["DaaS", "PaaS", "SaaS", "IaaS"], answer: "DaaS", exp: "Desktop as a Service." },
+    { type: "mc", q: "Gemeinkostenzuschlag deckt...", options: ["Betriebskosten", "Reinen Gewinn", "Kundenskonto", "Lieferrabatt"], answer: "Betriebskosten", exp: "Deckt indirekte Betriebskosten ab." },
+    { type: "mc", q: "80 PLUS Zertifikat gibt an...", options: ["80% Wirkungsgrad", "CE Gütesiegel", "ISO 9001 Standard", "TÜV Auszeichnung"], answer: "80% Wirkungsgrad", exp: "Netzteil Effizienz." },
+    { type: "mc", q: "Windows 11 Standard-Dateisystem?", options: ["NTFS", "FAT32", "ext4", "exFAT"], answer: "NTFS", exp: "Windows Dateisystem." },
+    { type: "mc", q: "S/FTP Kabel Schirmung?", options: ["Folien- und Geflechtschirmung", "Keine Schirmung vorhanden", "Nur einfache Plastikhülle", "Drahtseilkonstruktion"], answer: "Folien- und Geflechtschirmung", exp: "Schützt vor Störungen." },
+    { type: "mc", q: "Ziel der Nutzwertanalyse?", options: ["Vergleich von Alternativen", "Reine Gewinnberechnung", "Steuerberechnung", "Netzwerkmessung"], answer: "Vergleich von Alternativen", exp: "Gewichtete Auswahlverfahren." },
+    { type: "mc", q: "ElektroG Bestimmung?", options: ["Altgeräte-Entsorgung", "Kündigungsfristen", "Arbeitszeitregeln", "Gehaltsstufen"], answer: "Altgeräte-Entsorgung", exp: "Altgeräte-Entsorgung." },
+    { type: "mc", q: "Merkmal einer Workstation?", options: ["Profi-GPU & ECC-RAM", "Geringer Preis", "Geringes Gewicht", "Akkubetrieb"], answer: "Profi-GPU & ECC-RAM", exp: "Leistungsstarke Hardware." },
+    { type: "mc", q: "Aufgabe des DNS-Servers?", options: ["Namensauflösung im Netz", "IP-Adressen vergeben", "E-Mails filtern", "Viren löschen"], answer: "Namensauflösung im Netz", exp: "DNS übersetzt Domainnamen." },
+    { type: "mc", q: "Unterschied Kaufvertrag und Dienstvertrag?", options: ["Kaufvertrag = Eigentum; Dienstvertrag = Tätigkeit", "Kein rechtlicher Unterschied", "Dienstverträge sind immer kostenlos", "Kaufverträge gelten nur für Häuser"], answer: "Kaufvertrag = Eigentum; Dienstvertrag = Tätigkeit", exp: "Rechtlicher Unterschied nach BGB." },
+    { type: "mc", q: "Was versteht man unter Barverkaufspreis?", options: ["Preis vor Rabatt & Skonto", "Einkaufspreis Großhandel", "Preis inklusive MwSt", "Preis nach 5 Jahren"], answer: "Preis vor Rabatt & Skonto", exp: "Basis der Verkaufskalkulation." },
+    { type: "mc", q: "Welches Protokoll ermöglicht sicheren Dateitransfer?", options: ["SFTP", "HTTP", "TELNET", "UDP"], answer: "SFTP", exp: "SSH File Transfer Protocol." },
+    { type: "mc", q: "Was misst die Reaktionszeit bei Monitoren (ms)?", options: ["Pixel-Farbwechselzeit", "Stromverbrauch", "Blickwinkelstabilität", "Garantiedauer"], answer: "Pixel-Farbwechselzeit", exp: "Schnelle Reaktionszeiten verhindern Schlieren." },
+    { type: "mc", q: "Was bedeutet DÜ-Geschwindigkeit?", options: ["Datenmenge pro Sekunde", "Dauer der Garantie", "Drehzahl des Lüfters", "Dicke des Kabels"], answer: "Datenmenge pro Sekunde", exp: "Misst Datenmenge pro Zeit." },
+    { type: "mc", q: "Rechtsfolge von Verträgen mit Nichtgeschäftsfähigen (U7)?", options: ["Von Anfang an nichtig", "Fully Gültig", "Anfechtbar", "Schwebend unwirksam"], answer: "Von Anfang an nichtig", exp: "§ 105 BGB stellt Nichtigkeit fest." },
+    { type: "mc", q: "Welches Dokument dokumentiert die Ist-Analyse beim Kunden?", options: ["IST-Erhebung", "Pflichtenheft", "Kaufvertrag", "Mahnung"], answer: "IST-Erhebung", exp: "Nimmt den aktuellen Zustand auf." },
+    { type: "mc", q: "Welche Topologie benötigt einen zentralen Switch?", options: ["Stern-Topologie", "Bus-Topologie", "Ring-Topologie", "Baum-Topologie"], answer: "Stern-Topologie", exp: "Stern-Netze verbinden alle Knoten zentral." },
+    { type: "mc", q: "Vorteil von Stern-Topologie?", options: ["Einzelausfall stört Restnetz nicht", "Keine Kabel nötig", "Kein Switch nötig", "Kostenlos"], answer: "Einzelausfall stört Restnetz nicht", exp: "Hohe Ausfallsicherheit einzelner Stationen." },
+    { type: "mc", q: "Welche USV-Klasse bietet den höchsten Schutz gegen Spannungsschwankungen?", options: ["Online-USV", "Offline-USV", "Line-Interactive", "Standby-USV"], answer: "Online-USV", exp: "Online USVs liefern Dauerstrom ohne Umschaltzeit." },
+    { type: "mc", q: "Welche Gehäusebauform ist bei Servern im Rack üblich?", options: ["19-Zoll-Format", "Tower-Gehäuse", "Mini-ITX Cube", "Desktop-Slim"], answer: "19-Zoll-Format", exp: "Standard-Einbaumaß in Rechenzentren." },
+    { type: "mc", q: "Was bedeutet Höheneinheit (HE / U) im Server-Rack?", options: ["Höhenmaß 1,75 Zoll", "Breite des Servers", "Gewicht des Racks", "Lüfteranzahl"], answer: "Höhenmaß 1,75 Zoll", exp: "Höheneinheit für Einbaugeräte." },
+    { type: "mc", q: "Was besagt die DSGVO zum Prinzip der Datensparsamkeit?", options: ["Nur zwingende Daten erheben", "Alle Daten unendlich speichern", "Daten frei verkaufen", "Keine Daten speichern"], answer: "Nur zwingende Daten erheben", exp: "Minimierungsgebot der DSGVO." },
+    { type: "mc", q: "Welche Maßnahme schützt Arbeitsplätze vor Social-Engineering-Angriffen?", options: ["Mitarbeiterschulungen", "Neue Monitore", "Kabel tauschen", "Lautstärke"], answer: "Mitarbeiterschulungen", exp: "Der Mensch ist oft das schwächste Glied." },
+    { type: "mc", q: "Herzlichen Glückwunsch! Du hast Frage 100 erreicht! Was machst du nach der erfolgreichen Arbeitsplatz-Einrichtung?", options: ["Übergabeprotokoll abzeichnen lassen", "PC ungetestet stehen lassen", "Kabel zerschneiden", "Sofort nach Hause gehen"], answer: "Übergabeprotokoll abzeichnen lassen", exp: "Die saubere Abnahme schließt das Projekt erfolgreich ab!" }
+];
+
+const questions = shuffleArray(rawQuestions).slice(0, 100);
+
+let currentQ = 0;
+let score = 0;
+let currentShuffledOptions = [];
+
+function showQuestion() {
+    const q = questions[currentQ];
+    document.getElementById("progress").innerText = `Frage ${currentQ + 1} von ${questions.length}`;
+    const container = document.getElementById("question-content");
+    const feedback = document.getElementById("feedback-area");
+    feedback.innerHTML = "";
+    document.getElementById("next-btn").style.display = "none";
+
+    let html = `<div class="question-text">${q.q}</div>`;
+
+    if (q.type === "mc") {
+        currentShuffledOptions = shuffleArray(q.options);
+        html += `<div id="options-container">`;
+        currentShuffledOptions.forEach((opt, idx) => {
+            html += `<button class="option" onclick="checkMC(${idx})">${opt}</button>`;
+        });
+        html += `</div>`;
+    } else if (q.type === "open") {
+        html += `
+            <input type="text" id="open-answer" class="text-input" placeholder="Antwort eingeben..." autocomplete="off">
+            <button class="submit-btn" onclick="checkOpen()">Antwort prüfen</button>
+        `;
+    } else if (q.type === "table") {
+        html += `<table class="kalkulation-table"><tr><th>Position</th><th>Wert (€)</th></tr>`;
+        q.rows.forEach((row, idx) => {
+            html += `<tr><td>${row.label}</td><td>`;
+            if (row.readonly) {
+                html += `<strong>${row.val}</strong>`;
+            } else {
+                html += `<input type="text" id="table-val-${idx}" placeholder="Wert eingeben" autocomplete="off">`;
+            }
+            html += `</td></tr>`;
+        });
+        html += `</table><button class="submit-btn" onclick="checkTable()">Tabelle prüfen</button>`;
+    }
+
+    container.innerHTML = html;
+}
+
+function checkMC(selectedIndex) {
+    const q = questions[currentQ];
+    const selectedOption = currentShuffledOptions[selectedIndex];
+    const optionsBtns = document.querySelectorAll(".option");
+    optionsBtns.forEach(btn => btn.disabled = true);
+
+    if (selectedOption === q.answer) {
+        optionsBtns[selectedIndex].classList.add("correct");
+        score++;
+        showFeedback(true, `Richtig! ${q.exp}`);
+    } else {
+        optionsBtns[selectedIndex].classList.add("incorrect");
+        currentShuffledOptions.forEach((opt, idx) => {
+            if (opt === q.answer) {
+                optionsBtns[idx].classList.add("correct");
+            }
+        });
+        showFeedback(false, `Falsch! Richtige Antwort: ${q.answer}. ${q.exp}`);
+    }
+    document.getElementById("next-btn").style.display = "inline-block";
+}
+
+function checkOpen() {
+    const q = questions[currentQ];
+    const inputEle = document.getElementById("open-answer");
+    const input = inputEle ? inputEle.value : "";
+    const btn = document.querySelector(".submit-btn");
+    btn.disabled = true;
+
+    if (!input || input.trim() === "") {
+        showFeedback(false, `Keine Antwort eingegeben! Richtige Antwort: ${q.answer[0]}. ${q.exp}`);
+        document.getElementById("next-btn").style.display = "inline-block";
+        return;
+    }
+
+    let isCorrect = q.answer.some(ans => isSimilar(input, ans));
+
+    if (isCorrect) {
+        score++;
+        showFeedback(true, `Richtig! ${q.exp}`);
+    } else {
+        showFeedback(false, `Falsch! Richtige Antwort: ${q.answer[0]}. ${q.exp}`);
+    }
+    document.getElementById("next-btn").style.display = "inline-block";
+}
+
+function checkTable() {
+    const q = questions[currentQ];
+    let allCorrect = true;
+    let hasEmpty = false;
+    const btn = document.querySelector(".submit-btn");
+    btn.disabled = true;
+
+    q.rows.forEach((row, idx) => {
+        if (!row.readonly) {
+            const inputEle = document.getElementById(`table-val-${idx}`);
+            const inputVal = inputEle ? inputEle.value : "";
+            if (!inputVal || inputVal.trim() === "") {
+                hasEmpty = true;
+            }
+            if (!isSimilar(inputVal, row.key)) {
+                allCorrect = false;
+            }
+        }
+    });
+
+    if (!hasEmpty && allCorrect) {
+        score++;
+        showFeedback(true, `Alle Tabelleneinträge sind richtig! ${q.exp}`);
+    } else {
+        let answersText = q.rows.filter(r => !r.readonly).map(r => `${r.label}: ${r.key}`).join(" | ");
+        showFeedback(false, `Falsch oder unvollständig! Richtige Werte: ${answersText}. ${q.exp}`);
+    }
+    document.getElementById("next-btn").style.display = "inline-block";
+}
+
+function showFeedback(isCorrect, text) {
+    const feedback = document.getElementById("feedback-area");
+    feedback.className = `feedback ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`;
+    
+    // Verlangte spezifische URLs für Richtig und Falsch
+    const memeArray = isCorrect ? correctMemes : incorrectMemes;
+    const randomMeme = memeArray[Math.floor(Math.random() * memeArray.length)];
+
+    feedback.innerHTML = `
+        <div>${text}</div>
+        <div class="feedback-img">
+            <img src="${randomMeme}" alt="Reaktion Bild">
+        </div>
+    `;
+}
+
+function nextQuestion() {
+    currentQ++;
+    if (currentQ < questions.length) {
+        showQuestion();
+    } else {
+        finishQuiz();
+    }
+}
+
+// Ranglisten-Funktionalität
+function getRangliste() {
+    const data = localStorage.getItem("lf02_rangliste");
+    if (data) {
+        return JSON.parse(data);
+    }
+    // Demo-Daten
+    return [
+        { name: "Max Mustermann", score: 95, max: 100, date: "15.09.2026" },
+        { name: "IT-Profi_2026", score: 88, max: 100, date: "16.09.2026" },
+        { name: "ByteMaster", score: 72, max: 100, date: "14.09.2026" }
+    ];
+}
+
+function saveRanglisteEntry(name) {
+    if (!name || name.trim() === "") return;
+    let list = getRangliste();
+    const today = new Date().toLocaleDateString('de-DE');
+    list.push({
+        name: name.trim(),
+        score: score,
+        max: questions.length,
+        date: today
+    });
+    // Sortieren nach Punktzahl absteigend
+    list.sort((a, b) => b.score - a.score);
+    // Nur Top 10 speichern
+    list = list.slice(0, 10);
+    localStorage.setItem("lf02_rangliste", JSON.stringify(list));
+    renderRangliste(name.trim());
+}
+
+function renderRangliste(highlightName = null) {
+    const list = getRangliste();
+    let html = `
+        <table class="rangliste-table">
+            <tr>
+                <th>Rang</th>
+                <th>Name</th>
+                <th>Punkte</th>
+                <th>Prozent</th>
+                <th>Datum</th>
+            </tr>
+    `;
+    list.forEach((item, index) => {
+        const isCurrent = highlightName && item.name === highlightName && item.score === score;
+        const rowClass = isCurrent ? 'class="highlight-row"' : '';
+        const pct = Math.round((item.score / item.max) * 100);
+        html += `
+            <tr ${rowClass}>
+                <td><strong>#${index + 1}</strong></td>
+                <td>${item.name}</td>
+                <td>${item.score} / ${item.max}</td>
+                <td>${pct}%</td>
+                <td>${item.date}</td>
+            </tr>
+        `;
+    });
+    html += `</table>`;
+    document.getElementById("rangliste-table-container").innerHTML = html;
+}
+
+function finishQuiz() {
+    const passed = score >= (questions.length / 2);
+    
+    const imgSrc = passed 
+        ? "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7qE2VAxuXWeyvJIY/giphy.webp"
+        : "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzgxbGplZnkzdnFhanE2M3d5bDIybTZiN2J1Zm1qbzk4OHppdGdudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9u3TZfpmeDLkD6/giphy.gif";
+
+    const memeText = passed
+        ? "Großartige Leistung! Du hast den Test erfolgreich bestanden! 🎉"
+        : "Das war leider nichts... Zeit für eine Wiederholung! 😭";
+
+    document.getElementById("quiz-card").innerHTML = `
+        <div id="score-board">
+            <h2>Test Beendet!</h2>
+            <p style="font-size: 1.3em;">Ergebnis: <strong>${score}</strong> von <strong>${questions.length}</strong> Punkten (${Math.round(score/questions.length*100)}%)</p>
+            <div class="img-container">
+                <img src="${imgSrc}" alt="Ergebnis Bild">
+            </div>
+            <div class="meme-text">${memeText}</div>
+            
+            <div class="rangliste-container">
+                <h3>🏆 Rangliste (Top Scores)</h3>
+                <div class="rangliste-form" id="rangliste-form-box">
+                    <input type="text" id="player-name" placeholder="Deinen Namen eintragen..." autocomplete="off">
+                    <button class="submit-btn" style="margin-top:0;" onclick="submitScore()">In Rangliste eintragen</button>
+                </div>
+                <div id="rangliste-table-container"></div>
+            </div>
+            
+            <button class="submit-btn" onclick="location.reload()" style="margin-top:20px;">Test erneut starten</button>
+        </div>
+    `;
+    
+    renderRangliste();
+}
+
+function submitScore() {
+    const nameInput = document.getElementById("player-name");
+    if (nameInput && nameInput.value.trim() !== "") {
+        saveRanglisteEntry(nameInput.value);
+        document.getElementById("rangliste-form-box").style.display = "none";
+    }
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
