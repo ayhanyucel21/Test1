@@ -44,8 +44,8 @@
 <div class="card" id="quiz-card">
     <h1>LF02: Arbeitsplatz nach Kundenwunsch ausstatten</h1>
     <div class="test-selector">
-        <button class="test-btn active" id="btn-test1" onclick="switchTest(1)">Test 1 (Frage 1-50)</button>
-        <button class="test-btn" id="btn-test2" onclick="switchTest(2)">Test 2 (Frage 51-100)</button>
+        <button class="test-btn active" id="btn-test1" onclick="switchTest(1)">Test 1 (50 Fragen)</button>
+        <button class="test-btn" id="btn-test2" onclick="switchTest(2)">Test 2 (30 Vertiefungsfragen)</button>
     </div>
     <div id="progress" class="progress"></div>
     <div id="question-content"></div>
@@ -113,170 +113,142 @@ const incorrectMemes = [
     "https://media3.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MWYwZzI0ZDFheXM4eGNvcWo0ZGM0djkzMGs0Z3owaXRqbzJvcXJoNiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/hHPStl3w2ZU41qjKq2/giphy.webp"
 ];
 
-const allQuestions = [
-    // --- KALKULATIONEN MIT NEUEN ZAHLEN ---
+// --- TEST 1 (50 FRAGEN) ---
+const test1Questions = [
+    // Arbeitsschutz & Ergonomie (1-10)
+    { type: "mc", q: "1. Wofür steht die Abkürzung ArbSchG?", options: ["Arbeitsplatzgesetz", "Arbeitsschutzgesetz", "Arbeitsschutzgruppe", "Arbeitsgemeinschaft"], answer: "Arbeitsschutzgesetz", exp: "Erklärung: Das ArbSchG ist das zentrale deutsche Bundesgesetz zur Regelung des Arbeitsschutzes.\nQuelle: ArbSchG § 1." },
+    { type: "mc", q: "2. Was ist das vorrangige Ziel des Arbeitsschutzes?", options: ["Sicherstellung maximalen Unternehmensgewinns", "Erfüllung längerer täglicher Arbeitszeiten", "Schutz von Gesundheit und Sicherheit der Beschäftigten", "Anschaffung schnellere Computer im Betrieb"], answer: "Schutz von Gesundheit und Sicherheit der Beschäftigten", exp: "Erklärung: Ziel ist es, Arbeitsunfälle zu verhüten und die Gesundheit der Beschäftigten zu wahren.\nQuelle: ArbSchG § 1 & § 2." },
+    { type: "mc", q: "3. Wer trägt im Unternehmen die Hauptverantwortung für die Arbeitssicherheit?", options: ["Nur der einzelne Mitarbeiter selbst", "Der Arbeitgeber", "Ausschließlich die Berufsgenossenschaft", "Der extern bestellte Kunde"], answer: "Der Arbeitgeber", exp: "Erklärung: Der Arbeitgeber ist gesetzlich verpflichtet, die erforderlichen Arbeitsschutzmaßnahmen zu treffen.\nQuelle: ArbSchG § 3." },
+    { type: "mc", q: "4. Welche Eigenschaft muss ein ergonomischer Bürostuhl zwingend aufweisen?", options: ["Starre und unbewegliche Konstruktion", "Vollständige Höhenverstellbarkeit", "Fehlende Rückenlehne für Bewegungsfreiheit", "Ausführung rein aus unbehandeltem Holz"], answer: "Vollständige Höhenverstellbarkeit", exp: "Erklärung: Höhenverstellbarkeit sichert den 90°-Sitzwinkel für unterschiedliche Körpergrößen.\nQuelle: ArbStättV Anhang 6.1." },
+    { type: "mc", q: "5. Wie groß sollte der empfohlene Sehabstand zum Bildschirm sein?", options: ["Exakt 10 cm", "Mindestens 20 cm", "Etwa 50 bis 80 cm", "Unverhältnismäßig 2 Meter"], answer: "Etwa 50 bis 80 cm", exp: "Erklärung: 50-80 cm schützt vor Überanstrengung der Augen und Fehlhaltungen des Nackens.\nQuelle: DGUV Information 215-410." },
+    { type: "mc", q: "6. Warum sind regelmäßige Bewegungspausen bei der Bildschirmarbeit wichtig?", options: ["Zur Entlastung der Augen und Förderung der Gesundheit", "Zur Erhöhung des betrieblichen Stromverbrauchs", "Zur Beschleunigung der Prozessorleistung", "Zur Verbesserung des WLAN-Empfangs im Büro"], answer: "Zur Entlastung der Augen und Förderung der Gesundheit", exp: "Erklärung: Pausen beugen Ermüdung sowie Muskel-Skelett-Erkrankungen vor.\nQuelle: ArbStättV Anhang 6.3." },
+    { type: "mc", q: "7. Was bedeutet das Grundprinzip der Ergonomie am Arbeitsplatz?", options: ["Anpassung der Arbeitsbedingungen an den Menschen", "Reparatur defekter Computerhardware", "Aufbau strukturierter Firmennetzwerke", "Erstellung täglicher Datensicherungen"], answer: "Anpassung der Arbeitsbedingungen an den Menschen", exp: "Erklärung: Ergonomie passt Werkzeuge und Umgebung dem menschlichen Körper an.\nQuelle: DIN EN ISO 9241." },
+    { type: "mc", q: "8. Welche Körperhaltung gilt beim Sitzen am Bildschirmarbeitsplatz als richtig?", options: ["Krummes und dauerhaft vorgebeugtes Sitzen", "Ein 90°-Winkel an den Arm- und Beingelenken", "Bequemes Sitzen direkt auf dem Schreibtisch", "Reine Steharbeit während des gesamten Arbeitstages"], answer: "Ein 90°-Winkel an den Arm- und Beingelenken", exp: "Erklärung: Der 90°-Winkel sorgt für eine optimale Entlastung von Wirbelsäule und Gelenken.\nQuelle: DGUV Information 215-410." },
+    { type: "mc", q: "9. Welche Eigenschaft muss ein Monitor am Arbeitsplatz bezüglich der Anzeige aufweisen?", options: ["Starke Direktblendung verursachen", "Störende Lichtreflexionen spiegeln", "Gute Lesbarkeit und scharfe Darstellung bieten", "Dauerhaftes optisches Flackern aufweisen"], answer: "Gute Lesbarkeit und scharfe Darstellung bieten", exp: "Erklärung: Gute Lesbarkeit und Flimmerfreiheit sind Pflicht zur Augenschonung.\nQuelle: ArbStättV Anhang 6.2." },
+    { type: "mc", q: "10. Welches Gesetz bzw. Verordnung regelt die Anforderungen an Bildschirmarbeitsplätze?", options: ["Bürgerliches Gesetzbuch (BGB)", "Arbeitsstättenverordnung (ArbStättV)", "Handelsgesetzbuch (HGB)", "Strafgesetzbuch (StGB)"], answer: "Arbeitsstättenverordnung (ArbStättV)", exp: "Erklärung: Die Arbeitsstättenverordnung enthält im Anhang konkrete Regeln für Bildschirmarbeitsplätze.\nQuelle: ArbStättV Anhang 6." },
+
+    // Monitore (11-20)
+    { type: "mc", q: "11. Wofür steht die Standard-Auflösungsbezeichnung Full HD?", options: ["1280 × 720 Pixel", "1920 × 1080 Pixel", "2560 × 1440 Pixel", "3840 × 2160 Pixel"], answer: "1920 × 1080 Pixel", exp: "Erklärung: Full HD bezeichnet exakt 1920 x 1080 Bildpunkte im 16:9 Format.\nQuelle: IT-Handbuch Westermann / Display-Standards." },
+    { type: "mc", q: "12. Welcher Pixeldichte/Auflösung entspricht der Begriff 4K (Ultra HD)?", options: ["1024 × 768 Pixel", "1920 × 1080 Pixel", "3840 × 2160 Pixel", "4096 × 768 Pixel"], answer: "3840 × 2160 Pixel", exp: "Erklärung: 4K UHD bietet mit 3840x2160 Pixeln die vierfache Full-HD-Auflösung.\nQuelle: VESA Display Standard." },
+    { type: "mc", q: "13. Was ist die Hauptaufgabe eines Rechnermonitors?", options: ["Dauerhafte Speicherung von Anwendungsdaten", "Visuelle Anzeige von verarbeiteten Daten", "Ausdrucken von Grafiken auf Papier", "Automatisches Löschen fehlerhafter Daten"], answer: "Visuelle Anzeige von verarbeiteten Daten", exp: "Erklärung: Der Monitor ist das primäre optische Ausgabegerät im E-V-A-Prinzip.\nQuelle: E-V-A-Prinzip Grundwissen IT." },
+    { type: "mc", q: "14. Was versteht man unter einem Curved-Monitor?", options: ["Ein Monitor mit beweglicher Schwenkhalterung", "Ein physikalisch gebogener Bildschirm", "Ein reiner Touchscreen-Monitor", "Ein Videoprojektor für Beamer"], answer: "Ein physikalisch gebogener Bildschirm", exp: "Erklärung: Die Krümmung passt sich dem natürlichen Blickfeld des menschlichen Auges an.\nQuelle: VESA Ergonomie-Standards." },
+    { type: "mc", q: "15. Was gibt die Angabe Hertz (Hz) bei einem Monitor an?", options: ["Das Gesamtgewicht des Displays", "Die Bildwiederholrate pro Sekunde", "Die maximale physikalische Auflösung", "Die Lautsprecher-Ausgangslautstärke"], answer: "Die Bildwiederholrate pro Sekunde", exp: "Erklärung: Hertz misst, wie viele Einzelbilder der Monitor pro Sekunde aufbaut.\nQuelle: Hardware-Grundlagen Westermann." },
+    { type: "mc", q: "16. Welches Leistungsmerkmal ist bei der Auswahl eines Gaming-Monitors besonders wichtig?", options: ["Eine möglichst hohe Bildwiederholrate", "Eine extrem niedrige Bildauflösung", "Ein alter Röhrenbildschirm (CRT)", "Ein reiner Schwarz-Weiß-Bildschirm"], answer: "Eine möglichst hohe Bildwiederholrate", exp: "Erklärung: Hohe Bildwiederholraten (z.B. 144Hz+) sorgen für flüssige Bewegungsdarstellungen.\nQuelle: IT-Fachinformatiker Kompendium." },
+    { type: "mc", q: "17. Was zeichnet einen sogenannten Smart-Monitor aus?", options: ["Integriertes eigenes Betriebssystem für Apps", "Funktionsfähigkeit komplett ohne Stromzufuhr", "Integrierte Papier-Druckfunktion", "Möglichkeit zum mobilen Dokumentenscannen"], answer: "Integriertes eigenes Betriebssystem für Apps", exp: "Erklärung: Smart-Monitore können ohne angeschlossenen PC Streaming-Apps ausführen.\nQuelle: Hardware-Hersteller Spezifikationen." },
+    { type: "mc", q: "18. Was bedeutet eine größere Zoll-Angabe bei der Bildschirmspezifikation?", options: ["Einen physikalisch größeren Bildschirm", "Einen automatisch größeren Arbeitsspeicher", "Eine höhere CPU-Taktfrequenz", "Eine schnellere Internetverbindung"], answer: "Einen physikalisch größeren Bildschirm", exp: "Erklärung: Zoll misst die Bildschirmdiagonale (1 Zoll = 2,54 cm).\nQuelle: IT-Standard-Maßeinheiten." },
+    { type: "mc", q: "19. Was beschreibt die Auflösung eines Monitors?", options: ["Gesamtzahl der Bildpunkte (Pixel)", "Einstellbare Tonlautstärke", "Gesamtgewicht in Kilogramm", "Elektrischer Stromverbrauch"], answer: "Gesamtzahl der Bildpunkte (Pixel)", exp: "Erklärung: Die Auflösung bestimmt die Schärfe durch die Anzahl der Pixel in Breite und Höhe.\nQuelle: ISO 9241-307." },
+    { type: "mc", q: "20. Wozu dient die HDMI-Schnittstelle am Monitor erster Linie?", options: ["Kombinierte Bild- und Tonübertragung", "Nichts als reine Stromversorgung", "Automatische lokale Datensicherung", "Kühlung interner Baugruppen"], answer: "Kombinierte Bild- und Tonübertragung", exp: "Erklärung: HDMI überträgt hochauflösende digitale Video- und Audiosignale simultan.\nQuelle: HDMI Licensing Standard." },
+
+    // Paneltechnologien (21-30)
+    { type: "mc", q: "21. Wofür steht die Abkürzung LCD?", options: ["Large Color Display", "Liquid Crystal Display", "Low Computer Display", "Light Control Device"], answer: "Liquid Crystal Display", exp: "Erklärung: LCD bedeutet Flüssigkristallanzeige (Liquid Crystal Display).\nQuelle: IT-Kompendium Displaytechnik." },
+    { type: "mc", q: "22. Welcher Panel-Typ ist bekannt für besonders hohe Farbtreue und Blickwinkelstabilität?", options: ["TN-Panel", "IPS-Panel", "CRT-Röhre", "VGA-Grafikkarte"], answer: "IPS-Panel", exp: "Erklärung: IPS (In-Plane Switching) bietet hervorragende Blickwinkel und Farbtreue.\nQuelle: IT-Handbuch Hardware." },
+    { type: "mc", q: "23. Welches Display-Panel ist in der Herstellung meist am günstigsten?", options: ["OLED-Panel", "IPS-Panel", "TN-Panel", "Mini-LED Panel"], answer: "TN-Panel", exp: "Erklärung: TN-Panels (Twisted Nematic) sind preiswert herzustellen und bieten schnelle Reaktionszeiten.\nQuelle: IT-Kompendium Displaytechnik." },
+    { type: "mc", q: "24. Welcher Panel-Typ bietet konstruktionsbedingt besonders hohe Kontrastwerte?", options: ["VA-Panel", "TN-Panel", "VGA-Anschluss", "PS/2-Schnittstelle"], answer: "VA-Panel", exp: "Erklärung: VA-Panels (Vertical Alignment) zeichnen sich durch sehr hohe statische Kontrakte aus.\nQuelle: IT-Hardware Fachwissen." },
+    { type: "mc", q: "25. Was ist das Hauptmerkmal der OLED-Technologie?", options: ["Integreter Nadeldrucker", "Display aus selbstleuchtenden Pixeln", "Spezielles Netzwerk-Kupferkabel", "Integrierte Hauptprozessor-Unit"], answer: "Display aus selbstleuchtenden Pixeln", exp: "Erklärung: OLED-Pixel leuchten selbst und benötigen keine Hintergrundbeleuchtung.\nQuelle: Display-Technologien Fachbuch." },
+    { type: "mc", q: "26. Was beschreibt die Reaktionszeit eines Monitor-Panels?", options: ["Schaltgeschwindigkeit für Farbwechsel in ms", "Elektrischer Stromverbrauch pro Stunde", "Maximale Akustik-Lautstärke", "Physikalische Gehäusegröße"], answer: "Schaltgeschwindigkeit für Farbwechsel in ms", exp: "Erklärung: Sie misst die Zeit, die ein Pixel für den Wechsel von einer Farbe zur anderen benötigt.\nQuelle: VESA Test-Standards." },
+    { type: "mc", q: "27. In welcher Maßeinheit wird die Helligkeit eines Bildschirms gemessen?", options: ["Watt (W)", "Volt (V)", "Candela pro Quadratmeter (cd/m²)", "Meter (m)"], answer: "Candela pro Quadratmeter (cd/m²)", exp: "Erklärung: Die Leuchtdichte (Helligkeit) wird technisch in cd/m² angegeben.\nQuelle: SI-Einheiten / IT-Standard." },
+    { type: "mc", q: "28. Was bedeutet ein hoher Kontrastwert bei Bildschirmen?", options: ["Große Helligkeitsunterschiede zwischen Weiß und Schwarz", "Ein zwangsläufig extrem hoher Stromverbrauch", "Ein höheres physikalisches Gesamtgewicht", "Ein langsamer arbeitendes Display"], answer: "Große Helligkeitsunterschiede zwischen Weiß und Schwarz", exp: "Erklärung: Kontrast beschreibt das Verhältnis zwischen dunkelstem Schwarz und hellstem Weiß.\nQuelle: ISO 9241-307." },
+    { type: "mc", q: "29. Welchen messtechnischen Vorteil bietet OLED gegenüber LCDs?", options: ["Darstellung von absolut echtem Schwarz", "Eingeschränkter Farbraum", "Verringerung der Pixelanzahl", "Deutlich niedrigerer Kontrast"], answer: "Darstellung von absolut echtem Schwarz", exp: "Erklärung: Durch Abschalten einzelner Pixel erreicht OLED einen unendlichen Kontrast und echtes Schwarz.\nQuelle: Displaytechnologie Westermann." },
+    { type: "mc", q: "30. Für welches Anwendungsgebiet eignet sich ein IPS-Monitor besonders gut?", options: ["Professionelle Grafik- und Bildbearbeitung", "Ausdrucken langer Dokumente", "Einlesen von Papierscanns", "Netzwerk-Verkabelungen"], answer: "Professionelle Grafik- und Bildbearbeitung", exp: "Erklärung: Die hohe Farbtreue prädestiniert IPS für Grafik- und Bildbearbeitung.\nQuelle: DGUV Empfehlung Bildbearbeitung." },
+
+    // PC-Komponenten (31-40)
+    { type: "mc", q: "31. Was bedeutet die Abkürzung CPU im PC-System?", options: ["Hauptprozessor (Central Processing Unit)", "Magnetische Festplatte", "Gehäusestruktur", "Netzteil zur Stromversorgung"], answer: "Hauptprozessor (Central Processing Unit)", exp: "Erklärung: CPU steht für Central Processing Unit, die zentrale Recheneinheit.\nQuelle: IT-Systemelektroniker Grundlagen." },
+    { type: "mc", q: "32. Was ist die fundamentale Aufgabe der CPU?", options: ["Ausführung von Berechnungen und Befehlen", "Gedruckte Dokumente erzeugen", "Bilder direkt auf Papier anzeigen", "Daten dauerhaft stromlos speichern"], answer: "Ausführung von Berechnungen und Befehlen", exp: "Erklärung: Die CPU führt alle logischen und arithmetischen Befehle des Rechners aus.\nQuelle: E-V-A-Prinzip / CPU-Architektur." },
+    { type: "mc", q: "33. Wofür steht der Begriff RAM im Rechner?", options: ["Flüchtiger Arbeitsspeicher (Random Access Memory)", "Dauerhafte SSD-Festplatte", "Ergonomischer Monitor", "Dokumentenscanner"], answer: "Flüchtiger Arbeitsspeicher (Random Access Memory)", exp: "Erklärung: RAM (Random Access Memory) dient als schneller, flüchtiger Zwischenspeicher.\nQuelle: Rechnerarchitektur Westermann." },
+    { type: "mc", q: "34. Welches Bauteil speichert Daten auch nach dem Ausschalten dauerhaft?", options: ["RAM-Arbeitsspeicher", "SSD-Speicherlaufwerk", "Prozessor-Cache", "CPU-Kerne"], answer: "SSD-Speicherlaufwerk", exp: "Erklärung: SSDs speichern Daten nicht-flüchtig auf Halbleiterspeichern.\nQuelle: Tabellenbuch IT." },
+    { type: "mc", q: "35. Welcher Vorteil zeichnet eine SSD gegenüber einer HDD aus?", options: ["Deutlich schnellere Lese- und Schreibgeschwindigkeiten", "Geringere Geschwindigkeit im Datentransfer", "Größeres physikalisches Gehäuse", "Höheres Gesamtgewicht"], answer: "Deutlich schnellere Lese- und Schreibgeschwindigkeiten", exp: "Erklärung: SSDs greifen elektronisch ohne Mechanik extrem schnell auf Daten zu.\nQuelle: Hardware-Kompendium." },
+    { type: "mc", q: "36. Welches Bauteil verbindet alle internen Komponenten des Rechners miteinander?", options: ["Mausleitung", "Mainboard (Hauptplatine)", "Tastaturkabel", "Druckerschnittstelle"], answer: "Mainboard (Hauptplatine)", exp: "Erklärung: Das Mainboard stellt Bussysteme und Schnittstellen für alle Teile bereit.\nQuelle: Tabellenbuch IT." },
+    { type: "mc", q: "37. Was ist ein PCIe-Steckplatz auf der Hauptplatine?", options: ["Erweiterungssteckplatz für Grafikkarten etc.", "Eine externe Festplatte", "Ein internes Stromkabel", "Das Betriebssystem"], answer: "Erweiterungssteckplatz für Grafikkarten etc.", exp: "Erklärung: PCI Express bindet schnelle Erweiterungskarten direkt an das System an.\nQuelle: PCI-SIG Spezifikationen." },
+    { type: "mc", q: "38. Was ist ein CPU-Sockel?", options: ["Steckplatz zur Aufnahme des Prozessors", "Das PC-Netzteil", "Ein Gehäuselüfter", "Eine M.2-SSD"], answer: "Steckplatz zur Aufnahme des Prozessors", exp: "Erklärung: Der Sockel stellt den mechanischen und elektrischen Kontakt zur CPU her.\nQuelle: Mainboard-Handbuch." },
+    { type: "mc", q: "39. Was beschreibt der Begriff BIOS?", options: ["Grundlegende Firmware des Mainboards", "Ein hochauflösender Monitor", "Ein Netzwerk-Router", "Ein Nadeldrucker"], answer: "Grundlegende Firmware des Mainboards", exp: "Erklärung: Das Basic Input/Output System startet die Hardware und lädt den Bootloader.\nQuelle: IT-Kompendium." },
+    { type: "mc", q: "40. Was ist UEFI?", options: ["Ein Betriebssystem", "Der moderne Nachfolger des klassischen BIOS", "Eine externe Festplatte", "Ein Netzwerkkabel"], answer: "Der moderne Nachfolger des klassischen BIOS", exp: "Erklärung: UEFI ersetzt das BIOS mit mehr Speicher- und Sicherheitsfunktionen (z.B. Secure Boot).\nQuelle: UEFI Forum Spezifikation." },
+
+    // IT-Sicherheit (41-50)
+    { type: "mc", q: "41. Welchen Themenbereich regelt die DSGVO primär?", options: ["Monitorspezifikationen", "Datenschutz personenbezogener Daten", "Drucker-Garantien", "Mainboard-Formfaktoren"], answer: "Datenschutz personenbezogener Daten", exp: "Erklärung: Die DSGVO regelt die Verarbeitung personenbezogener Daten EU-weit.\nQuelle: DSGVO Art. 1." },
+    { type: "mc", q: "42. Was schützt der Datenschutzrechtliche Rahmen?", options: ["Personenbezogene Daten natürlicher Personen", "Das PC-Metallgehäuse", "Monitore vor Kratzern", "Lüfter vor Staub"], answer: "Personenbezogene Daten natürlicher Personen", exp: "Erklärung: Datenschutz schützt das Grundrecht auf informationelle Selbstbestimmung.\nQuelle: DSGVO Art. 1 / BDSG." },
+    { type: "mc", q: "43. Was bedeutet das Schutzziel der Vertraulichkeit?", options: ["Daten sind nur für Berechtigte einsehbar", "Daten werden schneller gespeichert", "Daten werden automatisch gelöscht", "Daten werden ausgedruckt"], answer: "Daten sind nur für Berechtigte einsehbar", exp: "Erklärung: Vertraulichkeit schützt Informationen vor unbefugter Offenlegung.\nQuelle: BSI IT-Grundschutz." },
+    { type: "mc", q: "44. Was beschreibt das Schutzziel der Integrität?", options: ["Daten bleiben korrekt und unverfälscht", "Daten belegen mehr Speicherplatz", "Datenübertragung wird schneller", "Hardware wird günstiger"], answer: "Daten bleiben korrekt und unverfälscht", exp: "Erklärung: Integrität stellt sicher, dass Daten nicht unbefugt verändert werden können.\nQuelle: BSI IT-Grundschutz." },
+    { type: "mc", q: "45. Was beinhaltet das Schutzziel der Verfügbarkeit?", options: ["Systeme/Daten sind für Berechtigte erreichbar", "Daten bleiben geheim", "Daten sind veraltet", "Daten sind unlesbar verschlüsselt"], answer: "Systeme/Daten sind für Berechtigte erreichbar", exp: "Erklärung: Verfügbarkeit sichert den zeitgerechten Zugriff auf Daten und Systeme.\nQuelle: BSI IT-Grundschutz." },
+    { type: "mc", q: "46. Wie werden die Schutzziele Vertraulichkeit, Integrität und Verfügbarkeit zusammenfassend genannt?", options: ["GDPR-Standard", "CIA-Triade", "VPN-Tunnel", "WLAN-Standard"], answer: "CIA-Triade", exp: "Erklärung: CIA steht für Confidentiality, Integrity, and Availability.\nQuelle: ISO/IEC 27001." },
+    { type: "mc", q: "47. Was versteht man unter dem Begriff Malware?", options: ["Ein Betriebssystem", "Sammelbegriff für Schadsoftware", "Ein Internet-Browser", "Ein Computermonitor"], answer: "Sammelbegriff für Schadsoftware", exp: "Erklärung: Malware (Malicious Software) umfasst Viren, Würmer, Trojaner etc.\nQuelle: BSI Glossar." },
+    { type: "mc", q: "48. Was ist ein Computervirus?", options: ["Eine spezifische Art von Malware", "Ein RAM-Baustein", "Eine schnelle SSD", "Ein Hauptprozessor"], answer: "Eine spezifische Art von Malware", exp: "Erklärung: Ein Virus verbreitet sich durch Anfügen an andere Dateien/Programme.\nQuelle: BSI IT-Sicherheit." },
+    { type: "mc", q: "49. Was zeichnet Ransomware aus?", options: ["Verschlüsselungs- und Erpressersoftware", "Drucker-Treiber-Software", "Ein Webbrowser-Add-on", "Ein Tabellenkalkulationsprogramm"], answer: "Verschlüsselungs- und Erpressersoftware", exp: "Erklärung: Ransomware sperrt Systeme/Daten und fordert Lösegeld zur Freischaltung.\nQuelle: BSI Lagebericht IT-Sicherheit." },
+
+    // Kalkulationsaufgabe (50)
     { 
         type: "table", 
-        q: "Rückwärtskalkulation: Ein IT-Händler verkauft Monitore für 120 € (Barverkaufspreis netto). Gewinnzuschlag = 20%, Handlungskosten = 25%. Berechnen Sie Selbstkosten und Bezugspreis von unten nach oben:",
-        exp: "Rückwärtsrechnung: Selbstkosten = 120 / 1,2 = 100 €. Bezugspreis = 100 / 1,25 = 80 €.",
+        q: "50. Kalkulation: Ein IT-Händler kauft Monitore ein. Der Listeneinkaufspreis beträgt 200,00 €. Er erhält 10 % Lieferrabatt. Die Bezugskosten betragen 10,00 €. Berechnen Sie den Bezugspreis:",
+        exp: "Erklärung:\nListeneinkaufspreis: 200,00 €\n- Rabatt (10%): 20,00 €\n= Zieleinkaufspreis: 180,00 €\n+ Bezugskosten: 10,00 €\n= Bezugspreis: 190,00 €.\nQuelle: Handelskalkulation / Westermann IT-Handelswissen.",
         rows: [
-            { label: "Barverkaufspreis (netto)", val: "120", readonly: true },
-            { label: "- Gewinnzuschlag (20% auf Selbstkosten)", val: "20", readonly: true },
-            { label: "= Selbstkosten", key: "100" },
-            { label: "- Handlungskosten (25% auf Bezugspreis)", val: "20", readonly: true },
-            { label: "= Bezugspreis", key: "80" }
+            { label: "Listeneinkaufspreis (LEP)", val: "200,00", readonly: true },
+            { label: "- Lieferrabatt (10%)", val: "20,00", readonly: true },
+            { label: "= Zieleinkaufspreis (ZEP)", key: "180" },
+            { label: "+ Bezugskosten", val: "10,00", readonly: true },
+            { label: "= Bezugspreis (Einstandspreis)", key: "190" }
         ]
-    },
-    { 
-        type: "table", 
-        q: "Vorwärtskalkulation: Füllen Sie die verbleibenden Felder aus (Zahlenwert):",
-        exp: "ZEP = 1500 - 150 = 1350. Bezugspreis = 1350 + 50 = 1400.",
-        rows: [
-            { label: "Listeneinkaufspreis (LEP)", val: "1500", readonly: true },
-            { label: "- Lieferrabatt (10%)", val: "150", readonly: true },
-            { label: "= Zieleinkaufspreis (ZEP)", key: "1350" },
-            { label: "+ Bezugskosten", val: "50", readonly: true },
-            { label: "= Bezugspreis", key: "1400" }
-        ]
-    },
-    { 
-        type: "table", 
-        q: "Vorwärtskalkulation: Füllen Sie die weiteren Schritte aus (Zahlenwert):",
-        exp: "Handlungskosten (20%) = 200. Selbstkosten = 1200. Gewinn (15%) = 180. Barverkaufspreis = 1380.",
-        rows: [
-            { label: "Bezugspreis", val: "1000", readonly: true },
-            { label: "+ Handlungskosten (20%)", key: "200" },
-            { label: "= Selbstkosten", key: "1200" },
-            { label: "+ Gewinnzuschlag (15%)", key: "180" },
-            { label: "= Barverkaufspreis", key: "1380" }
-        ]
-    },
-    { 
-        type: "table", 
-        q: "Rückwärtskalkulation: Der Barverkaufspreis beträgt 220 €. Gewinnzuschlag = 10%, Handlungskosten = 25%. Berechnen Sie Selbstkosten und Bezugspreis von unten nach oben:",
-        exp: "Rückwärtsrechnung: Selbstkosten = 220 / 1,1 = 200 €. Bezugspreis = 200 / 1,25 = 160 €.",
-        rows: [
-            { label: "Barverkaufspreis (netto)", val: "220", readonly: true },
-            { label: "- Gewinnzuschlag (10%)", val: "20", readonly: true },
-            { label: "= Selbstkosten", key: "200" },
-            { label: "- Handlungskosten (25%)", val: "40", readonly: true },
-            { label: "= Bezugspreis", key: "160" }
-        ]
-    },
-
-    // --- ARBEITSSCHUTZ & ERGONOMIE ---
-    { type: "mc", q: "Was ist das Ziel des Arbeitsschutzes?", options: ["Sicherheit und Gesundheitsschutz der Beschäftigten gewährleisten", "Möglichst viele Überstunden anordnen", "Nur Kosten im Betrieb senken", "Geräte ohne Prüfung betreiben"], answer: "Sicherheit und Gesundheitsschutz der Beschäftigten gewährleisten", exp: "Der Arbeitsschutz dient dem Schutz der Beschäftigten." },
-    { type: "mc", q: "Welches Gesetz regelt den Arbeitsschutz in Deutschland grundlegend?", options: ["Arbeitsschutzgesetz (ArbSchG)", "Handelsgesetzbuch (HGB)", "Strafgesetzbuch (StGB)", "Straßenverkehrsordnung (StVO)"], answer: "Arbeitsschutzgesetz (ArbSchG)", exp: "Das ArbSchG regelt den Arbeitsschutz in Deutschland." },
-    { type: "mc", q: "Wer trägt die Hauptverantwortung für die Arbeitssicherheit im Unternehmen?", options: ["Der Arbeitgeber", "Nur der Betriebsratsvorsitzende", "Die externen Kunden", "Der Hausmeister"], answer: "Der Arbeitgeber", exp: "Der Arbeitgeber ist rechtlich verantwortlich für Arbeitssicherheit." },
-    { type: "open", q: "Wofür steht die Abkürzung ArbSchG?", answer: ["Arbeitsschutzgesetz"], exp: "ArbSchG steht für Arbeitsschutzgesetz." },
-    { type: "open", q: "Wofür steht die Abkürzung ArbStättV?", answer: ["Arbeitsstättenverordnung"], exp: "ArbStättV steht für Arbeitsstättenverordnung." },
-    { type: "mc", q: "Welche Pflicht hat der Arbeitgeber bezüglich der Arbeitsbedingungen?", options: ["Durchführung einer Gefährdungsbeurteilung", "Kostenlose Süßigkeiten bereitstellen", "Keine Unterweisungen durchführen", "Arbeitszeiten unbegrenzt verlängern"], answer: "Durchführung einer Gefährdungsbeurteilung", exp: "Eine Gefährdungsbeurteilung ist Pflicht des Arbeitgebers." },
-    { type: "mc", q: "Wie groß sollte der empfohlene Abstand zum Bildschirm sein?", options: ["50 bis 80 cm", "10 bis 20 cm", "150 bis 200 cm", "Exakt 5 cm"], answer: "50 bis 80 cm", exp: "Ein Sehabstand von 50-80 cm schont die Augen." },
-    { type: "mc", q: "Warum ist ein höhenverstellbarer Bürostuhl wichtig?", options: ["Ermöglicht individuelle Anpassung für ergonomische Haltung", "Sieht moderner aus", "Ist günstiger im Einkauf", "Verringert die Raumtemperatur"], answer: "Ermöglicht individuelle Anpassung für ergonomische Haltung", exp: "Passt den Sitz an die Körpergröße an." },
-    { type: "mc", q: "Was besagt die 90-Grad-Regel beim ergonomischen Sitzen?", options: ["Knie-, Hüft- und Ellenbogengelenke bilden etwa einen 90-Grad-Winkel", "Der Monitor muss um 90 Grad gedreht sein", "Der Raum muss 90 Grad warm sein", "Arbeitszeit beträgt 90 Minuten"], answer: "Knie-, Hüft- und Ellenbogengelenke bilden etwa einen 90-Grad-Winkel", exp: "Entlastet Muskeln und Gelenke beim Sitzen." },
-    { type: "mc", q: "Welche Auswirkung kann dauerhaft falsches Sitzen haben?", options: ["Rückenschmerzen und Haltungsschäden", "Bessere Sehschärfe", "Höhere Herzfrequenz beim Schlafen", "Keine Auswirkungen"], answer: "Rückenschmerzen und Haltungsschäden", exp: "Falsches Sitzen belastet die Wirbelsäule." },
-
-    // --- BILDSCHIRMARBEITSPLATZ ---
-    { type: "mc", q: "Was versteht man unter einem ergonomischen Arbeitsplatz?", options: ["Ein optimal an den Menschen angepasster Arbeitsplatz", "Ein Platz mit besonders teuren Möbeln", "Ein Platz ohne Stromanschluss", "Ein Stehplatz ohne Stuhl"], answer: "Ein optimal an den Menschen angepasster Arbeitsplatz", exp: "Ergonomie passt Arbeitsbedingungen an den Menschen an." },
-    { type: "mc", q: "Welche Eigenschaft sollte ein Monitor am Arbeitsplatz besitzen?", options: ["Höhenverstellbarkeit und Neigbarkeit", "Möglichst verspiegelte Oberfläche", "Feste Halterung ohne Verstellbarkeit", "Sehr hohes Gewicht"], answer: "Höhenverstellbarkeit und Neigbarkeit", exp: "Flexible Ausrichtung verhindert Nackenschmerzen." },
-    { type: "mc", q: "Warum ist eine blendfreie Monitoranzeige wichtig?", options: ["Vermeidet Augenermüdung und Reflexionen", "Macht das Bild dunkler", "Spart immer 90% Strom", "Schützt das Display vor Staub"], answer: "Vermeidet Augenermüdung und Reflexionen", exp: "Entspiegelung schont das Sehvermögen." },
-    { type: "open", q: "Wie nennt man Technologien zum Schutz der Augen vor Blaulicht und Flimmern (Englischer Begriff)?", answer: ["Eye-Care", "Eye Care", "EyeCare"], exp: "Eye-Care-Technologie minimiert Blaulicht und Flimmern." },
-    { type: "mc", q: "Welchen Vorteil bietet ein Curved-Monitor am Arbeitsplatz?", options: ["Gleichmäßigerer Sehabstand zu den Rändern", "Verbraucht nie Strom", "Passt in jede Tasche", "Ist immer billiger als Flachbildschirme"], answer: "Gleichmäßigerer Sehabstand zu den Rändern", exp: "Die Krümmung entspricht der natürlichen Augenrundung." },
-    { type: "mc", q: "Welchen Vorteil bietet ein IPS-Panel?", options: ["Hohe Blickwinkelstabilität und gute Farbwiedergabe", "Sehr hoher Stromverbrauch", "Geringe Helligkeit", "Gefährliche Strahlung"], answer: "Hohe Blickwinkelstabilität und gute Farbwiedergabe", exp: "IPS liefert stabile Farben aus allen Winkeln." },
-    { type: "mc", q: "Welchen Vorteil bietet ein OLED-Panel?", options: ["Echtes Schwarz durch selbstleuchtende Pixel", "Mechanische Kühlung erforderlich", "Verbraucht immer 500 Watt", "Nutzt alte Röhrentechnik"], answer: "Echtes Schwarz durch selbstleuchtende Pixel", exp: "OLED benötigt keine Hintergrundbeleuchtung." },
-    { type: "open", q: "Wie nennt man die Anzahl der Bildaktualisierungen pro Sekunde in Hertz (Hz)?", answer: ["Bildwiederholrate", "Bildwiederholfrequenz"], exp: "Die Bildwiederholrate misst Bilder pro Sekunde." },
-    { type: "mc", q: "Was gibt die Auflösung eines Monitors an?", options: ["Anzahl der Bildpunkte (Pixel) in Breite und Höhe", "Gewicht des Monitors in kg", "Bildschirmdiagonale in Zoll", "Stromverbrauch in Watt"], answer: "Anzahl der Bildpunkte (Pixel) in Breite und Höhe", exp: "Die Auflösung beschreibt die Pixeldichte." },
-    { type: "mc", q: "Was ist der Unterschied zwischen Full HD und 4K?", options: ["4K hat viermal so viele Pixel wie Full HD", "Full HD hat mehr Pixel als 4K", "Kein Unterschied", "4K funktioniert nur ohne Kabel"], answer: "4K hat viermal so viele Pixel wie Full HD", exp: "4K (3840x2160) bietet 4-fache Full-HD-Pixelzahl." },
-
-    // --- MONITOR- & PANELTECHNOLOGIEN ---
-    { type: "open", q: "Wofür steht die Abkürzung LCD?", answer: ["Liquid Crystal Display"], exp: "Liquid Crystal Display = Flüssigkristallanzeige." },
-    { type: "open", q: "Wofür steht die Abkürzung LED?", answer: ["Light Emitting Diode"], exp: "Light Emitting Diode = Lichtemittierende Diode." },
-    { type: "mc", q: "Welche Eigenschaft ist typisch für ein TN-Panel?", options: ["Sehr schnelle Reaktionszeiten, aber schwacher Blickwinkel", "Perfekter Blickwinkel", "Selbstleuchtende Pixel", "Hohes Gewicht"], answer: "Sehr schnelle Reaktionszeiten, aber schwacher Blickwinkel", exp: "TN-Panels sind schnell, haben aber geringen Blickwinkel." },
-    { type: "mc", q: "Welche Eigenschaft zeichnet ein VA-Panel aus?", options: ["Hoher Kontrast und gute Schwarzwerte", "Sehr schlechter Kontrast", "Nur in Schwarz-Weiß verfügbar", "Kein LED-Licht möglich"], answer: "Hoher Kontrast und gute Schwarzwerte", exp: "VA-Panels bieten starke Kontraste." },
-    { type: "mc", q: "Was bedeutet die Reaktionszeit bei Monitoren?", options: ["Zeit, die ein Pixel für den Farbwechsel benötigt (in ms)", "Dauer des Einschaltvorgangs", "Garantiezeit des Herstellers", "Dauer der Lieferung"], answer: "Zeit, die ein Pixel für den Farbwechsel benötigt (in ms)", exp: "Kürzere Schaltzeiten verhindern Schlieren." },
-    { type: "mc", q: "Was beschreibt das Kontrastverhältnis?", options: ["Unterschied zwischen dem hellsten Weiß und dunkelsten Schwarz", "Helligkeit bei Sonnenlicht", "Stromverbrauch bei Volllast", "Anzahl der Anschlüsse"], answer: "Unterschied zwischen dem hellsten Weiß und dunkelsten Schwarz", exp: "Hoher Kontrast sorgt für tiefes Schwarz." },
-    { type: "open", q: "In welcher Einheit wird die Helligkeit eines Monitors angegeben?", answer: ["cd/m2", "cd/m²", "Candela"], exp: "Helligkeit wird in Candela pro Quadratmeter angegeben." },
-    { type: "mc", q: "Was ist Adaptive Sync (z.B. FreeSync / G-Sync)?", options: ["Synchronisation der Bildwiederholrate mit der Grafikkarte", "Automatisches Ausschalten des Monitors", "Automatische Reinigung des Bildschirms", "Lautstärkeregelung"], answer: "Synchronisation der Bildwiederholrate mit der Grafikkarte", exp: "Verhindert Tearing (Bildreißen)." },
-
-    // --- MAINBOARD & PC-KOMPONENTEN ---
-    { type: "mc", q: "Was ist die Hauptaufgabe eines Mainboards?", options: ["Zentrale Verbindung und Kommunikation aller Komponenten", "Nur die Stromversorgung der Tastatur", "Erzeugung von Tönen", "Speicherung des Betriebssystems"], answer: "Zentrale Verbindung und Kommunikation aller Komponenten", exp: "Das Mainboard verbindet alle Systemteile." },
-    { type: "open", q: "Wie heißt der Steckplatz auf dem Mainboard für den Prozessor?", answer: ["CPU-Sockel", "Sockel", "CPU Sockel"], exp: "Der CPU-Sockel nimmt den Prozessor auf." },
-    { type: "open", q: "Wofür stehen die Buchstaben CPU?", answer: ["Central Processing Unit"], exp: "Central Processing Unit = Hauptprozessor." },
-    { type: "mc", q: "Was ist der Chipsatz auf einem Mainboard?", options: ["Steuert den Datenfluss zwischen CPU, Speicher und Peripherie", "Ein lüfterloser Kühler", "Das Netzteil des Gehäuses", "Die Soundkarte"], answer: "Steuert den Datenfluss zwischen CPU, Speicher und Peripherie", exp: "Der Chipsatz steuert die Datenwege auf der Platine." },
-    { type: "open", q: "Wie nennt man den flüchtigen Arbeitsspeicher eines PCs?", answer: ["RAM", "Random Access Memory"], exp: "RAM = Random Access Memory." },
-    { type: "open", q: "Wofür steht die Abkürzung DIMM beim Arbeitsspeicher?", answer: ["Dual In-line Memory Module", "Dual Inline Memory Module"], exp: "DIMM ist Bauform von Arbeitsspeicher-Riegeln." },
-    { type: "mc", q: "Wofür wird ein PCIe-Steckplatz hauptsächlich genutzt?", options: ["Einbau von Grafikkarten und Erweiterungskarten", "Anschluss von Netzkabeln", "Montage des Gehäuselüfters", "Einbau des Netzteils"], answer: "Einbau von Grafikkarten und Erweiterungskarten", exp: "PCIe bietet hohe Bandbreite für Erweiterungskarten." },
-    { type: "mc", q: "Wofür werden SATA-Anschlüsse verwendet?", options: ["Anschluss von Festplatten, SSDs und optischen Laufwerken", "Anschluss des Monitors", "Verbindung zur Tastatur", "Stromversorgung der CPU"], answer: "Anschluss von Festplatten, SSDs und optischen Laufwerken", exp: "SATA ist eine Standard-Datenschnittstelle." },
-    { type: "open", q: "Wie heißt das grundlegende Eingabe-/Ausgabesystem eines PCs?", answer: ["BIOS"], exp: "BIOS = Basic Input/Output System." },
-    { type: "open", q: "Wie heißt der moderne Nachfolger des klassischen BIOS?", answer: ["UEFI"], exp: "UEFI = Unified Extensible Firmware Interface." },
-
-    // --- PROZESSOREN ---
-    { type: "mc", q: "Was versteht man unter Multi-Core bei Prozessoren?", options: ["Mehrere unabhängige Rechenkerne in einem Chip", "Mehrere Netzteile im Gehäuse", "Arbeitsspeicher auf der Grafikkarte", "Besonders dicke Kühlkörper"], answer: "Mehrere unabhängige Rechenkerne in einem Chip", exp: "Multi-Core steigert die Multitasking-Leistung." },
-    { type: "mc", q: "Was bedeutet Multithreading?", options: ["Zusammenarbeit mehrerer Threads zur parallelen Befehlsverarbeitung", "Nutzung von zwei Monitoren", "Gleichzeitiges Drucken und Scannen", "Kühlung mit Wasser"], answer: "Zusammenarbeit mehrerer Threads zur parallelen Befehlsverarbeitung", exp: "Ermöglicht parallele Abarbeitung von Aufgaben." },
-    { type: "open", q: "Wie nennt Intel seine Technologie für virtuelle Kernverdopplung?", answer: ["Hyper-Threading", "Hyperthreading"], exp: "Hyper-Threading spaltet physische Kerne logisch auf." },
-    { type: "mc", q: "Was bedeutet Pipelining in der Mikroprozessortechnik?", options: ["Überlappende Abarbeitung von Befehlsstufen", "Kühlung durch Rohre", "Übertragung von Sound", "Speicherung auf Band"], answer: "Überlappende Abarbeitung von Befehlsstufen", exp: "Steigert den Befehlsdurchsatz pro Takt." },
-    { type: "mc", q: "Was ist ein Coprozessor?", options: ["Zusatzprozessor zur Entlastung der Haupt-CPU", "Ersatzprozessor bei Defekt", "Software im BIOS", "Ein lüfterloser Kühlkörper"], answer: "Zusatzprozessor zur Entlastung der Haupt-CPU", exp: "Führt Spezialaufgaben aus (z.B. Mathe/Grafik)." },
-    { type: "mc", q: "Was ist der Unterschied zwischen CPU und GPU?", options: ["CPU ist universell; GPU ist auf parallele Grafikberechnung spezialisiert", "GPU verarbeitet nur Texte", "CPU ist nur in Laptops verbaut", "Kein Unterschied"], answer: "CPU ist universell; GPU ist auf parallele Grafikberechnung spezialisiert", exp: "GPU berechnet hochparallele Grafikdaten." },
-    { type: "mc", q: "Was versteht man unter der Taktfrequenz eines Prozessors?", options: ["Anzahl der Schaltvorgänge pro Sekunde (in GHz)", "Lüftergeschwindigkeit in U/min", "Datentransferrate der SSD", "Größe des Arbeitsspeichers"], answer: "Anzahl der Schaltvorgänge pro Sekunde (in GHz)", exp: "Gibt die Arbeitsgeschwindigkeit der CPU an." },
-    { type: "mc", q: "Was ist der Cache eines Prozessors?", options: ["Sehr schneller Pufferspeicher direkt auf dem Prozessor", "Ein externes Backup-Laufwerk", "Das Betriebssystem auf der SSD", "Ein Cloud-Speicher"], answer: "Sehr schneller Pufferspeicher direkt auf dem Prozessor", exp: "Puffert häufig genutzte Daten nah an der CPU." },
-    { type: "mc", q: "Was bedeutet ALU bei Prozessoren?", options: ["Arithmetic Logic Unit (Arithmetisch-Logische Einheit)", "Automatic Load Unit", "Advanced Local User", "Array Level Upgrade"], answer: "Arithmetic Logic Unit (Arithmetisch-Logische Einheit)", exp: "Die ALU führt mathematische und logische Rechenoperationen aus." },
-
-    // --- SPEICHER UND DATENTRÄGER ---
-    { type: "mc", q: "Was ist der Hauptunterschied zwischen HDD und SSD?", options: ["HDDs nutzen mechanische Magnetscheiben; SSDs nutzen Flash-Speicher", "SSDs sind viel langsamer als HDDs", "HDDs verbrauchen keinen Strom", "SSDs nutzen Magnetbänder"], answer: "HDDs nutzen mechanische Magnetscheiben; SSDs nutzen Flash-Speicher", exp: "SSDs arbeiten voll-elektronisch." },
-    { type: "mc", q: "Welchen Vorteil hat eine SSD?", options: ["Schnelle Zugriffszeiten und Stoßfestigkeit", "Günstigerer Preis pro Terabyte als HDD", "Geräuschentwicklung durch rotierende Scheiben", "Sehr hohes Gewicht"], answer: "Schnelle Zugriffszeiten und Stoßfestigkeit", exp: "Keine mechanischen Teile vorhanden." },
-    { type: "open", q: "Wie nennt man den Nur-Lese-Speicher, der Daten permanent behält?", answer: ["ROM", "Read Only Memory"], exp: "ROM = Read Only Memory." },
-    { type: "mc", q: "Was versteht man unter Hot-Swap?", options: ["Tauschen von Komponenten im laufenden Betrieb", "Kühlung durch Heißluft", "Übertakten der CPU", "Automatisches Löschen der Daten"], answer: "Tauschen von Komponenten im laufenden Betrieb", exp: "Wichtig für Serverwartung ohne Ausfallzeit." },
-    { type: "mc", q: "Was beschreibt die Zugriffszeit bei Datenträgern?", options: ["Zeit vom Anfordern der Daten bis zum Bereitstellen", "Dauer des Formatierens", "Garantiedauer des Laufwerks", "Zeit für den Einbau"], answer: "Zeit vom Anfordern der Daten bis zum Bereitstellen", exp: "SSDs bieten extrem kurze Zugriffszeiten." },
-    { type: "open", q: "Welches Protokoll nutzen extrem schnelle moderne SSDs über PCIe?", answer: ["NVMe"], exp: "NVMe = Non-Volatile Memory Express." },
-
-    // --- DRUCKER & SCANNER ---
-    { type: "mc", q: "Wie funktioniert ein Laserdrucker?", options: ["Belichtung einer Trommel und Fixierung von Toner durch Hitze", "Spritzen von flüssigen Tintentropfen", "Nadelanschläge auf ein Farbband", "Einritzen von Papier"], answer: "Belichtung einer Trommel und Fixierung von Toner durch Hitze", exp: "Laserdrucker nutzen Tonerpulver und Hitze." },
-    { type: "mc", q: "Wie funktioniert ein Tintenstrahldrucker?", options: ["Gezieltes Spritzen winziger Tintentropfen auf das Papier", "Erwärmen von Spezialpapier", "Brennen mit Laserstrahl", "Magnetische Übertragung"], answer: "Gezieltes Spritzen winziger Tintentropfen auf das Papier", exp: "Tintendüsen tragen flüssige Tinte auf." },
-    { type: "mc", q: "Welchen Vorteil bietet ein Laserdrucker?", options: ["Hohe Druckgeschwindigkeit und wischfeste Ausdrucke", "Günstige originale Farbpatronen", "Perfekter Fotodruck auf Glanzpapier", "Geringe Abmessungen"], answer: "Hohe Druckgeschwindigkeit und wischfeste Ausdrucke", exp: "Ideal für hohe Textdruck-Volumen." },
-    { type: "mc", q: "Was zeichnet einen Thermodrucker aus (z.B. Kassenzettel)?", options: ["Erzeugt Drucke durch gezielte Hitzeeinwirkung auf Spezialpapier", "Nutzt normale Tinte", "Nutzt Farbbänder", "Benötigt Lasertoner"], answer: "Erzeugt Drucke durch gezielte Hitzeeinwirkung auf Spezialpapier", exp: "Thermodrucker benötigen keine Tinte/Toner." },
-    { type: "mc", q: "Was ist ein Multifunktionsgerät (MFP)?", options: ["Kombination aus Drucken, Scannen, Kopieren und optional Faxen", "Ein PC mit zwei Monitoren", "Ein Router mit USB-Port", "Ein Server im Rack"], answer: "Kombination aus Drucken, Scannen, Kopieren und optional Faxen", exp: "Vereint mehrere Bürogeräte in einem." },
-
-    // --- NETZWERKE & SERVER ---
-    { type: "open", q: "Wofür steht die Abkürzung IP im Netzwerkbereich?", answer: ["Internet Protocol"], exp: "IP = Internet Protocol." },
-    { type: "mc", q: "Wie viele Bits nutzt eine IPv4-Adresse?", options: ["32 Bits", "128 Bits", "64 Bits", "16 Bits"], answer: "32 Bits", exp: "IPv4 nutzt 32-Bit Adressen." },
-    { type: "mc", q: "Wie viele Bits nutzt eine IPv6-Adresse?", options: ["128 Bits", "32 Bits", "64 Bits", "256 Bits"], answer: "128 Bits", exp: "IPv6 nutzt 128-Bit Adressen." },
-    { type: "open", q: "Wie heißt der standardisierte Steckertyp für Ethernet-Netzwerkkabel?", answer: ["RJ45", "RJ-45"], exp: "RJ45 ist der standardisierte Netzwerkstecker." },
-    { type: "mc", q: "Was ist die Hauptaufgabe eines Network-Switches?", options: ["Verteilung von Datenpaketen innerhalb eines lokalen Netzwerks anhand von MAC-Adressen", "Herstellung der Internetverbindung beim Provider", "Drucken von Dokumenten", "Speichern von Passwörtern"], answer: "Verteilung von Datenpaketen innerhalb eines lokalen Netzwerks anhand von MAC-Adressen", exp: "Switches verbinden Geräte im LAN auf Layer 2." },
-    { type: "mc", q: "Was ist die Hauptaufgabe eines Routers?", options: ["Verbindung verschiedener Netzwerke und Weiterleitung von Datenpaketen (z.B. LAN zu Internet)", "Signalverstärkung im Kabel", "Stromversorgung von PCs", "Virenscannen von E-Mails"], answer: "Verbindung verschiedener Netzwerke und Weiterleitung von Datenpaketen (z.B. LAN zu Internet)", exp: "Router verbinden unterschiedliche IP-Netze auf Layer 3." },
-    { type: "open", q: "Welcher Dienst vergibt automatisch IP-Adressen an Clients im Netzwerk?", answer: ["DHCP"], exp: "DHCP = Dynamic Host Configuration Protocol." },
-    { type: "open", q: "Welcher Dienst löst Domainnamen (z.B. google.com) in IP-Adressen auf?", answer: ["DNS"], exp: "DNS = Domain Name System." },
-
-    // --- IT-SICHERHEIT & DATENSCHUTZ ---
-    { type: "open", q: "Wofür steht die Abkürzung DSGVO?", answer: ["Datenschutz-Grundverordnung", "Datenschutzgrundverordnung"], exp: "DSGVO = Datenschutz-Grundverordnung." },
-    { type: "mc", q: "Was versteht man unter Datenschutz?", options: ["Schutz von Personen vor Missbrauch ihrer personenbezogenen Daten", "Schutz der Festplatte vor Stürzen", "Sicherung von Stromkabeln", "Verschlüsselung von Bios"], answer: "Schutz von Personen vor Missbrauch ihrer personenbezogenen Daten", exp: "Datenschutz schützt das Persönlichkeitsrecht." },
-    { type: "mc", q: "Was versteht man unter Datensicherheit?", options: ["Schutz von Daten vor Verlust, Fälschung und unbefugtem Zugriff", "Vermeidung von Tastaturverschleiß", "Kauf von Garantieverlängerungen", "Reinigung des Bildschirms"], answer: "Schutz von Daten vor Verlust, Fälschung und unbefugtem Zugriff", exp: "Datensicherheit schützt die Daten selbst." },
-    { type: "mc", q: "Welches Schutzziel verhindert unbefugtes Lesen von Daten?", options: ["Vertraulichkeit", "Integrität", "Verfügbarkeit", "Redundanz"], answer: "Vertraulichkeit", exp: "Vertraulichkeit schützt vor Einsichtnahme." },
-    { type: "mc", q: "Welches Schutzziel schützt Daten vor unerlaubter Veränderung?", options: ["Integrität", "Vertraulichkeit", "Verfügbarkeit", "Anonymität"], answer: "Integrität", exp: "Integrität garantiert Datenunversehrtheit." },
-    { type: "mc", q: "Welches Schutzziel garantiert, dass Systeme betriebsbereit sind?", options: ["Verfügbarkeit", "Vertraulichkeit", "Integrität", "Authentizität"], answer: "Verfügbarkeit", exp: "Verfügbarkeit gewährleistet Zugriff." },
-    { type: "mc", q: "Wie nennt man die drei Schutzziele Vertraulichkeit, Integrität und Verfügbarkeit zusammen?", options: ["CIA-Triade", "DSGVO-Trio", "E-V-A-Prinzip", "IHK-Regel"], answer: "CIA-Triade", exp: "CIA = Confidentiality, Integrity, Availability." },
-    { type: "open", q: "Wie lautet der Oberbegriff für schädliche Software (Viren, Würmer, Trojaner)?", answer: ["Malware"], exp: "Malware ist der Sammelbegriff für Schadsoftware." },
-    { type: "mc", q: "Was ist Ransomware?", options: ["Schadsoftware, die Daten verschlüsselt und Lösegeld erpresst", "Ein kostenloses Virenprogramm", "Ein Tool zur Datenwiederherstellung", "Ein schnelles Netzwerkprotokoll"], answer: "Schadsoftware, die Daten verschlüsselt und Lösegeld erpresst", exp: "Erpressungs-Trojaner verschlüsseln Dateien." },
-    { type: "mc", q: "Was versteht man unter Phishing?", options: ["Versuch, über gefälschte Mails/Websites vertrauliche Daten zu stehlen", "Angriff auf Kabel im Wasser", "Formatieren einer Festplatte", "Löschen von Spam-Mails"], answer: "Versuch, über gefälschte Mails/Websites vertrauliche Daten zu stehlen", exp: "Phishing täuscht falsche Identitäten vor." },
-
-    // --- WIRTSCHAFT, RECHT & PROJEKTMANAGEMENT ---
-    { type: "mc", q: "Was ist ein Lastenheft?", options: ["Gesamtheit der Anforderungen des Auftraggebers an die Lieferungen und Leistungen", "Lieferschein des Spediteurs", "Handbuch des Herstellers", "Rechnung des Dienstleisters"], answer: "Gesamtheit der Anforderungen des Auftraggebers an die Lieferungen und Leistungen", exp: "Das Lastenheft beschreibt WAS der Kunde will." },
-    { type: "mc", q: "Was ist ein Pflichtenheft?", options: ["Vom Auftragnehmer erarbeitetes Realisierungskonzept", "Vertrag über die Arbeitszeiten", "Stundenzettel des Mitarbeiters", "Anleitung für die Mülltrennung"], answer: "Vom Auftragnehmer erarbeitetes Realisierungskonzept", exp: "Das Pflichtenheft beschreibt WIE der Auftragnehmer umsetzt." },
-    { type: "mc", q: "Was ist der Unterschied zwischen Lastenheft und Pflichtenheft?", options: ["Lastenheft = Kundenwunsch (WAS); Pflichtenheft = Umsetzungsplan (WIE)", "Es gibt keinen Unterschied", "Lastenheft schreibt der Auftragnehmer", "Pflichtenheft ist immer kostenlos"], answer: "Lastenheft = Kundenwunsch (WAS); Pflichtenheft = Umsetzungsplan (WIE)", exp: "Klassische IHK-Unterscheidung." },
-    { type: "mc", q: "Was versteht man unter einem Kaufvertrag?", options: ["Zwei übereinstimmende Willenserklärungen über den Übergang von Eigentum gegen Geld", "Kostenlose Überlassung einer Sache", "Reine Dienstleistung ohne Eigentumsübertragung", "Einseitiges Versprechen"], answer: "Zwei übereinstimmende Willenserklärungen über den Übergang von Eigentum gegen Geld", exp: "Kaufvertrag nach § 433 BGB." },
-    { type: "mc", q: "Was ist ein Sachmangel nach § 434 BGB?", options: ["Abweichung der gelieferten Ware von der vereinbarten Beschaffenheit", "Dritte Personen geltend machen Rechte geltend", "Ware wird pünktlich geliefert", "Rechnung ist falsch ausgestellt"], answer: "Abweichung der gelieferten Ware von der vereinbarten Beschaffenheit", exp: "Sachmangel = Physische Abweichung/Defekt." },
-    { type: "mc", q: "Was ist ein Rechtsmangel nach § 435 BGB?", options: ["Dritte können Rechte an der Sache geltend machen (z.B. fehlende Lizenzen)", "Das Gehäuse hat Kratzer", "Die Verpackung fehlt", "Das Gerät ist zu langsam"], answer: "Dritte können Rechte an der Sache geltend machen (z.B. fehlende Lizenzen)", exp: "Rechtsmangel liegt vor, wenn Rechte Dritter stören." },
-    { type: "mc", q: "Was versteht man unter Recycling im IT-Bereich?", options: ["Wiederverwertung von Rohstoffen aus Altgeräten", "Verbrennung von Altgeräten im Restmüll", "Lagerung im Keller für immer", "Export in den Ozean"], answer: "Wiederverwertung von Rohstoffen aus Altgeräten", exp: "Schont Ressourcen nach ElektroG." },
-    { type: "open", q: "Wie heißt das bekannte deutsche Umweltzeichen für umweltfreundliche Produkte?", answer: ["Blauer Engel", "Der Blaue Engel"], exp: "Der Blaue Engel belohnt umweltfreundliche IT." },
-    { type: "mc", q: "Wofür steht das S in den SMART-Kriterien bei Projektzielen?", options: ["Spezifisch", "Schnell", "Sicher", "Spontan"], answer: "Spezifisch", exp: "SMART = Spezifisch, Messbar, Akzeptiert, Realistisch, Terminiert." },
-    { type: "mc", q: "Was ist ein Merkmal des Wasserfallmodells im Projektmanagement?", options: ["Linearer Ablauf, bei dem Phasen nacheinander durchlaufen werden", "Tägliche Wechsel der Ziele", "Arbeiten ohne Dokumentation", "Rücksprung in jede Phase jederzeit ohne Kosten"], answer: "Linearer Ablauf, bei dem Phasen nacheinander durchlaufen werden", exp: "Wasserfall ist ein sequenzielles Vorgehensmodell." }
+    }
 ];
 
-// Fragen aufteilen: Test 1 (1-50), Test 2 (51-100)
-let currentTest = 1;
-let test1Questions = allQuestions.slice(0, 50);
-let test2Questions = allQuestions.slice(50, 100);
-let activeQuestions = [];
+// --- TEST 2 (30 PEKİŞTİRME / VERTIEFUNGSFRAGEN) ---
+const test2Questions = [
+    { type: "mc", q: "1. Welches Dokument wird vom Auftraggeber (Kunden) zur Definition aller Anforderungen erstellt?", options: ["Pflichtenheft", "Lastenheft", "Arbeitsstättenverordnung", "Übergabeprotokoll"], answer: "Lastenheft", exp: "Erklärung: Das Lastenheft beschreibt das 'WAS' aus Kundensicht.\nQuelle: DIN 69901 / IT-Projektmanagement." },
+    { type: "mc", q: "2. Welches Dokument beschreibt die konkrete technische Umsetzung durch den IT-Dienstleister?", options: ["Lastenheft", "Pflichtenheft", "Handelsregisterauszug", "DSGVO-Erklärung"], answer: "Pflichtenheft", exp: "Erklärung: Das Pflichtenheft beschreibt das 'WIE' aus Auftragnehmersicht.\nQuelle: DIN 69901 / IT-Projektmanagement." },
+    { type: "mc", q: "3. Auf welcher Schicht des OSI-Modells arbeitet eine MAC-Adresse?", options: ["Layer 1 (Physikalische Schicht)", "Layer 2 (Sicherungsschicht)", "Layer 3 (Netzwerkschicht)", "Layer 7 (Anwendungsschicht)"], answer: "Layer 2 (Sicherungsschicht)", exp: "Erklärung: Die MAC-Adresse identifiziert Netzwerkkarten eindeutig auf Schicht 2.\nQuelle: ISO/IEC 7498-1 (OSI-Modell)." },
+    { type: "mc", q: "4. Wofür steht das Protokoll DHCP im Netzwerkbereich?", options: ["Automatisierte Vergabe von IP-Konfigurationen", "Auflösung von Domainnamen", "Verschlüsselung von E-Mails", "Sichere Dateiübertragung"], answer: "Automatisierte Vergabe von IP-Konfigurationen", exp: "Erklärung: DHCP teilt Clients dynamisch IP-Adressen und Subnetzmasken zu.\nQuelle: RFC 2131." },
+    { type: "mc", q: "5. Welches Gerät verbindet Netzwerke unterschiedlicher IP-Subnetze auf Schicht 3?", options: ["Switch", "Router", "Hub", "Repeater"], answer: "Router", exp: "Erklärung: Router leiten Datenpakete zwischen verschiedenen Netzen weiter.\nQuelle: IT-Netzwerktechnik Westermann." },
+    { type: "mc", q: "6. Was versteht man unter dem Begriff Hot-Swap bei Serverkomponenten?", options: ["Tausch von Festplatten/Netzteilen im laufenden Betrieb", "Automatische Übertaktung bei Hitze", "Kühlung durch Flüssigkeitskreisläufe", "Abschaltung des Servers bei Überlast"], answer: "Tausch von Festplatten/Netzteilen im laufenden Betrieb", exp: "Erklärung: Hot-Swap ermöglicht Komponententausch ohne Serverausfallzeit.\nQuelle: Server-Hardware Handbuch." },
+    { type: "mc", q: "7. Was ist die Hauptfunktion von ECC-Arbeitsspeicher (Error Correcting Code)?", options: ["Erkennung und Korrektur von Speicherfehlern", "Höhere Taktraten für Gaming-Szenarien", "Integrierte RGB-Beleuchtung", "Niedrigerer Anschaffungspreis"], answer: "Erkennung und Korrektur von Speicherfehlern", exp: "Erklärung: ECC-RAM korrigiert Einzelbit-Fehler zur Erhöhung der Serversicherheit.\nQuelle: JEDEC RAM-Standards." },
+    { type: "mc", q: "8. Welcher RAID-Level bietet Spiegelung für hohe Ausfallsicherheit bei 2 Festplatten?", options: ["RAID 0", "RAID 1", "RAID 5", "RAID 10"], answer: "RAID 1", exp: "Erklärung: RAID 1 spiegelt alle Daten identisch auf zwei Platten.\nQuelle: Storage-Grundlagen." },
+    { type: "mc", q: "9. Wie viele Festplatten werden mindestens für ein RAID-5-Array benötigt?", options: ["1 Festplatte", "2 Festplatten", "3 Festplatten", "4 Festplatten"], answer: "3 Festplatten", exp: "Erklärung: RAID 5 verteilt Paritätsinformationen über mindestens 3 Laufwerke.\nQuelle: Storage-Grundlagen." },
+    { type: "mc", q: "10. Was beinhaltet die 3-2-1-Backup-Regel?", options: ["3 Kopien, 2 verschiedene Medien, 1 Sicherung extern gelagert", "3 Server, 2 Switches, 1 Router", "3 Tage, 2 Wochen, 1 Monat Aufbewahrung", "3 Admins, 2 Passwörter, 1 Schlüssel"], answer: "3 Kopien, 2 verschiedenen Medien, 1 Sicherung extern gelagert", exp: "Erklärung: Die Empfehlung des BSI lautet: 3 Datenkopien auf 2 Medien, davon 1 offsite.\nQuelle: BSI Empfehlung Datensicherung." },
 
+    // Weitere Fachfragen (11-28)
+    { type: "mc", q: "11. Welches Dateisystem wird standardmäßig bei modernen Windows-Systemen genutzt?", options: ["FAT32", "NTFS", "ext4", "exFAT"], answer: "NTFS", exp: "Erklärung: NTFS bietet Rechteverwaltung, Journaling und Unterstützung großer Dateien.\nQuelle: Microsoft System-Dokumentation." },
+    { type: "mc", q: "12. Welches Schutzziel schützt vor unbefugter Datenänderung?", options: ["Vertraulichkeit", "Integrität", "Verfügbarkeit", "Authentizität"], answer: "Integrität", exp: "Erklärung: Integrität stellt sicher, dass Daten unversehrt und korrekt sind.\nQuelle: BSI Grundschutz." },
+    { type: "mc", q: "13. Welcher Mangel liegt vor, wenn eine falsche Ware (Aliud) geliefert wird?", options: ["Sachmangel nach § 434 BGB", "Rechtsmangel nach § 435 BGB", "Garantiefall", "Verzug"], answer: "Sachmangel nach § 434 BGB", exp: "Erklärung: Nach § 434 Abs. 3 BGB steht die Lieferung einer anderen Sache einem Sachmangel gleich.\nQuelle: BGB § 434." },
+    { type: "mc", q: "14. Welche Mindest-Gewährleistungsfrist gilt gesetzlich beim Kauf von Neuwaren durch Verbraucher?", options: ["6 Monate", "12 Monate", "24 Monate", "36 Monate"], answer: "24 Monate", exp: "Erklärung: Die gesetzliche Verjährungsfrist für Mängelansprüche beträgt 2 Jahre.\nQuelle: BGB § 438." },
+    { type: "mc", q: "15. Was regelt das Jugendarbeitsschutzgesetz (JArbSchG)?", options: ["Besondere Arbeitszeit- und Ruhepausenregeln für Unter-18-Jährige", "Garantiezeiten von IT-Geräten", "Gehaltsstufen für Auszubildende", "Kündigungsfristen nach der Probezeit"], answer: "Besondere Arbeitszeit- und Ruhepausenregeln für Unter-18-Jährige", exp: "Erklärung: Das JArbSchG schützt Jugendliche im Arbeitsleben.\nQuelle: JArbSchG § 1." },
+    { type: "mc", q: "16. Was versteht man unter Phishing?", options: ["Versuch, vertrauliche Zugangsdaten über gefälschte E-Mails zu erlangen", "Anschluss eines Netzwerkkabels", "Reinigung von Hardwarekomponenten", "Sicherung von Datenbanken"], answer: "Versuch, vertrauliche Zugangsdaten über gefälschte E-Mails zu erlangen", exp: "Erklärung: Phishing täuscht vertrauenswürdige Absender vor.\nQuelle: BSI Lagebericht." },
+    { type: "mc", q: "17. Was beschreibt das E-V-A-Prinzip der Datenverarbeitung?", options: ["Eingabe -> Verarbeitung -> Ausgabe", "Energie -> Verbrauch -> Analyse", "Einbau -> Verbindung -> Ablauf", "Emulation -> Code -> Ausgabe"], answer: "Eingabe -> Verarbeitung -> Ausgabe", exp: "Erklärung: Das EVA-Prinzip ist das Grundmodell der Computer-Datenverarbeitung.\nQuelle: IT-Grundwissen." },
+    { type: "mc", q: "18. Wofür steht die Abkürzung USV im Bereich der IT-Infrastruktur?", options: ["Unterbrechungsfreie Stromversorgung", "Universal Server Link", "Ultra Security System", "Umwelt-Schutz-Verordnung"], answer: "Unterbrechungsfreie Stromversorgung", exp: "Erklärung: Eine USV schützt IT-Geräte bei Stromausfällen und Überspannungen.\nQuelle: IT-Infrastruktur Standards." },
+    { type: "mc", q: "19. Welcher Standard definiert drahtlose lokale Netzwerke (WLAN)?", options: ["IEEE 802.3", "IEEE 802.11", "ISO 9001", "DIN 5008"], answer: "IEEE 802.11", exp: "Erklärung: IEEE 802.11 definiert die Spezifikationen für WLAN-Verbindungen.\nQuelle: IEEE Standards Association." },
+    { type: "mc", q: "20. Was zeichnet eine Grafikkarte (GPU) im Vergleich zur CPU aus?", options: ["Tausende kleine Kerne für hochparallele Berechnungen", "Nur ein einziger hochgetakteter Rechenkern", "Reiner Arbeitsspeicher für Office-Anwendungen", "Direkte Verbindung zum Netzteil"], answer: "Tausende kleine Kerne für hochparallele Berechnungen", exp: "Erklärung: GPUs verarbeiten viele Datenströme (z.B. Pixel) gleichzeitig.\nQuelle: Hardware-Architektur Westermann." },
+    { type: "mc", q: "21. Wofür dient die DNS-Namensauflösung im Internet?", options: ["Übersetzung von Domainnamen in IP-Adressen", "Automatische Vergabe von IP-Adressen", "Sichere Verschlüsselung von Webseiten", "Formatierung von Speicherlaufwerken"], answer: "Übersetzung von Domainnamen in IP-Adressen", exp: "Erklärung: DNS wandelt z.B. google.de in die zugehörige IP-Adresse um.\nQuelle: RFC 1035." },
+    { type: "mc", q: "22. Welches Verschlüsselungsprotokoll sichert den Aufruf von HTTPS-Webseiten?", options: ["TLS / SSL", "FTP", "DHCP", "TELNET"], answer: "TLS / SSL", exp: "Erklärung: HTTPS nutzt TLS (Transport Layer Security) zur Verschlüsselung.\nQuelle: IETF Web Security." },
+    { type: "mc", q: "23. Was zeichnet ein S/FTP-Netzwerkkabel aus?", options: ["Geflecht- und Folienabschirmung gegen elektromagnetische Störungen", "Reine Kunststoffhülle ohne jede Schirmung", "Kabel rein für Stromübertragung", "Glasfaserkabel für Unterseeverbindungen"], answer: "Geflecht- und Folienabschirmung gegen elektromagnetische Störungen", exp: "Erklärung: S/FTP schützt Datenleitungen optimal vor Außenstörungen.\nQuelle: ISO/IEC 11801." },
+    { type: "mc", q: "24. Welches Gütesiegel belohnt besonders umweltfreundliche und energieeffiziente IT-Geräte?", options: ["Blauer Engel", "CE-Kennzeichnung", "TÜV-Süd Gütesiegel", "GS-Zeichen"], answer: "Blauer Engel", exp: "Erklärung: Der Blaue Engel ist das deutsche Umweltzeichen für nachhaltige Produkte.\nQuelle: Umweltbundesamt." },
+    { type: "mc", q: "25. Was bedeutet DaaS im Cloud-Computing-Bereich?", options: ["Desktop as a Service", "Data as a Security", "Database as a System", "Disk as a Storage"], answer: "Desktop as a Service", exp: "Erklärung: DaaS stellt virtuelle Desktop-Umgebungen über die Cloud bereit.\nQuelle: Cloud Architecture Standards." },
+    { type: "mc", q: "26. Was versteht man unter Social Engineering im Sicherheitskontext?", options: ["Menschliche Beeinflussung zur Preisgabe von vertraulichen Daten", "Entwicklung sozialer Netzwerke", "Erstellung von Gruppenrichtlinien", "Konfiguration von Firewalls"], answer: "Menschliche Beeinflussung zur Preisgabe von vertraulichen Daten", exp: "Erklärung: Social Engineering nutzt den Faktor Mensch als Schwachstelle aus.\nQuelle: BSI IT-Sicherheit." },
+    { type: "mc", q: "27. Welches Verfahren dient dem systematischen Vergleich von System-Alternativen?", options: ["Nutzwertanalyse", "Rückwärtskalkulation", "Wasserfallmodell", "Gefährdungsbeurteilung"], answer: "Nutzwertanalyse", exp: "Erklärung: Die Nutzwertanalyse bewertet Alternativen anhand gewichteter Kriterien.\nQuelle: IT-Projektmanagement Westermann." },
+    { type: "mc", q: "28. Welches Schutzziel stellt sicher, dass ein Dienst jederzeit erreichbar bleibt?", options: ["Verfügbarkeit", "Integrität", "Vertraulichkeit", "Authentizität"], answer: "Verfügbarkeit", exp: "Erklärung: Verfügbarkeit verhindert Systemausfälle und Sperrungen.\nQuelle: BSI Grundschutz." },
+
+    // Weitere Kalkulationen im Test 2 (29-30)
+    { 
+        type: "table", 
+        q: "29. Vorwärtskalkulation: Bezugspreis = 100,00 €. Handlungskostenzuschlag = 20 %. Gewinnzuschlag = 10 %. Berechnen Sie den Barverkaufspreis:",
+        exp: "Erklärung:\nBezugspreis: 100,00 €\n+ Handlungskosten (20%): 20,00 €\n= Selbstkosten: 120,00 €\n+ Gewinnzuschlag (10% auf Selbstkosten): 12,00 €\n= Barverkaufspreis: 132,00 €.\nQuelle: Handelskalkulation Westermann.",
+        rows: [
+            { label: "Bezugspreis", val: "100,00", readonly: true },
+            { label: "+ Handlungskosten (20%)", key: "20" },
+            { label: "= Selbstkosten", key: "120" },
+            { label: "+ Gewinnzuschlag (10%)", key: "12" },
+            { label: "= Barverkaufspreis", key: "132" }
+        ]
+    },
+    { 
+        type: "table", 
+        q: "30. Rückwärtskalkulation: Barverkaufspreis = 220,00 €. Gewinnzuschlag = 10 % (auf Selbstkosten). Berechnen Sie die Selbstkosten:",
+        exp: "Erklärung:\nBarverkaufspreis = Selbstkosten * 1,10\nSelbstkosten = 220,00 € / 1,10 = 200,00 €.\nGewinnzuschlag = 20,00 €.\nQuelle: Handelskalkulation Westermann.",
+        rows: [
+            { label: "Barverkaufspreis (netto)", val: "220,00", readonly: true },
+            { label: "- Gewinnzuschlag (10% auf Selbstkosten)", key: "20" },
+            { label: "= Selbstkosten", key: "200" }
+        ]
+    }
+];
+
+let currentTest = 1;
+let activeQuestions = test1Questions;
 let currentQ = 0;
 let score = 0;
 let currentShuffledOptions = [];
@@ -340,7 +312,7 @@ function checkMC(selectedIndex) {
     if (selectedOption === q.answer) {
         optionsBtns[selectedIndex].classList.add("correct");
         score++;
-        showFeedback(true, `Richtig! ${q.exp}`);
+        showFeedback(true, `Richtig!\n\n${q.exp}`);
     } else {
         optionsBtns[selectedIndex].classList.add("incorrect");
         currentShuffledOptions.forEach((opt, idx) => {
@@ -348,7 +320,7 @@ function checkMC(selectedIndex) {
                 optionsBtns[idx].classList.add("correct");
             }
         });
-        showFeedback(false, `Falsch! Richtige Antwort: ${q.answer}. ${q.exp}`);
+        showFeedback(false, `Falsch! Richtige Antwort: ${q.answer}\n\n${q.exp}`);
     }
     document.getElementById("next-btn").style.display = "inline-block";
 }
@@ -361,7 +333,7 @@ function checkOpen() {
     btn.disabled = true;
 
     if (!input || input.trim() === "") {
-        showFeedback(false, `Keine Antwort eingegeben! Richtige Antwort: ${Array.isArray(q.answer) ? q.answer[0] : q.answer}. ${q.exp}`);
+        showFeedback(false, `Keine Antwort eingegeben! Richtige Antwort: ${Array.isArray(q.answer) ? q.answer[0] : q.answer}\n\n${q.exp}`);
         document.getElementById("next-btn").style.display = "inline-block";
         return;
     }
@@ -375,9 +347,9 @@ function checkOpen() {
 
     if (isCorrect) {
         score++;
-        showFeedback(true, `Richtig! ${q.exp}`);
+        showFeedback(true, `Richtig!\n\n${q.exp}`);
     } else {
-        showFeedback(false, `Falsch! Richtige Antwort: ${Array.isArray(q.answer) ? q.answer[0] : q.answer}. ${q.exp}`);
+        showFeedback(false, `Falsch! Richtige Antwort: ${Array.isArray(q.answer) ? q.answer[0] : q.answer}\n\n${q.exp}`);
     }
     document.getElementById("next-btn").style.display = "inline-block";
 }
@@ -404,10 +376,10 @@ function checkTable() {
 
     if (!hasEmpty && allCorrect) {
         score++;
-        showFeedback(true, `Alle Tabelleneinträge sind richtig! ${q.exp}`);
+        showFeedback(true, `Alle Tabelleneinträge sind richtig!\n\n${q.exp}`);
     } else {
         let answersText = q.rows.filter(r => !r.readonly).map(r => `${r.label}: ${r.key}`).join(" | ");
-        showFeedback(false, `Falsch oder unvollständig! Richtige Werte: ${answersText}. ${q.exp}`);
+        showFeedback(false, `Falsch oder unvollständig! Richtige Werte: ${answersText}\n\n${q.exp}`);
     }
     document.getElementById("next-btn").style.display = "inline-block";
 }
@@ -420,7 +392,7 @@ function showFeedback(isCorrect, text) {
     const randomMeme = memeArray[Math.floor(Math.random() * memeArray.length)];
 
     feedback.innerHTML = `
-        <div>${text}</div>
+        <div style="white-space: pre-line;">${text}</div>
         <div class="feedback-img">
             <img src="${randomMeme}" alt="Reaktion Bild">
         </div>
@@ -442,8 +414,8 @@ function getRangliste() {
         return JSON.parse(data);
     }
     return [
-        { name: "Max Mustermann", score: 48, max: 50, date: "15.09.2026" },
-        { name: "IT-Profi", score: 42, max: 50, date: "16.09.2026" }
+        { name: "Max Mustermann", score: Math.round(activeQuestions.length * 0.9), max: activeQuestions.length, date: "15.09.2026" },
+        { name: "IT-Profi", score: Math.round(activeQuestions.length * 0.8), max: activeQuestions.length, date: "16.09.2026" }
     ];
 }
 
@@ -501,7 +473,7 @@ function finishQuiz() {
         : "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzgxbGplZnkzdnFhanE2M3d5bDIybTZiN2J1Zm1qbzk4OHppdGdudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9u3TZfpmeDLkD6/giphy.gif";
 
     const nextActionBtn = (currentTest === 1)
-        ? `<button class="submit-btn" onclick="switchTest(2)" style="margin-top:20px; background-color:#28a745;">Weiter zu Test 2 (Frage 51-100)</button>`
+        ? `<button class="submit-btn" onclick="switchTest(2)" style="margin-top:20px; background-color:#28a745;">Weiter zu Test 2 (30 Vertiefungsfragen)</button>`
         : `<button class="submit-btn" onclick="switchTest(1)" style="margin-top:20px;">Zurück zu Test 1</button>`;
 
     document.getElementById("quiz-card").innerHTML = `
