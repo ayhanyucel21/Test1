@@ -2,11 +2,14 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>LF02: Arbeitsplatz nach Kundenwunsch ausstatten – Test</title>
+    <title>LF02: Arbeitsplatz nach Kundenwunsch ausstatten – Test 1 & 2</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #eef2f5; color: #333; }
         .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 850px; margin: auto; }
         h1 { text-align: center; color: #0056b3; margin-bottom: 20px; border-bottom: 2px solid #0056b3; padding-bottom: 10px; }
+        .test-selector { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
+        .test-btn { background: #6c757d; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        .test-btn.active { background: #0056b3; }
         .progress { font-weight: bold; color: #666; margin-bottom: 15px; font-size: 1.1em; }
         .question-text { font-size: 1.2em; font-weight: 600; margin-bottom: 20px; line-height: 1.4; }
         .option { display: block; width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; text-align: left; font-size: 16px; transition: background 0.2s; }
@@ -30,8 +33,6 @@
         .img-container { margin-top: 20px; text-align: center; }
         .img-container img { max-width: 400px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); border: 3px solid #0056b3; }
         .meme-text { font-size: 1.3em; font-weight: bold; margin-top: 15px; color: #222; }
-        
-        /* Rangliste CSS */
         .rangliste-container { margin-top: 30px; text-align: left; background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
         .rangliste-form { display: flex; gap: 10px; margin-bottom: 20px; }
         .rangliste-form input { flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
@@ -41,7 +42,11 @@
 <body>
 
 <div class="card" id="quiz-card">
-    <h1>LF02: Arbeitsplatz nach Kundenwunsch ausstatten – Test</h1>
+    <h1>LF02: Arbeitsplatz nach Kundenwunsch ausstatten</h1>
+    <div class="test-selector">
+        <button class="test-btn active" id="btn-test1" onclick="switchTest(1)">Test 1 (Frage 1-50)</button>
+        <button class="test-btn" id="btn-test2" onclick="switchTest(2)">Test 2 (Frage 51-100)</button>
+    </div>
     <div id="progress" class="progress"></div>
     <div id="question-content"></div>
     <div id="feedback-area"></div>
@@ -90,7 +95,6 @@ function shuffleArray(array) {
     return arr;
 }
 
-// Richtig-Gifs
 const correctMemes = [
     "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7qE2VAxuXWeyvJIY/giphy.webp",
     "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/11sBLVxNs7v6WA/100.webp",
@@ -100,7 +104,6 @@ const correctMemes = [
     "https://media2.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OWRmaWxqbmk5Y2xzdDlneGFxeGRicGowZWVzMWU2YnFlOTZoNWsxbiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/okfvUCpgArv3y/200.webp"
 ];
 
-// Falsch-Gifs
 const incorrectMemes = [
     "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzgxbGplZnkzdnFhanE2M3d5bDIybTZiN2J1Zm1qbzk4OHppdGdudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9u3TZfpmeDLkD6/giphy.gif",
     "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWhsazE0eW56OGRkNXk1MzVzeTNsMGYxOGNmcWZmYmswaGJxamJpMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MLhIi4DoxeUjC/giphy.gif",
@@ -110,7 +113,7 @@ const incorrectMemes = [
     "https://media3.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MWYwZzI0ZDFheXM4eGNvcWo0ZGM0djkzMGs0Z3owaXRqbzJvcXJoNiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/hHPStl3w2ZU41qjKq2/giphy.webp"
 ];
 
-const rawQuestions = [
+const allQuestions = [
     // --- KALKULATIONEN MIT NEUEN ZAHLEN ---
     { 
         type: "table", 
@@ -122,18 +125,6 @@ const rawQuestions = [
             { label: "= Selbstkosten", key: "100" },
             { label: "- Handlungskosten (25% auf Bezugspreis)", val: "20", readonly: true },
             { label: "= Bezugspreis", key: "80" }
-        ]
-    },
-    { 
-        type: "table", 
-        q: "Rückwärtskalkulation: Der Barverkaufspreis beträgt 220 €. Gewinnzuschlag = 10%, Handlungskosten = 25%. Berechnen Sie Selbstkosten und Bezugspreis von unten nach oben:",
-        exp: "Rückwärtsrechnung: Selbstkosten = 220 / 1,1 = 200 €. Bezugspreis = 200 / 1,25 = 160 €.",
-        rows: [
-            { label: "Barverkaufspreis (netto)", val: "220", readonly: true },
-            { label: "- Gewinnzuschlag (10%)", val: "20", readonly: true },
-            { label: "= Selbstkosten", key: "200" },
-            { label: "- Handlungskosten (25%)", val: "40", readonly: true },
-            { label: "= Bezugspreis", key: "160" }
         ]
     },
     { 
@@ -160,105 +151,150 @@ const rawQuestions = [
             { label: "= Barverkaufspreis", key: "1380" }
         ]
     },
+    { 
+        type: "table", 
+        q: "Rückwärtskalkulation: Der Barverkaufspreis beträgt 220 €. Gewinnzuschlag = 10%, Handlungskosten = 25%. Berechnen Sie Selbstkosten und Bezugspreis von unten nach oben:",
+        exp: "Rückwärtsrechnung: Selbstkosten = 220 / 1,1 = 200 €. Bezugspreis = 200 / 1,25 = 160 €.",
+        rows: [
+            { label: "Barverkaufspreis (netto)", val: "220", readonly: true },
+            { label: "- Gewinnzuschlag (10%)", val: "20", readonly: true },
+            { label: "= Selbstkosten", key: "200" },
+            { label: "- Handlungskosten (25%)", val: "40", readonly: true },
+            { label: "= Bezugspreis", key: "160" }
+        ]
+    },
 
-    // --- ANWENDUNG DER KERN-BEGRIFFE ---
-    { type: "mc", q: "Ein Kunde möchte wissen, welches Dokument alle seine funktionellen Anforderungen an das neue IT-System enthält. Welches Dokument ist das?", options: ["Das Lastenheft des Kunden", "Das Pflichtenheft vom Dienstleister", "Die offizielle Arbeitsstättenverordnung", "Das unterschriebene Übergabeprotokoll"], answer: "Das Lastenheft des Kunden", exp: "Das Lastenheft definiert alle Anforderungen aus Kundensicht." },
-    { type: "mc", q: "Der IT-Dienstleister beschreibt im Detail, mit welchen Komponenten und Technologien er die Wünsche umsetzt. Welches Dokument übergibt er?", options: ["Ein formloses Lastenheft", "Das detaillierte Pflichtenheft", "Den aktuellen Handelsregisterauszug", "Die allgemeine DSGVO-Erklärung"], answer: "Das detaillierte Pflichtenheft", exp: "Das Pflichtenheft beschreibt die technische Lösung des Auftragnehmers." },
-    { type: "mc", q: "Welches Bauteil stellt die physikalische Verbindung und Kommunikationswege für CPU, RAM und Erweiterungskarten bereit?", options: ["Das externe Netzteil", "Das zentrale Mainboard", "Die interne NVMe-SSD", "Der integrierte Router"], answer: "Das zentrale Mainboard", exp: "Das Mainboard ist die zentrale Schaltzentrale im PC." },
-    { type: "mc", q: "Welche Komponente führt Befehle aus und bildet das Rechenzentrum eines Computers?", options: ["Der flüchtige RAM", "Die zentrale CPU", "Das BIOS-Chipset", "Die Grafikkarte"], answer: "Die zentrale CPU", exp: "Die CPU ist der Hauptprozessor." },
-    { type: "mc", q: "Warum benötigt ein Computer RAM neben der Festplatte?", options: ["Zur dauerhaften Datenarchivierung im System", "Als schnellen flüchtigen Arbeitsspeicher", "Zur stabilen Stromversorgung der CPU", "Zum Schutz vor bösartigen Virenarten"], answer: "Als schnellen flüchtigen Arbeitsspeicher", exp: "RAM bietet extrem schnelle Lese- und Schreibzugriffe." },
-    { type: "mc", q: "Was ist der Hauptvorteil einer SSD gegenüber einer klassischen HDD?", options: ["Schnelle Datenübertragung ohne Mechanik", "Niedrigerer Anschaffungspreis pro Terabyte", "Höheres Gesamtgewicht aller Bauteile", "Mechanische Bauteile für Langlebigkeit"], answer: "Schnelle Datenübertragung ohne Mechanik", exp: "SSDs arbeiten voll-elektronisch ohne Mechanik." },
-    { type: "mc", q: "Welche Eigenschaft trifft auf eine IPv4-Adresse zu?", options: ["Besteht aus 128-Bit Hexadezimalzahlen", "Nutzt 32-Bit in Punkt-Dezimal-Notation", "Ist eine physische MAC-Adresse", "Wird ausschließlich im WLAN genutzt"], answer: "Nutzt 32-Bit in Punkt-Dezimal-Notation", exp: "IPv4 nutzt 4 Blöcke à 8 Bits (32 Bits)." },
-    { type: "mc", q: "Warum wird das IPv6-Protokoll zunehmend eingesetzt?", options: ["Knappe IPv4-Adressen und 128-Bit Adressraum", "Weil IPv6 keine Router mehr benötigt", "Weil es drastisch billiger im Einkauf ist", "Weil es nur noch Kabelverbindungen unterstützt"], answer: "Knappe IPv4-Adressen und 128-Bit Adressraum", exp: "IPv6 bietet nahezu unendlich viele IP-Adressen." },
-    { type: "mc", q: "Auf welcher Ebene arbeitet die MAC-Adresse im Netzwerk?", options: ["Layer 3 (Internet-Protokoll)", "Layer 2 (Netzwerkkarten-Adresse)", "Layer 7 (Anwendungsschicht)", "Layer 1 (Physikalisches Kabel)"], answer: "Layer 2 (Netzwerkkarten-Adresse)", exp: "Die MAC-Adresse ist die physikalische Adresse der Netzwerkkarte." },
-    { type: "mc", q: "Welcher Standard regelt drahtlose lokale Netzwerke (WLAN)?", options: ["Der Standard IEEE 802.11", "Die Qualitätsnorm ISO 9001", "Die Bürostandardnorm DIN 5008", "Die Gebäudenorm EN 50173"], answer: "Der Standard IEEE 802.11", exp: "IEEE 802.11 definiert WLAN-Standards." },
+    // --- ARBEITSSCHUTZ & ERGONOMIE ---
+    { type: "mc", q: "Was ist das Ziel des Arbeitsschutzes?", options: ["Sicherheit und Gesundheitsschutz der Beschäftigten gewährleisten", "Möglichst viele Überstunden anordnen", "Nur Kosten im Betrieb senken", "Geräte ohne Prüfung betreiben"], answer: "Sicherheit und Gesundheitsschutz der Beschäftigten gewährleisten", exp: "Der Arbeitsschutz dient dem Schutz der Beschäftigten." },
+    { type: "mc", q: "Welches Gesetz regelt den Arbeitsschutz in Deutschland grundlegend?", options: ["Arbeitsschutzgesetz (ArbSchG)", "Handelsgesetzbuch (HGB)", "Strafgesetzbuch (StGB)", "Straßenverkehrsordnung (StVO)"], answer: "Arbeitsschutzgesetz (ArbSchG)", exp: "Das ArbSchG regelt den Arbeitsschutz in Deutschland." },
+    { type: "mc", q: "Wer trägt die Hauptverantwortung für die Arbeitssicherheit im Unternehmen?", options: ["Der Arbeitgeber", "Nur der Betriebsratsvorsitzende", "Die externen Kunden", "Der Hausmeister"], answer: "Der Arbeitgeber", exp: "Der Arbeitgeber ist rechtlich verantwortlich für Arbeitssicherheit." },
+    { type: "open", q: "Wofür steht die Abkürzung ArbSchG?", answer: ["Arbeitsschutzgesetz"], exp: "ArbSchG steht für Arbeitsschutzgesetz." },
+    { type: "open", q: "Wofür steht die Abkürzung ArbStättV?", answer: ["Arbeitsstättenverordnung"], exp: "ArbStättV steht für Arbeitsstättenverordnung." },
+    { type: "mc", q: "Welche Pflicht hat der Arbeitgeber bezüglich der Arbeitsbedingungen?", options: ["Durchführung einer Gefährdungsbeurteilung", "Kostenlose Süßigkeiten bereitstellen", "Keine Unterweisungen durchführen", "Arbeitszeiten unbegrenzt verlängern"], answer: "Durchführung einer Gefährdungsbeurteilung", exp: "Eine Gefährdungsbeurteilung ist Pflicht des Arbeitgebers." },
+    { type: "mc", q: "Wie groß sollte der empfohlene Abstand zum Bildschirm sein?", options: ["50 bis 80 cm", "10 bis 20 cm", "150 bis 200 cm", "Exakt 5 cm"], answer: "50 bis 80 cm", exp: "Ein Sehabstand von 50-80 cm schont die Augen." },
+    { type: "mc", q: "Warum ist ein höhenverstellbarer Bürostuhl wichtig?", options: ["Ermöglicht individuelle Anpassung für ergonomische Haltung", "Sieht moderner aus", "Ist günstiger im Einkauf", "Verringert die Raumtemperatur"], answer: "Ermöglicht individuelle Anpassung für ergonomische Haltung", exp: "Passt den Sitz an die Körpergröße an." },
+    { type: "mc", q: "Was besagt die 90-Grad-Regel beim ergonomischen Sitzen?", options: ["Knie-, Hüft- und Ellenbogengelenke bilden etwa einen 90-Grad-Winkel", "Der Monitor muss um 90 Grad gedreht sein", "Der Raum muss 90 Grad warm sein", "Arbeitszeit beträgt 90 Minuten"], answer: "Knie-, Hüft- und Ellenbogengelenke bilden etwa einen 90-Grad-Winkel", exp: "Entlastet Muskeln und Gelenke beim Sitzen." },
+    { type: "mc", q: "Welche Auswirkung kann dauerhaft falsches Sitzen haben?", options: ["Rückenschmerzen und Haltungsschäden", "Bessere Sehschärfe", "Höhere Herzfrequenz beim Schlafen", "Keine Auswirkungen"], answer: "Rückenschmerzen und Haltungsschäden", exp: "Falsches Sitzen belastet die Wirbelsäule." },
 
-    // --- LÜCKENTEXT- & OPEN ENDED FRAGEN ---
-    { type: "open", q: "Vervollständigen Sie den Satz: Das Dokument des Auftraggebers heißt _______.", answer: ["Lastenheft"], exp: "Das Lastenheft enthält die Kundenanforderungen." },
-    { type: "open", q: "Vervollständigen Sie den Satz: Das technische Umsetzungskonzept des Auftragnehmers heißt _______.", answer: ["Pflichtenheft"], exp: "Das Pflichtenheft beschreibt die technische Realisierung." },
-    { type: "open", q: "Ergänzen Sie den Begriff: Die Hauptplatine eines Rechners ist das _______.", answer: ["Mainboard"], exp: "Mainboard verbindet alle Systemteile." },
-    { type: "open", q: "Ergänzen Sie die Abkürzung: Der Hauptprozessor heißt _______.", answer: ["Cpu", "CPU"], exp: "CPU ist die Central Processing Unit." },
-    { type: "open", q: "Ergänzen Sie den Begriff: Der flüchtige Arbeitsspeicher heißt _______.", answer: ["Ram", "RAM"], exp: "RAM speichert Daten temporär." },
-    { type: "open", q: "Ergänzen Sie die Abkürzung: Ein lautloser Flash-Datenträger ist eine _______.", answer: ["Ssd", "SSD"], exp: "SSDs nutzen Halbleiterspeicher." },
-    { type: "open", q: "Ergänzen Sie das Protokoll: Das 32-Bit Adressformat heißt _______.", answer: ["Ipv4", "IPv4"], exp: "IPv4 nutzt 32 Bits." },
-    { type: "open", q: "Ergänzen Sie das Protokoll: Das 128-Bit Adressformat heißt _______.", answer: ["Ipv6", "IPv6"], exp: "IPv6 nutzt 128 Bits." },
-    { type: "open", q: "Ergänzen Sie den Begriff: Die Eindeutige Hardware-Adresse heißt _______-Adresse.", answer: ["Mac", "MAC"], exp: "MAC-Adresse ist die physikalische Kennung." },
-    { type: "open", q: "Ergänzen Sie den Begriff: Drahtloses Netzwerk wird als _______ bezeichnet.", answer: ["Wlan", "WLAN"], exp: "WLAN steht für Wireless LAN." },
-    { type: "open", q: "Ergänzen Sie den Standard: Netzwerk-Kupferkabel der Kategorie 5 heißen kurz _______.", answer: ["Cat5", "CAT5"], exp: "Cat 5 ist bis 100 MHz spezifiziert." },
-    { type: "open", q: "Ergänzen Sie den Begriff: Die grundlegende Firmware auf dem Mainboard heißt _______.", answer: ["Bios", "BIOS"], exp: "Das BIOS führt den POST aus." },
-    { type: "open", q: "Ergänzen Sie den Standard: Die USB-Schnittstelle mit 5 Gbit/s Übertragung heißt _______.", answer: ["Usb 3.0", "USB 3.0"], exp: "USB 3.0 ist blau gekennzeichnet." },
+    // --- BILDSCHIRMARBEITSPLATZ ---
+    { type: "mc", q: "Was versteht man unter einem ergonomischen Arbeitsplatz?", options: ["Ein optimal an den Menschen angepasster Arbeitsplatz", "Ein Platz mit besonders teuren Möbeln", "Ein Platz ohne Stromanschluss", "Ein Stehplatz ohne Stuhl"], answer: "Ein optimal an den Menschen angepasster Arbeitsplatz", exp: "Ergonomie passt Arbeitsbedingungen an den Menschen an." },
+    { type: "mc", q: "Welche Eigenschaft sollte ein Monitor am Arbeitsplatz besitzen?", options: ["Höhenverstellbarkeit und Neigbarkeit", "Möglichst verspiegelte Oberfläche", "Feste Halterung ohne Verstellbarkeit", "Sehr hohes Gewicht"], answer: "Höhenverstellbarkeit und Neigbarkeit", exp: "Flexible Ausrichtung verhindert Nackenschmerzen." },
+    { type: "mc", q: "Warum ist eine blendfreie Monitoranzeige wichtig?", options: ["Vermeidet Augenermüdung und Reflexionen", "Macht das Bild dunkler", "Spart immer 90% Strom", "Schützt das Display vor Staub"], answer: "Vermeidet Augenermüdung und Reflexionen", exp: "Entspiegelung schont das Sehvermögen." },
+    { type: "open", q: "Wie nennt man Technologien zum Schutz der Augen vor Blaulicht und Flimmern (Englischer Begriff)?", answer: ["Eye-Care", "Eye Care", "EyeCare"], exp: "Eye-Care-Technologie minimiert Blaulicht und Flimmern." },
+    { type: "mc", q: "Welchen Vorteil bietet ein Curved-Monitor am Arbeitsplatz?", options: ["Gleichmäßigerer Sehabstand zu den Rändern", "Verbraucht nie Strom", "Passt in jede Tasche", "Ist immer billiger als Flachbildschirme"], answer: "Gleichmäßigerer Sehabstand zu den Rändern", exp: "Die Krümmung entspricht der natürlichen Augenrundung." },
+    { type: "mc", q: "Welchen Vorteil bietet ein IPS-Panel?", options: ["Hohe Blickwinkelstabilität und gute Farbwiedergabe", "Sehr hoher Stromverbrauch", "Geringe Helligkeit", "Gefährliche Strahlung"], answer: "Hohe Blickwinkelstabilität und gute Farbwiedergabe", exp: "IPS liefert stabile Farben aus allen Winkeln." },
+    { type: "mc", q: "Welchen Vorteil bietet ein OLED-Panel?", options: ["Echtes Schwarz durch selbstleuchtende Pixel", "Mechanische Kühlung erforderlich", "Verbraucht immer 500 Watt", "Nutzt alte Röhrentechnik"], answer: "Echtes Schwarz durch selbstleuchtende Pixel", exp: "OLED benötigt keine Hintergrundbeleuchtung." },
+    { type: "open", q: "Wie nennt man die Anzahl der Bildaktualisierungen pro Sekunde in Hertz (Hz)?", answer: ["Bildwiederholrate", "Bildwiederholfrequenz"], exp: "Die Bildwiederholrate misst Bilder pro Sekunde." },
+    { type: "mc", q: "Was gibt die Auflösung eines Monitors an?", options: ["Anzahl der Bildpunkte (Pixel) in Breite und Höhe", "Gewicht des Monitors in kg", "Bildschirmdiagonale in Zoll", "Stromverbrauch in Watt"], answer: "Anzahl der Bildpunkte (Pixel) in Breite und Höhe", exp: "Die Auflösung beschreibt die Pixeldichte." },
+    { type: "mc", q: "Was ist der Unterschied zwischen Full HD und 4K?", options: ["4K hat viermal so viele Pixel wie Full HD", "Full HD hat mehr Pixel als 4K", "Kein Unterschied", "4K funktioniert nur ohne Kabel"], answer: "4K hat viermal so viele Pixel wie Full HD", exp: "4K (3840x2160) bietet 4-fache Full-HD-Pixelzahl." },
 
-    // --- RELEVANTE IHK-FRAGEN ---
-    { type: "mc", q: "Welches Schutzziel schützt Daten vor unbefugter Manipulation?", options: ["Integrität", "Vertraulichkeit", "Verfügbarkeit", "Authentizität"], answer: "Integrität", exp: "Integrität garantiert Datenunversehrtheit." },
-    { type: "mc", q: "Welches Schutzziel schützt vor unbefugtem Lesen?", options: ["Vertraulichkeit", "Integrität", "Verfügbarkeit", "Authentizität"], answer: "Vertraulichkeit", exp: "Vertraulichkeit verhindert unbefugte Einsicht." },
-    { type: "mc", q: "Welches Schutzziel garantiert ständige Erreichbarkeit?", options: ["Verfügbarkeit", "Integrität", "Vertraulichkeit", "Redundanz"], answer: "Verfügbarkeit", exp: "Verfügbarkeit stellt Nutzung sicher." },
-    { type: "mc", q: "Mangel nach § 434 BGB bei Zu-Wenig-Lieferung?", options: ["Quantitätsmangel", "Qualitätsmangel", "Rechtsmangel", "Montagemangel"], answer: "Quantitätsmangel", exp: "Eksik teslimat = Quantitätsmangel." },
-    { type: "mc", q: "Mangel nach § 435 BGB bei fehlenden Software-Lizenzen?", options: ["Rechtsmangel", "Sachmangel", "Lieferverzug", "Garantiefall"], answer: "Rechtsmangel", exp: "Verletzung von Rechten Dritter." },
-    { type: "mc", q: "Falschlieferung einer völlig anderen Ware (Aliud)?", options: ["Sachmangel", "Garantiefall", "Kein Mangel", "Mietmangel"], answer: "Sachmangel", exp: "§ 434 Abs. 3 BGB stellt Aliud Sachmängeln gleich." },
-    { type: "mc", q: "Pflicht für Auszubildende nach BBiG?", options: ["Berichtsheftführung", "Gehaltszahlung", "Urlaubsgewährung", "Prüfungsorganisation"], answer: "Berichtsheftführung", exp: "Ausbildungsnachweis führen." },
-    { type: "mc", q: "Gesetz für Arbeitszeiten von U18-Auszubildenden?", options: ["JArbSchG", "ArbStättV", "BGB", "HGB"], answer: "JArbSchG", exp: "Jugendarbeitsschutzgesetz." },
-    { type: "mc", q: "Mindest-Gewährleistungsfrist nach BGB für Neuwaren?", options: ["24 Monate", "12 Monate", "36 Monate", "06 Monate"], answer: "24 Monate", exp: "2 Jahre gesetzliche Verjährung." },
-    { type: "mc", q: "Regelung für Bildschirmarbeitsplätze?", options: ["ArbStättV", "DSGVO", "HGB", "BGB"], answer: "ArbStättV", exp: "Arbeitsstättenverordnung Anhang 6." },
-    { type: "mc", q: "Winkelregel für Gelenke beim Ergonomischen Sitzen?", options: ["90 Grad", "45 Grad", "120 Grad", "180 Grad"], answer: "90 Grad", exp: "90-Grad-Regel." },
-    { type: "mc", q: "Blickrichtung zum Fenster zur Vermeidung von Blendung?", options: ["90 Grad", "Frontal", "Rücken", "Beliebig"], answer: "90 Grad", exp: "Vermeidet direktes Licht auf Schirm." },
-    { type: "mc", q: "Umweltzeichen für nachhaltige IT-Geräte?", options: ["Blauer Engel", "CE-Zeichen", "TÜV-Süd", "GS-Siegel"], answer: "Blauer Engel", exp: "Umweltgütesiegel." },
-    { type: "mc", q: "Hot-Swap Funktion bei Servern bedeutet...", options: ["Tausch im laufenden Betrieb", "Wasserkühlung der Festplatten", "Übertaktung aller Prozessoren", "Automatischer Stromsparmodus"], answer: "Tausch im laufenden Betrieb", exp: "Komponenten ohne Shutdown wechseln." },
-    { type: "mc", q: "ECC-RAM Funktion im Serverbereich?", options: ["Automatische Fehlerkorrektur", "Integriertes RGB-Farblicht", "Höhere Taktfrequenz im Bus", "Niedriger Anschaffungspreis"], answer: "Automatische Fehlerkorrektur", exp: "ECC korrigiert Einzelbit-Fehler." },
-    { type: "mc", q: "RAID 1 Spiegelung dient der...", options: ["Ausfallsicherheit", "Geschwindigkeit", "Kapazität", "Stromersparnis"], answer: "Ausfallsicherheit", exp: "Spiegelung schützt vor Plattenausfall." },
-    { type: "mc", q: "RAID 5 Mindestanzahl an Festplatten?", options: ["3 Festplatten", "2 Festplatten", "4 Festplatten", "1 Festplatte"], answer: "3 Festplatten", exp: "RAID 5 erfordert min. 3 Platten." },
-    { type: "mc", q: "Gerät zur Datenweiterleitung anhand der MAC-Adresse?", options: ["Switch", "Router", "Hub", "Repeater"], answer: "Switch", exp: "Switch arbeitet auf Layer 2." },
-    { type: "mc", q: "Gerät zur Verbindung verschiedener IP-Netze?", options: ["Router", "Switch", "Hub", "Bridge"], answer: "Router", exp: "Router arbeitet auf Layer 3." },
-    { type: "mc", q: "Server zur automatischen IP-Adressvergabe?", options: ["DHCP", "DNS", "FTP", "HTTP"], answer: "DHCP", exp: "DHCP verteilt Netzwerkeinstellungen." },
-    { type: "mc", q: "Server zur Auflösung von Namen in IP-Adressen?", options: ["DNS", "DHCP", "Proxy", "SMTP"], answer: "DNS", exp: "DNS übersetzt Domainnamen." },
-    { type: "mc", q: "Verschlüsseltes Webprotokoll?", options: ["HTTPS", "HTTP", "FTP", "TELNET"], answer: "HTTPS", exp: "HTTPS nutzt TLS/SSL." },
-    { type: "mc", q: "Verschlüsseltes Konsolen-Fernwartungsprotokoll?", options: ["SSH", "Telnet", "FTP", "HTTP"], answer: "SSH", exp: "SSH ist die sichere Shell." },
-    { type: "mc", q: "Bedeutung USV?", options: ["Unterbrechungsfreie Stromversorgung", "Universal Server Connection Link", "Ultra Security Encryption System", "Umwelt Schutz Richtlinie"], answer: "Unterbrechungsfreie Stromversorgung", exp: "Sichert Stromausfälle ab." },
-    { type: "mc", q: "3-2-1 Backup Regel bedeutet...", options: ["3 Kopien, 2 Medien, 1 extern", "3 Server, 2 Switches, 1 Router", "3 Tage, 2 Wochen, 1 Monat", "3 Admins, 2 Passwörter, 1 Key"], answer: "3 Kopien, 2 Medien, 1 extern", exp: "Standard Backup-Regel." },
-    { type: "mc", q: "Schadsoftware, die Lösegeld erpresst?", options: ["Ransomware", "Adware", "Spyware", "Rootkit"], answer: "Ransomware", exp: "Verschlüsselt Daten für Lösegeld." },
-    { type: "mc", q: "Gefälschte E-Mails zur Datenerfassung?", options: ["Phishing", "Spam", "Scanning", "Routing"], answer: "Phishing", exp: "Täuscht Identität vor." },
-    { type: "mc", q: "Netzwerkschutz-System nach Regeln?", options: ["Firewall", "USV", "Router", "Switch"], answer: "Firewall", exp: "Filtert Datenverkehr." },
-    { type: "mc", q: "Tätigkeitsschulden ohne Erfolgsgarantie?", options: ["Dienstvertrag", "Werkvertrag", "Mietvertrag", "Leihvertrag"], answer: "Dienstvertrag", exp: "Schuldet reine Dienstleistung." },
-    { type: "mc", q: "Zieleinkaufspreis Berechnung?", options: ["LEP minus Rabatt", "LEP plus Skonto", "Bezugspreis minus Fracht", "Selbstkosten plus Gewinn"], answer: "LEP minus Rabatt", exp: "ZEP = LEP - Rabatt." },
-    { type: "mc", q: "Bezugskosten im Wareneinkauf?", options: ["Fracht und Zoll", "Lieferrabatt", "Liefererskonto", "Gewinnzuschlag"], answer: "Fracht und Zoll", exp: "Erhöht den Einkaufswert." },
-    { type: "mc", q: "E-V-A Prinzip Bedeutung?", options: ["Eingabe-Verarbeitung-Ausgabe", "Energie-Verbrauch-Analyse", "Einbau-Verbindung-Ablauf", "Emulation-Code-Ausgabe"], answer: "Eingabe-Verarbeitung-Ausgabe", exp: "Grundstruktur der IT." },
-    { type: "mc", q: "M.2 Steckplatz Anbindung?", options: ["PCIe Lanes", "SATA 1.0", "USB 2.0", "VGA"], answer: "PCIe Lanes", exp: "Bindet schnelle SSDs an." },
-    { type: "mc", q: "POST Prüfaufgabe des BIOS?", options: ["Hardware-Test", "Windows-Update", "Virensuche", "Netzwerkspeed"], answer: "Hardware-Test", exp: "Power-On Self-Test." },
-    { type: "mc", q: "Formular zur fehlerfreien Übergabe an den Kunden?", options: ["Übergabeprotokoll", "Lieferschein", "Rechnung", "Mahnung"], answer: "Übergabeprotokoll", exp: "Hält Zustand bei Übergabe fest." },
-    { type: "mc", q: "Virtuelle Desktops aus der Cloud?", options: ["DaaS", "PaaS", "SaaS", "IaaS"], answer: "DaaS", exp: "Desktop as a Service." },
-    { type: "mc", q: "Gemeinkostenzuschlag deckt...", options: ["Betriebskosten", "Reinen Gewinn", "Kundenskonto", "Lieferrabatt"], answer: "Betriebskosten", exp: "Deckt indirekte Betriebskosten ab." },
-    { type: "mc", q: "80 PLUS Zertifikat gibt an...", options: ["80% Wirkungsgrad", "CE Gütesiegel", "ISO 9001 Standard", "TÜV Auszeichnung"], answer: "80% Wirkungsgrad", exp: "Netzteil Effizienz." },
-    { type: "mc", q: "Windows 11 Standard-Dateisystem?", options: ["NTFS", "FAT32", "ext4", "exFAT"], answer: "NTFS", exp: "Windows Dateisystem." },
-    { type: "mc", q: "S/FTP Kabel Schirmung?", options: ["Folien- und Geflechtschirmung", "Keine Schirmung vorhanden", "Nur einfache Plastikhülle", "Drahtseilkonstruktion"], answer: "Folien- und Geflechtschirmung", exp: "Schützt vor Störungen." },
-    { type: "mc", q: "Ziel der Nutzwertanalyse?", options: ["Vergleich von Alternativen", "Reine Gewinnberechnung", "Steuerberechnung", "Netzwerkmessung"], answer: "Vergleich von Alternativen", exp: "Gewichtete Auswahlverfahren." },
-    { type: "mc", q: "ElektroG Bestimmung?", options: ["Altgeräte-Entsorgung", "Kündigungsfristen", "Arbeitszeitregeln", "Gehaltsstufen"], answer: "Altgeräte-Entsorgung", exp: "Altgeräte-Entsorgung." },
-    { type: "mc", q: "Merkmal einer Workstation?", options: ["Profi-GPU & ECC-RAM", "Geringer Preis", "Geringes Gewicht", "Akkubetrieb"], answer: "Profi-GPU & ECC-RAM", exp: "Leistungsstarke Hardware." },
-    { type: "mc", q: "Aufgabe des DNS-Servers?", options: ["Namensauflösung im Netz", "IP-Adressen vergeben", "E-Mails filtern", "Viren löschen"], answer: "Namensauflösung im Netz", exp: "DNS übersetzt Domainnamen." },
-    { type: "mc", q: "Unterschied Kaufvertrag und Dienstvertrag?", options: ["Kaufvertrag = Eigentum; Dienstvertrag = Tätigkeit", "Kein rechtlicher Unterschied", "Dienstverträge sind immer kostenlos", "Kaufverträge gelten nur für Häuser"], answer: "Kaufvertrag = Eigentum; Dienstvertrag = Tätigkeit", exp: "Rechtlicher Unterschied nach BGB." },
-    { type: "mc", q: "Was versteht man unter Barverkaufspreis?", options: ["Preis vor Rabatt & Skonto", "Einkaufspreis Großhandel", "Preis inklusive MwSt", "Preis nach 5 Jahren"], answer: "Preis vor Rabatt & Skonto", exp: "Basis der Verkaufskalkulation." },
-    { type: "mc", q: "Welches Protokoll ermöglicht sicheren Dateitransfer?", options: ["SFTP", "HTTP", "TELNET", "UDP"], answer: "SFTP", exp: "SSH File Transfer Protocol." },
-    { type: "mc", q: "Was misst die Reaktionszeit bei Monitoren (ms)?", options: ["Pixel-Farbwechselzeit", "Stromverbrauch", "Blickwinkelstabilität", "Garantiedauer"], answer: "Pixel-Farbwechselzeit", exp: "Schnelle Reaktionszeiten verhindern Schlieren." },
-    { type: "mc", q: "Was bedeutet DÜ-Geschwindigkeit?", options: ["Datenmenge pro Sekunde", "Dauer der Garantie", "Drehzahl des Lüfters", "Dicke des Kabels"], answer: "Datenmenge pro Sekunde", exp: "Misst Datenmenge pro Zeit." },
-    { type: "mc", q: "Rechtsfolge von Verträgen mit Nichtgeschäftsfähigen (U7)?", options: ["Von Anfang an nichtig", "Fully Gültig", "Anfechtbar", "Schwebend unwirksam"], answer: "Von Anfang an nichtig", exp: "§ 105 BGB stellt Nichtigkeit fest." },
-    { type: "mc", q: "Welches Dokument dokumentiert die Ist-Analyse beim Kunden?", options: ["IST-Erhebung", "Pflichtenheft", "Kaufvertrag", "Mahnung"], answer: "IST-Erhebung", exp: "Nimmt den aktuellen Zustand auf." },
-    { type: "mc", q: "Welche Topologie benötigt einen zentralen Switch?", options: ["Stern-Topologie", "Bus-Topologie", "Ring-Topologie", "Baum-Topologie"], answer: "Stern-Topologie", exp: "Stern-Netze verbinden alle Knoten zentral." },
-    { type: "mc", q: "Vorteil von Stern-Topologie?", options: ["Einzelausfall stört Restnetz nicht", "Keine Kabel nötig", "Kein Switch nötig", "Kostenlos"], answer: "Einzelausfall stört Restnetz nicht", exp: "Hohe Ausfallsicherheit einzelner Stationen." },
-    { type: "mc", q: "Welche USV-Klasse bietet den höchsten Schutz gegen Spannungsschwankungen?", options: ["Online-USV", "Offline-USV", "Line-Interactive", "Standby-USV"], answer: "Online-USV", exp: "Online USVs liefern Dauerstrom ohne Umschaltzeit." },
-    { type: "mc", q: "Welche Gehäusebauform ist bei Servern im Rack üblich?", options: ["19-Zoll-Format", "Tower-Gehäuse", "Mini-ITX Cube", "Desktop-Slim"], answer: "19-Zoll-Format", exp: "Standard-Einbaumaß in Rechenzentren." },
-    { type: "mc", q: "Was bedeutet Höheneinheit (HE / U) im Server-Rack?", options: ["Höhenmaß 1,75 Zoll", "Breite des Servers", "Gewicht des Racks", "Lüfteranzahl"], answer: "Höhenmaß 1,75 Zoll", exp: "Höheneinheit für Einbaugeräte." },
-    { type: "mc", q: "Was besagt die DSGVO zum Prinzip der Datensparsamkeit?", options: ["Nur zwingende Daten erheben", "Alle Daten unendlich speichern", "Daten frei verkaufen", "Keine Daten speichern"], answer: "Nur zwingende Daten erheben", exp: "Minimierungsgebot der DSGVO." },
-    { type: "mc", q: "Welche Maßnahme schützt Arbeitsplätze vor Social-Engineering-Angriffen?", options: ["Mitarbeiterschulungen", "Neue Monitore", "Kabel tauschen", "Lautstärke"], answer: "Mitarbeiterschulungen", exp: "Der Mensch ist oft das schwächste Glied." },
-    { type: "mc", q: "Herzlichen Glückwunsch! Du hast Frage 100 erreicht! Was machst du nach der erfolgreichen Arbeitsplatz-Einrichtung?", options: ["Übergabeprotokoll abzeichnen lassen", "PC ungetestet stehen lassen", "Kabel zerschneiden", "Sofort nach Hause gehen"], answer: "Übergabeprotokoll abzeichnen lassen", exp: "Die saubere Abnahme schließt das Projekt erfolgreich ab!" }
+    // --- MONITOR- & PANELTECHNOLOGIEN ---
+    { type: "open", q: "Wofür steht die Abkürzung LCD?", answer: ["Liquid Crystal Display"], exp: "Liquid Crystal Display = Flüssigkristallanzeige." },
+    { type: "open", q: "Wofür steht die Abkürzung LED?", answer: ["Light Emitting Diode"], exp: "Light Emitting Diode = Lichtemittierende Diode." },
+    { type: "mc", q: "Welche Eigenschaft ist typisch für ein TN-Panel?", options: ["Sehr schnelle Reaktionszeiten, aber schwacher Blickwinkel", "Perfekter Blickwinkel", "Selbstleuchtende Pixel", "Hohes Gewicht"], answer: "Sehr schnelle Reaktionszeiten, aber schwacher Blickwinkel", exp: "TN-Panels sind schnell, haben aber geringen Blickwinkel." },
+    { type: "mc", q: "Welche Eigenschaft zeichnet ein VA-Panel aus?", options: ["Hoher Kontrast und gute Schwarzwerte", "Sehr schlechter Kontrast", "Nur in Schwarz-Weiß verfügbar", "Kein LED-Licht möglich"], answer: "Hoher Kontrast und gute Schwarzwerte", exp: "VA-Panels bieten starke Kontraste." },
+    { type: "mc", q: "Was bedeutet die Reaktionszeit bei Monitoren?", options: ["Zeit, die ein Pixel für den Farbwechsel benötigt (in ms)", "Dauer des Einschaltvorgangs", "Garantiezeit des Herstellers", "Dauer der Lieferung"], answer: "Zeit, die ein Pixel für den Farbwechsel benötigt (in ms)", exp: "Kürzere Schaltzeiten verhindern Schlieren." },
+    { type: "mc", q: "Was beschreibt das Kontrastverhältnis?", options: ["Unterschied zwischen dem hellsten Weiß und dunkelsten Schwarz", "Helligkeit bei Sonnenlicht", "Stromverbrauch bei Volllast", "Anzahl der Anschlüsse"], answer: "Unterschied zwischen dem hellsten Weiß und dunkelsten Schwarz", exp: "Hoher Kontrast sorgt für tiefes Schwarz." },
+    { type: "open", q: "In welcher Einheit wird die Helligkeit eines Monitors angegeben?", answer: ["cd/m2", "cd/m²", "Candela"], exp: "Helligkeit wird in Candela pro Quadratmeter angegeben." },
+    { type: "mc", q: "Was ist Adaptive Sync (z.B. FreeSync / G-Sync)?", options: ["Synchronisation der Bildwiederholrate mit der Grafikkarte", "Automatisches Ausschalten des Monitors", "Automatische Reinigung des Bildschirms", "Lautstärkeregelung"], answer: "Synchronisation der Bildwiederholrate mit der Grafikkarte", exp: "Verhindert Tearing (Bildreißen)." },
+
+    // --- MAINBOARD & PC-KOMPONENTEN ---
+    { type: "mc", q: "Was ist die Hauptaufgabe eines Mainboards?", options: ["Zentrale Verbindung und Kommunikation aller Komponenten", "Nur die Stromversorgung der Tastatur", "Erzeugung von Tönen", "Speicherung des Betriebssystems"], answer: "Zentrale Verbindung und Kommunikation aller Komponenten", exp: "Das Mainboard verbindet alle Systemteile." },
+    { type: "open", q: "Wie heißt der Steckplatz auf dem Mainboard für den Prozessor?", answer: ["CPU-Sockel", "Sockel", "CPU Sockel"], exp: "Der CPU-Sockel nimmt den Prozessor auf." },
+    { type: "open", q: "Wofür stehen die Buchstaben CPU?", answer: ["Central Processing Unit"], exp: "Central Processing Unit = Hauptprozessor." },
+    { type: "mc", q: "Was ist der Chipsatz auf einem Mainboard?", options: ["Steuert den Datenfluss zwischen CPU, Speicher und Peripherie", "Ein lüfterloser Kühler", "Das Netzteil des Gehäuses", "Die Soundkarte"], answer: "Steuert den Datenfluss zwischen CPU, Speicher und Peripherie", exp: "Der Chipsatz steuert die Datenwege auf der Platine." },
+    { type: "open", q: "Wie nennt man den flüchtigen Arbeitsspeicher eines PCs?", answer: ["RAM", "Random Access Memory"], exp: "RAM = Random Access Memory." },
+    { type: "open", q: "Wofür steht die Abkürzung DIMM beim Arbeitsspeicher?", answer: ["Dual In-line Memory Module", "Dual Inline Memory Module"], exp: "DIMM ist Bauform von Arbeitsspeicher-Riegeln." },
+    { type: "mc", q: "Wofür wird ein PCIe-Steckplatz hauptsächlich genutzt?", options: ["Einbau von Grafikkarten und Erweiterungskarten", "Anschluss von Netzkabeln", "Montage des Gehäuselüfters", "Einbau des Netzteils"], answer: "Einbau von Grafikkarten und Erweiterungskarten", exp: "PCIe bietet hohe Bandbreite für Erweiterungskarten." },
+    { type: "mc", q: "Wofür werden SATA-Anschlüsse verwendet?", options: ["Anschluss von Festplatten, SSDs und optischen Laufwerken", "Anschluss des Monitors", "Verbindung zur Tastatur", "Stromversorgung der CPU"], answer: "Anschluss von Festplatten, SSDs und optischen Laufwerken", exp: "SATA ist eine Standard-Datenschnittstelle." },
+    { type: "open", q: "Wie heißt das grundlegende Eingabe-/Ausgabesystem eines PCs?", answer: ["BIOS"], exp: "BIOS = Basic Input/Output System." },
+    { type: "open", q: "Wie heißt der moderne Nachfolger des klassischen BIOS?", answer: ["UEFI"], exp: "UEFI = Unified Extensible Firmware Interface." },
+
+    // --- PROZESSOREN ---
+    { type: "mc", q: "Was versteht man unter Multi-Core bei Prozessoren?", options: ["Mehrere unabhängige Rechenkerne in einem Chip", "Mehrere Netzteile im Gehäuse", "Arbeitsspeicher auf der Grafikkarte", "Besonders dicke Kühlkörper"], answer: "Mehrere unabhängige Rechenkerne in einem Chip", exp: "Multi-Core steigert die Multitasking-Leistung." },
+    { type: "mc", q: "Was bedeutet Multithreading?", options: ["Zusammenarbeit mehrerer Threads zur parallelen Befehlsverarbeitung", "Nutzung von zwei Monitoren", "Gleichzeitiges Drucken und Scannen", "Kühlung mit Wasser"], answer: "Zusammenarbeit mehrerer Threads zur parallelen Befehlsverarbeitung", exp: "Ermöglicht parallele Abarbeitung von Aufgaben." },
+    { type: "open", q: "Wie nennt Intel seine Technologie für virtuelle Kernverdopplung?", answer: ["Hyper-Threading", "Hyperthreading"], exp: "Hyper-Threading spaltet physische Kerne logisch auf." },
+    { type: "mc", q: "Was bedeutet Pipelining in der Mikroprozessortechnik?", options: ["Überlappende Abarbeitung von Befehlsstufen", "Kühlung durch Rohre", "Übertragung von Sound", "Speicherung auf Band"], answer: "Überlappende Abarbeitung von Befehlsstufen", exp: "Steigert den Befehlsdurchsatz pro Takt." },
+    { type: "mc", q: "Was ist ein Coprozessor?", options: ["Zusatzprozessor zur Entlastung der Haupt-CPU", "Ersatzprozessor bei Defekt", "Software im BIOS", "Ein lüfterloser Kühlkörper"], answer: "Zusatzprozessor zur Entlastung der Haupt-CPU", exp: "Führt Spezialaufgaben aus (z.B. Mathe/Grafik)." },
+    { type: "mc", q: "Was ist der Unterschied zwischen CPU und GPU?", options: ["CPU ist universell; GPU ist auf parallele Grafikberechnung spezialisiert", "GPU verarbeitet nur Texte", "CPU ist nur in Laptops verbaut", "Kein Unterschied"], answer: "CPU ist universell; GPU ist auf parallele Grafikberechnung spezialisiert", exp: "GPU berechnet hochparallele Grafikdaten." },
+    { type: "mc", q: "Was versteht man unter der Taktfrequenz eines Prozessors?", options: ["Anzahl der Schaltvorgänge pro Sekunde (in GHz)", "Lüftergeschwindigkeit in U/min", "Datentransferrate der SSD", "Größe des Arbeitsspeichers"], answer: "Anzahl der Schaltvorgänge pro Sekunde (in GHz)", exp: "Gibt die Arbeitsgeschwindigkeit der CPU an." },
+    { type: "mc", q: "Was ist der Cache eines Prozessors?", options: ["Sehr schneller Pufferspeicher direkt auf dem Prozessor", "Ein externes Backup-Laufwerk", "Das Betriebssystem auf der SSD", "Ein Cloud-Speicher"], answer: "Sehr schneller Pufferspeicher direkt auf dem Prozessor", exp: "Puffert häufig genutzte Daten nah an der CPU." },
+    { type: "mc", q: "Was bedeutet ALU bei Prozessoren?", options: ["Arithmetic Logic Unit (Arithmetisch-Logische Einheit)", "Automatic Load Unit", "Advanced Local User", "Array Level Upgrade"], answer: "Arithmetic Logic Unit (Arithmetisch-Logische Einheit)", exp: "Die ALU führt mathematische und logische Rechenoperationen aus." },
+
+    // --- SPEICHER UND DATENTRÄGER ---
+    { type: "mc", q: "Was ist der Hauptunterschied zwischen HDD und SSD?", options: ["HDDs nutzen mechanische Magnetscheiben; SSDs nutzen Flash-Speicher", "SSDs sind viel langsamer als HDDs", "HDDs verbrauchen keinen Strom", "SSDs nutzen Magnetbänder"], answer: "HDDs nutzen mechanische Magnetscheiben; SSDs nutzen Flash-Speicher", exp: "SSDs arbeiten voll-elektronisch." },
+    { type: "mc", q: "Welchen Vorteil hat eine SSD?", options: ["Schnelle Zugriffszeiten und Stoßfestigkeit", "Günstigerer Preis pro Terabyte als HDD", "Geräuschentwicklung durch rotierende Scheiben", "Sehr hohes Gewicht"], answer: "Schnelle Zugriffszeiten und Stoßfestigkeit", exp: "Keine mechanischen Teile vorhanden." },
+    { type: "open", q: "Wie nennt man den Nur-Lese-Speicher, der Daten permanent behält?", answer: ["ROM", "Read Only Memory"], exp: "ROM = Read Only Memory." },
+    { type: "mc", q: "Was versteht man unter Hot-Swap?", options: ["Tauschen von Komponenten im laufenden Betrieb", "Kühlung durch Heißluft", "Übertakten der CPU", "Automatisches Löschen der Daten"], answer: "Tauschen von Komponenten im laufenden Betrieb", exp: "Wichtig für Serverwartung ohne Ausfallzeit." },
+    { type: "mc", q: "Was beschreibt die Zugriffszeit bei Datenträgern?", options: ["Zeit vom Anfordern der Daten bis zum Bereitstellen", "Dauer des Formatierens", "Garantiedauer des Laufwerks", "Zeit für den Einbau"], answer: "Zeit vom Anfordern der Daten bis zum Bereitstellen", exp: "SSDs bieten extrem kurze Zugriffszeiten." },
+    { type: "open", q: "Welches Protokoll nutzen extrem schnelle moderne SSDs über PCIe?", answer: ["NVMe"], exp: "NVMe = Non-Volatile Memory Express." },
+
+    // --- DRUCKER & SCANNER ---
+    { type: "mc", q: "Wie funktioniert ein Laserdrucker?", options: ["Belichtung einer Trommel und Fixierung von Toner durch Hitze", "Spritzen von flüssigen Tintentropfen", "Nadelanschläge auf ein Farbband", "Einritzen von Papier"], answer: "Belichtung einer Trommel und Fixierung von Toner durch Hitze", exp: "Laserdrucker nutzen Tonerpulver und Hitze." },
+    { type: "mc", q: "Wie funktioniert ein Tintenstrahldrucker?", options: ["Gezieltes Spritzen winziger Tintentropfen auf das Papier", "Erwärmen von Spezialpapier", "Brennen mit Laserstrahl", "Magnetische Übertragung"], answer: "Gezieltes Spritzen winziger Tintentropfen auf das Papier", exp: "Tintendüsen tragen flüssige Tinte auf." },
+    { type: "mc", q: "Welchen Vorteil bietet ein Laserdrucker?", options: ["Hohe Druckgeschwindigkeit und wischfeste Ausdrucke", "Günstige originale Farbpatronen", "Perfekter Fotodruck auf Glanzpapier", "Geringe Abmessungen"], answer: "Hohe Druckgeschwindigkeit und wischfeste Ausdrucke", exp: "Ideal für hohe Textdruck-Volumen." },
+    { type: "mc", q: "Was zeichnet einen Thermodrucker aus (z.B. Kassenzettel)?", options: ["Erzeugt Drucke durch gezielte Hitzeeinwirkung auf Spezialpapier", "Nutzt normale Tinte", "Nutzt Farbbänder", "Benötigt Lasertoner"], answer: "Erzeugt Drucke durch gezielte Hitzeeinwirkung auf Spezialpapier", exp: "Thermodrucker benötigen keine Tinte/Toner." },
+    { type: "mc", q: "Was ist ein Multifunktionsgerät (MFP)?", options: ["Kombination aus Drucken, Scannen, Kopieren und optional Faxen", "Ein PC mit zwei Monitoren", "Ein Router mit USB-Port", "Ein Server im Rack"], answer: "Kombination aus Drucken, Scannen, Kopieren und optional Faxen", exp: "Vereint mehrere Bürogeräte in einem." },
+
+    // --- NETZWERKE & SERVER ---
+    { type: "open", q: "Wofür steht die Abkürzung IP im Netzwerkbereich?", answer: ["Internet Protocol"], exp: "IP = Internet Protocol." },
+    { type: "mc", q: "Wie viele Bits nutzt eine IPv4-Adresse?", options: ["32 Bits", "128 Bits", "64 Bits", "16 Bits"], answer: "32 Bits", exp: "IPv4 nutzt 32-Bit Adressen." },
+    { type: "mc", q: "Wie viele Bits nutzt eine IPv6-Adresse?", options: ["128 Bits", "32 Bits", "64 Bits", "256 Bits"], answer: "128 Bits", exp: "IPv6 nutzt 128-Bit Adressen." },
+    { type: "open", q: "Wie heißt der standardisierte Steckertyp für Ethernet-Netzwerkkabel?", answer: ["RJ45", "RJ-45"], exp: "RJ45 ist der standardisierte Netzwerkstecker." },
+    { type: "mc", q: "Was ist die Hauptaufgabe eines Network-Switches?", options: ["Verteilung von Datenpaketen innerhalb eines lokalen Netzwerks anhand von MAC-Adressen", "Herstellung der Internetverbindung beim Provider", "Drucken von Dokumenten", "Speichern von Passwörtern"], answer: "Verteilung von Datenpaketen innerhalb eines lokalen Netzwerks anhand von MAC-Adressen", exp: "Switches verbinden Geräte im LAN auf Layer 2." },
+    { type: "mc", q: "Was ist die Hauptaufgabe eines Routers?", options: ["Verbindung verschiedener Netzwerke und Weiterleitung von Datenpaketen (z.B. LAN zu Internet)", "Signalverstärkung im Kabel", "Stromversorgung von PCs", "Virenscannen von E-Mails"], answer: "Verbindung verschiedener Netzwerke und Weiterleitung von Datenpaketen (z.B. LAN zu Internet)", exp: "Router verbinden unterschiedliche IP-Netze auf Layer 3." },
+    { type: "open", q: "Welcher Dienst vergibt automatisch IP-Adressen an Clients im Netzwerk?", answer: ["DHCP"], exp: "DHCP = Dynamic Host Configuration Protocol." },
+    { type: "open", q: "Welcher Dienst löst Domainnamen (z.B. google.com) in IP-Adressen auf?", answer: ["DNS"], exp: "DNS = Domain Name System." },
+
+    // --- IT-SICHERHEIT & DATENSCHUTZ ---
+    { type: "open", q: "Wofür steht die Abkürzung DSGVO?", answer: ["Datenschutz-Grundverordnung", "Datenschutzgrundverordnung"], exp: "DSGVO = Datenschutz-Grundverordnung." },
+    { type: "mc", q: "Was versteht man unter Datenschutz?", options: ["Schutz von Personen vor Missbrauch ihrer personenbezogenen Daten", "Schutz der Festplatte vor Stürzen", "Sicherung von Stromkabeln", "Verschlüsselung von Bios"], answer: "Schutz von Personen vor Missbrauch ihrer personenbezogenen Daten", exp: "Datenschutz schützt das Persönlichkeitsrecht." },
+    { type: "mc", q: "Was versteht man unter Datensicherheit?", options: ["Schutz von Daten vor Verlust, Fälschung und unbefugtem Zugriff", "Vermeidung von Tastaturverschleiß", "Kauf von Garantieverlängerungen", "Reinigung des Bildschirms"], answer: "Schutz von Daten vor Verlust, Fälschung und unbefugtem Zugriff", exp: "Datensicherheit schützt die Daten selbst." },
+    { type: "mc", q: "Welches Schutzziel verhindert unbefugtes Lesen von Daten?", options: ["Vertraulichkeit", "Integrität", "Verfügbarkeit", "Redundanz"], answer: "Vertraulichkeit", exp: "Vertraulichkeit schützt vor Einsichtnahme." },
+    { type: "mc", q: "Welches Schutzziel schützt Daten vor unerlaubter Veränderung?", options: ["Integrität", "Vertraulichkeit", "Verfügbarkeit", "Anonymität"], answer: "Integrität", exp: "Integrität garantiert Datenunversehrtheit." },
+    { type: "mc", q: "Welches Schutzziel garantiert, dass Systeme betriebsbereit sind?", options: ["Verfügbarkeit", "Vertraulichkeit", "Integrität", "Authentizität"], answer: "Verfügbarkeit", exp: "Verfügbarkeit gewährleistet Zugriff." },
+    { type: "mc", q: "Wie nennt man die drei Schutzziele Vertraulichkeit, Integrität und Verfügbarkeit zusammen?", options: ["CIA-Triade", "DSGVO-Trio", "E-V-A-Prinzip", "IHK-Regel"], answer: "CIA-Triade", exp: "CIA = Confidentiality, Integrity, Availability." },
+    { type: "open", q: "Wie lautet der Oberbegriff für schädliche Software (Viren, Würmer, Trojaner)?", answer: ["Malware"], exp: "Malware ist der Sammelbegriff für Schadsoftware." },
+    { type: "mc", q: "Was ist Ransomware?", options: ["Schadsoftware, die Daten verschlüsselt und Lösegeld erpresst", "Ein kostenloses Virenprogramm", "Ein Tool zur Datenwiederherstellung", "Ein schnelles Netzwerkprotokoll"], answer: "Schadsoftware, die Daten verschlüsselt und Lösegeld erpresst", exp: "Erpressungs-Trojaner verschlüsseln Dateien." },
+    { type: "mc", q: "Was versteht man unter Phishing?", options: ["Versuch, über gefälschte Mails/Websites vertrauliche Daten zu stehlen", "Angriff auf Kabel im Wasser", "Formatieren einer Festplatte", "Löschen von Spam-Mails"], answer: "Versuch, über gefälschte Mails/Websites vertrauliche Daten zu stehlen", exp: "Phishing täuscht falsche Identitäten vor." },
+
+    // --- WIRTSCHAFT, RECHT & PROJEKTMANAGEMENT ---
+    { type: "mc", q: "Was ist ein Lastenheft?", options: ["Gesamtheit der Anforderungen des Auftraggebers an die Lieferungen und Leistungen", "Lieferschein des Spediteurs", "Handbuch des Herstellers", "Rechnung des Dienstleisters"], answer: "Gesamtheit der Anforderungen des Auftraggebers an die Lieferungen und Leistungen", exp: "Das Lastenheft beschreibt WAS der Kunde will." },
+    { type: "mc", q: "Was ist ein Pflichtenheft?", options: ["Vom Auftragnehmer erarbeitetes Realisierungskonzept", "Vertrag über die Arbeitszeiten", "Stundenzettel des Mitarbeiters", "Anleitung für die Mülltrennung"], answer: "Vom Auftragnehmer erarbeitetes Realisierungskonzept", exp: "Das Pflichtenheft beschreibt WIE der Auftragnehmer umsetzt." },
+    { type: "mc", q: "Was ist der Unterschied zwischen Lastenheft und Pflichtenheft?", options: ["Lastenheft = Kundenwunsch (WAS); Pflichtenheft = Umsetzungsplan (WIE)", "Es gibt keinen Unterschied", "Lastenheft schreibt der Auftragnehmer", "Pflichtenheft ist immer kostenlos"], answer: "Lastenheft = Kundenwunsch (WAS); Pflichtenheft = Umsetzungsplan (WIE)", exp: "Klassische IHK-Unterscheidung." },
+    { type: "mc", q: "Was versteht man unter einem Kaufvertrag?", options: ["Zwei übereinstimmende Willenserklärungen über den Übergang von Eigentum gegen Geld", "Kostenlose Überlassung einer Sache", "Reine Dienstleistung ohne Eigentumsübertragung", "Einseitiges Versprechen"], answer: "Zwei übereinstimmende Willenserklärungen über den Übergang von Eigentum gegen Geld", exp: "Kaufvertrag nach § 433 BGB." },
+    { type: "mc", q: "Was ist ein Sachmangel nach § 434 BGB?", options: ["Abweichung der gelieferten Ware von der vereinbarten Beschaffenheit", "Dritte Personen geltend machen Rechte geltend", "Ware wird pünktlich geliefert", "Rechnung ist falsch ausgestellt"], answer: "Abweichung der gelieferten Ware von der vereinbarten Beschaffenheit", exp: "Sachmangel = Physische Abweichung/Defekt." },
+    { type: "mc", q: "Was ist ein Rechtsmangel nach § 435 BGB?", options: ["Dritte können Rechte an der Sache geltend machen (z.B. fehlende Lizenzen)", "Das Gehäuse hat Kratzer", "Die Verpackung fehlt", "Das Gerät ist zu langsam"], answer: "Dritte können Rechte an der Sache geltend machen (z.B. fehlende Lizenzen)", exp: "Rechtsmangel liegt vor, wenn Rechte Dritter stören." },
+    { type: "mc", q: "Was versteht man unter Recycling im IT-Bereich?", options: ["Wiederverwertung von Rohstoffen aus Altgeräten", "Verbrennung von Altgeräten im Restmüll", "Lagerung im Keller für immer", "Export in den Ozean"], answer: "Wiederverwertung von Rohstoffen aus Altgeräten", exp: "Schont Ressourcen nach ElektroG." },
+    { type: "open", q: "Wie heißt das bekannte deutsche Umweltzeichen für umweltfreundliche Produkte?", answer: ["Blauer Engel", "Der Blaue Engel"], exp: "Der Blaue Engel belohnt umweltfreundliche IT." },
+    { type: "mc", q: "Wofür steht das S in den SMART-Kriterien bei Projektzielen?", options: ["Spezifisch", "Schnell", "Sicher", "Spontan"], answer: "Spezifisch", exp: "SMART = Spezifisch, Messbar, Akzeptiert, Realistisch, Terminiert." },
+    { type: "mc", q: "Was ist ein Merkmal des Wasserfallmodells im Projektmanagement?", options: ["Linearer Ablauf, bei dem Phasen nacheinander durchlaufen werden", "Tägliche Wechsel der Ziele", "Arbeiten ohne Dokumentation", "Rücksprung in jede Phase jederzeit ohne Kosten"], answer: "Linearer Ablauf, bei dem Phasen nacheinander durchlaufen werden", exp: "Wasserfall ist ein sequenzielles Vorgehensmodell." }
 ];
 
-const questions = shuffleArray(rawQuestions).slice(0, 100);
+// Fragen aufteilen: Test 1 (1-50), Test 2 (51-100)
+let currentTest = 1;
+let test1Questions = allQuestions.slice(0, 50);
+let test2Questions = allQuestions.slice(50, 100);
+let activeQuestions = [];
 
 let currentQ = 0;
 let score = 0;
 let currentShuffledOptions = [];
 
+function switchTest(testNum) {
+    currentTest = testNum;
+    document.getElementById("btn-test1").classList.toggle("active", testNum === 1);
+    document.getElementById("btn-test2").classList.toggle("active", testNum === 2);
+    
+    activeQuestions = testNum === 1 ? test1Questions : test2Questions;
+    currentQ = 0;
+    score = 0;
+    showQuestion();
+}
+
 function showQuestion() {
-    const q = questions[currentQ];
-    document.getElementById("progress").innerText = `Frage ${currentQ + 1} von ${questions.length}`;
+    const q = activeQuestions[currentQ];
+    document.getElementById("progress").innerText = `Test ${currentTest} - Frage ${currentQ + 1} von ${activeQuestions.length}`;
     const container = document.getElementById("question-content");
     const feedback = document.getElementById("feedback-area");
     feedback.innerHTML = "";
@@ -296,7 +332,7 @@ function showQuestion() {
 }
 
 function checkMC(selectedIndex) {
-    const q = questions[currentQ];
+    const q = activeQuestions[currentQ];
     const selectedOption = currentShuffledOptions[selectedIndex];
     const optionsBtns = document.querySelectorAll(".option");
     optionsBtns.forEach(btn => btn.disabled = true);
@@ -318,31 +354,36 @@ function checkMC(selectedIndex) {
 }
 
 function checkOpen() {
-    const q = questions[currentQ];
+    const q = activeQuestions[currentQ];
     const inputEle = document.getElementById("open-answer");
     const input = inputEle ? inputEle.value : "";
     const btn = document.querySelector(".submit-btn");
     btn.disabled = true;
 
     if (!input || input.trim() === "") {
-        showFeedback(false, `Keine Antwort eingegeben! Richtige Antwort: ${q.answer[0]}. ${q.exp}`);
+        showFeedback(false, `Keine Antwort eingegeben! Richtige Antwort: ${Array.isArray(q.answer) ? q.answer[0] : q.answer}. ${q.exp}`);
         document.getElementById("next-btn").style.display = "inline-block";
         return;
     }
 
-    let isCorrect = q.answer.some(ans => isSimilar(input, ans));
+    let isCorrect = false;
+    if (Array.isArray(q.answer)) {
+        isCorrect = q.answer.some(ans => isSimilar(input, ans));
+    } else {
+        isCorrect = isSimilar(input, q.answer);
+    }
 
     if (isCorrect) {
         score++;
         showFeedback(true, `Richtig! ${q.exp}`);
     } else {
-        showFeedback(false, `Falsch! Richtige Antwort: ${q.answer[0]}. ${q.exp}`);
+        showFeedback(false, `Falsch! Richtige Antwort: ${Array.isArray(q.answer) ? q.answer[0] : q.answer}. ${q.exp}`);
     }
     document.getElementById("next-btn").style.display = "inline-block";
 }
 
 function checkTable() {
-    const q = questions[currentQ];
+    const q = activeQuestions[currentQ];
     let allCorrect = true;
     let hasEmpty = false;
     const btn = document.querySelector(".submit-btn");
@@ -375,7 +416,6 @@ function showFeedback(isCorrect, text) {
     const feedback = document.getElementById("feedback-area");
     feedback.className = `feedback ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`;
     
-    // Verlangte spezifische URLs für Richtig und Falsch
     const memeArray = isCorrect ? correctMemes : incorrectMemes;
     const randomMeme = memeArray[Math.floor(Math.random() * memeArray.length)];
 
@@ -389,24 +429,21 @@ function showFeedback(isCorrect, text) {
 
 function nextQuestion() {
     currentQ++;
-    if (currentQ < questions.length) {
+    if (currentQ < activeQuestions.length) {
         showQuestion();
     } else {
         finishQuiz();
     }
 }
 
-// Ranglisten-Funktionalität
 function getRangliste() {
-    const data = localStorage.getItem("lf02_rangliste");
+    const data = localStorage.getItem(`lf02_rangliste_test${currentTest}`);
     if (data) {
         return JSON.parse(data);
     }
-    // Demo-Daten
     return [
-        { name: "Max Mustermann", score: 95, max: 100, date: "15.09.2026" },
-        { name: "IT-Profi_2026", score: 88, max: 100, date: "16.09.2026" },
-        { name: "ByteMaster", score: 72, max: 100, date: "14.09.2026" }
+        { name: "Max Mustermann", score: 48, max: 50, date: "15.09.2026" },
+        { name: "IT-Profi", score: 42, max: 50, date: "16.09.2026" }
     ];
 }
 
@@ -417,14 +454,12 @@ function saveRanglisteEntry(name) {
     list.push({
         name: name.trim(),
         score: score,
-        max: questions.length,
+        max: activeQuestions.length,
         date: today
     });
-    // Sortieren nach Punktzahl absteigend
     list.sort((a, b) => b.score - a.score);
-    // Nur Top 10 speichern
     list = list.slice(0, 10);
-    localStorage.setItem("lf02_rangliste", JSON.stringify(list));
+    localStorage.setItem(`lf02_rangliste_test${currentTest}`, JSON.stringify(list));
     renderRangliste(name.trim());
 }
 
@@ -459,27 +494,27 @@ function renderRangliste(highlightName = null) {
 }
 
 function finishQuiz() {
-    const passed = score >= (questions.length / 2);
+    const passed = score >= (activeQuestions.length / 2);
     
     const imgSrc = passed 
         ? "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7qE2VAxuXWeyvJIY/giphy.webp"
         : "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzgxbGplZnkzdnFhanE2M3d5bDIybTZiN2J1Zm1qbzk4OHppdGdudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9u3TZfpmeDLkD6/giphy.gif";
 
-    const memeText = passed
-        ? "Großartige Leistung! Du hast den Test erfolgreich bestanden! 🎉"
-        : "Das war leider nichts... Zeit für eine Wiederholung! 😭";
+    const nextActionBtn = (currentTest === 1)
+        ? `<button class="submit-btn" onclick="switchTest(2)" style="margin-top:20px; background-color:#28a745;">Weiter zu Test 2 (Frage 51-100)</button>`
+        : `<button class="submit-btn" onclick="switchTest(1)" style="margin-top:20px;">Zurück zu Test 1</button>`;
 
     document.getElementById("quiz-card").innerHTML = `
         <div id="score-board">
-            <h2>Test Beendet!</h2>
-            <p style="font-size: 1.3em;">Ergebnis: <strong>${score}</strong> von <strong>${questions.length}</strong> Punkten (${Math.round(score/questions.length*100)}%)</p>
+            <h2>Test ${currentTest} Beendet!</h2>
+            <p style="font-size: 1.3em;">Ergebnis: <strong>${score}</strong> von <strong>${activeQuestions.length}</strong> Punkten (${Math.round(score/activeQuestions.length*100)}%)</p>
             <div class="img-container">
                 <img src="${imgSrc}" alt="Ergebnis Bild">
             </div>
-            <div class="meme-text">${memeText}</div>
+            <div class="meme-text">${passed ? 'Klasse Leistung! Du hast diesen Abschnitt bestanden! 🎉' : 'Das war leider nichts... Zeit für eine Wiederholung! 😭'}</div>
             
             <div class="rangliste-container">
-                <h3>🏆 Rangliste (Top Scores)</h3>
+                <h3>🏆 Rangliste für Test ${currentTest}</h3>
                 <div class="rangliste-form" id="rangliste-form-box">
                     <input type="text" id="player-name" placeholder="Deinen Namen eintragen..." autocomplete="off">
                     <button class="submit-btn" style="margin-top:0;" onclick="submitScore()">In Rangliste eintragen</button>
@@ -487,7 +522,7 @@ function finishQuiz() {
                 <div id="rangliste-table-container"></div>
             </div>
             
-            <button class="submit-btn" onclick="location.reload()" style="margin-top:20px;">Test erneut starten</button>
+            ${nextActionBtn}
         </div>
     `;
     
@@ -502,7 +537,8 @@ function submitScore() {
     }
 }
 
-showQuestion();
+// Start mit Test 1
+switchTest(1);
 </script>
 
 </body>
