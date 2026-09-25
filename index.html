@@ -2,28 +2,23 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>LF02: Arbeitsplatz nach Kundenwunsch ausstatten – Test 1 & 2</title>
+    <title>LERNZIELKONTROLLE LF03 – CLIENTS IN NETZWERKE EINBINDEN</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #eef2f5; color: #333; }
         .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 850px; margin: auto; }
-        h1 { text-align: center; color: #0056b3; margin-bottom: 20px; border-bottom: 2px solid #0056b3; padding-bottom: 10px; }
-        .test-selector { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
-        .test-btn { background: #6c757d; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
-        .test-btn.active { background: #0056b3; }
+        h1 { text-align: center; color: #003366; margin-bottom: 5px; font-size: 1.8em; }
+        .subtitle { text-align: center; color: #555; margin-bottom: 20px; font-weight: 600; border-bottom: 2px solid #003366; padding-bottom: 10px; }
         .progress { font-weight: bold; color: #666; margin-bottom: 15px; font-size: 1.1em; }
-        .question-text { font-size: 1.2em; font-weight: 600; margin-bottom: 20px; line-height: 1.4; }
-        .option { display: block; width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; text-align: left; font-size: 16px; transition: background 0.2s; }
+        .question-text { font-size: 1.2em; font-weight: 600; margin-bottom: 15px; line-height: 1.4; }
+        .q-image-container { text-align: center; margin-bottom: 20px; background: #fafafa; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0; }
+        .q-image-container svg { max-width: 100%; height: auto; }
+        .option { display: block; width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; text-align: left; font-size: 16px; transition: background 0.2s; box-sizing: border-box; }
         .option:hover { background: #eef2f5; }
         .correct { background: #d4edda !important; border-color: #c3e6cb !important; color: #155724; font-weight: bold; }
         .incorrect { background: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24; font-weight: bold; }
-        .text-input { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; margin-bottom: 15px; }
-        .submit-btn, #next-btn { background: #0056b3; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; margin-top: 15px; transition: background 0.2s; }
-        .submit-btn:hover, #next-btn:hover { background: #004085; }
+        .submit-btn, #next-btn { background: #003366; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; margin-top: 15px; transition: background 0.2s; font-weight: bold; }
+        .submit-btn:hover, #next-btn:hover { background: #002244; }
         #next-btn { display: none; }
-        table.kalkulation-table, table.rangliste-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-        table.kalkulation-table th, table.kalkulation-table td, table.rangliste-table th, table.rangliste-table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-        table.kalkulation-table th, table.rangliste-table th { background: #f2f2f2; }
-        table.kalkulation-table input { width: 100%; padding: 6px; font-size: 14px; box-sizing: border-box; }
         .feedback { margin-top: 15px; font-size: 1em; padding: 12px; border-radius: 6px; line-height: 1.4; }
         .feedback-correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .feedback-incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
@@ -31,22 +26,22 @@
         .feedback-img { margin-top: 15px; text-align: center; }
         .feedback-img img { max-width: 280px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .img-container { margin-top: 20px; text-align: center; }
-        .img-container img { max-width: 400px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); border: 3px solid #0056b3; }
+        .img-container img { max-width: 400px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); border: 3px solid #003366; }
         .meme-text { font-size: 1.3em; font-weight: bold; margin-top: 15px; color: #222; }
         .rangliste-container { margin-top: 30px; text-align: left; background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
         .rangliste-form { display: flex; gap: 10px; margin-bottom: 20px; }
         .rangliste-form input { flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+        table.rangliste-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        table.rangliste-table th, table.rangliste-table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        table.rangliste-table th { background: #f2f2f2; }
         .highlight-row { background-color: #d1ecf1 !important; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="card" id="quiz-card">
-    <h1>LF02: Arbeitsplatz nach Kundenwunsch ausstatten</h1>
-    <div class="test-selector">
-        <button class="test-btn active" id="btn-test1" onclick="switchTest(1)">Test 1 (50 Fragen)</button>
-        <button class="test-btn" id="btn-test2" onclick="switchTest(2)">Test 2 (30 Vertiefungsfragen)</button>
-    </div>
+    <h1>LERNZIELKONTROLLE LF03</h1>
+    <div class="subtitle">CLIENTS IN NETZWERKE EINBINDEN (50 IHK-Prüfungsaufgaben)</div>
     <div id="progress" class="progress"></div>
     <div id="question-content"></div>
     <div id="feedback-area"></div>
@@ -113,160 +108,184 @@ const incorrectMemes = [
     "https://media3.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MWYwZzI0ZDFheXM4eGNvcWo0ZGM0djkzMGs0Z3owaXRqbzJvcXJoNiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/hHPStl3w2ZU41qjKq2/giphy.webp"
 ];
 
-// --- TEST 1 (50 FRAGEN) ---
-const test1Questions = [
-    // Arbeitsschutz & Ergonomie (1-10)
-    { type: "mc", q: "1. Wofür steht die Abkürzung ArbSchG?", options: ["Arbeitsplatzgesetz", "Arbeitsschutzgesetz", "Arbeitsschutzgruppe", "Arbeitsgemeinschaft"], answer: "Arbeitsschutzgesetz", exp: "Erklärung: Das ArbSchG ist das zentrale deutsche Bundesgesetz zur Regelung des Arbeitsschutzes.\nQuelle: ArbSchG § 1." },
-    { type: "mc", q: "2. Was ist das vorrangige Ziel des Arbeitsschutzes?", options: ["Sicherstellung maximalen Unternehmensgewinns", "Erfüllung längerer täglicher Arbeitszeiten", "Schutz von Gesundheit und Sicherheit der Beschäftigten", "Anschaffung schnellere Computer im Betrieb"], answer: "Schutz von Gesundheit und Sicherheit der Beschäftigten", exp: "Erklärung: Ziel ist es, Arbeitsunfälle zu verhüten und die Gesundheit der Beschäftigten zu wahren.\nQuelle: ArbSchG § 1 & § 2." },
-    { type: "mc", q: "3. Wer trägt im Unternehmen die Hauptverantwortung für die Arbeitssicherheit?", options: ["Nur der einzelne Mitarbeiter selbst", "Der Arbeitgeber", "Ausschließlich die Berufsgenossenschaft", "Der extern bestellte Kunde"], answer: "Der Arbeitgeber", exp: "Erklärung: Der Arbeitgeber ist gesetzlich verpflichtet, die erforderlichen Arbeitsschutzmaßnahmen zu treffen.\nQuelle: ArbSchG § 3." },
-    { type: "mc", q: "4. Welche Eigenschaft muss ein ergonomischer Bürostuhl zwingend aufweisen?", options: ["Starre und unbewegliche Konstruktion", "Vollständige Höhenverstellbarkeit", "Fehlende Rückenlehne für Bewegungsfreiheit", "Ausführung rein aus unbehandeltem Holz"], answer: "Vollständige Höhenverstellbarkeit", exp: "Erklärung: Höhenverstellbarkeit sichert den 90°-Sitzwinkel für unterschiedliche Körpergrößen.\nQuelle: ArbStättV Anhang 6.1." },
-    { type: "mc", q: "5. Wie groß sollte der empfohlene Sehabstand zum Bildschirm sein?", options: ["Exakt 10 cm", "Mindestens 20 cm", "Etwa 50 bis 80 cm", "Unverhältnismäßig 2 Meter"], answer: "Etwa 50 bis 80 cm", exp: "Erklärung: 50-80 cm schützt vor Überanstrengung der Augen und Fehlhaltungen des Nackens.\nQuelle: DGUV Information 215-410." },
-    { type: "mc", q: "6. Warum sind regelmäßige Bewegungspausen bei der Bildschirmarbeit wichtig?", options: ["Zur Entlastung der Augen und Förderung der Gesundheit", "Zur Erhöhung des betrieblichen Stromverbrauchs", "Zur Beschleunigung der Prozessorleistung", "Zur Verbesserung des WLAN-Empfangs im Büro"], answer: "Zur Entlastung der Augen und Förderung der Gesundheit", exp: "Erklärung: Pausen beugen Ermüdung sowie Muskel-Skelett-Erkrankungen vor.\nQuelle: ArbStättV Anhang 6.3." },
-    { type: "mc", q: "7. Was bedeutet das Grundprinzip der Ergonomie am Arbeitsplatz?", options: ["Anpassung der Arbeitsbedingungen an den Menschen", "Reparatur defekter Computerhardware", "Aufbau strukturierter Firmennetzwerke", "Erstellung täglicher Datensicherungen"], answer: "Anpassung der Arbeitsbedingungen an den Menschen", exp: "Erklärung: Ergonomie passt Werkzeuge und Umgebung dem menschlichen Körper an.\nQuelle: DIN EN ISO 9241." },
-    { type: "mc", q: "8. Welche Körperhaltung gilt beim Sitzen am Bildschirmarbeitsplatz als richtig?", options: ["Krummes und dauerhaft vorgebeugtes Sitzen", "Ein 90°-Winkel an den Arm- und Beingelenken", "Bequemes Sitzen direkt auf dem Schreibtisch", "Reine Steharbeit während des gesamten Arbeitstages"], answer: "Ein 90°-Winkel an den Arm- und Beingelenken", exp: "Erklärung: Der 90°-Winkel sorgt für eine optimale Entlastung von Wirbelsäule und Gelenken.\nQuelle: DGUV Information 215-410." },
-    { type: "mc", q: "9. Welche Eigenschaft muss ein Monitor am Arbeitsplatz bezüglich der Anzeige aufweisen?", options: ["Starke Direktblendung verursachen", "Störende Lichtreflexionen spiegeln", "Gute Lesbarkeit und scharfe Darstellung bieten", "Dauerhaftes optisches Flackern aufweisen"], answer: "Gute Lesbarkeit und scharfe Darstellung bieten", exp: "Erklärung: Gute Lesbarkeit und Flimmerfreiheit sind Pflicht zur Augenschonung.\nQuelle: ArbStättV Anhang 6.2." },
-    { type: "mc", q: "10. Welches Gesetz bzw. Verordnung regelt die Anforderungen an Bildschirmarbeitsplätze?", options: ["Bürgerliches Gesetzbuch (BGB)", "Arbeitsstättenverordnung (ArbStättV)", "Handelsgesetzbuch (HGB)", "Strafgesetzbuch (StGB)"], answer: "Arbeitsstättenverordnung (ArbStättV)", exp: "Erklärung: Die Arbeitsstättenverordnung enthält im Anhang konkrete Regeln für Bildschirmarbeitsplätze.\nQuelle: ArbStättV Anhang 6." },
+// --- VORLAGEN FÜR BILDER (SVG) ---
+const svgOSI = `
+<svg width="320" height="220" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .box { fill: #f8f9fa; stroke: #333; stroke-width: 1.5; }
+    .txt { font-family: sans-serif; font-size: 13px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; }
+    .num { font-family: sans-serif; font-size: 13px; font-weight: bold; fill: #003366; text-anchor: middle; dominant-baseline: middle; }
+  </style>
+  <rect x="10" y="5" width="40" height="26" class="box"/><text x="30" y="18" class="num">7</text>
+  <rect x="55" y="5" width="160" height="26" class="box"/><text x="135" y="18" class="txt">Anwendung</text>
 
-    // Monitore (11-20)
-    { type: "mc", q: "11. Wofür steht die Standard-Auflösungsbezeichnung Full HD?", options: ["1280 × 720 Pixel", "1920 × 1080 Pixel", "2560 × 1440 Pixel", "3840 × 2160 Pixel"], answer: "1920 × 1080 Pixel", exp: "Erklärung: Full HD bezeichnet exakt 1920 x 1080 Bildpunkte im 16:9 Format.\nQuelle: IT-Handbuch Westermann / Display-Standards." },
-    { type: "mc", q: "12. Welcher Pixeldichte/Auflösung entspricht der Begriff 4K (Ultra HD)?", options: ["1024 × 768 Pixel", "1920 × 1080 Pixel", "3840 × 2160 Pixel", "4096 × 768 Pixel"], answer: "3840 × 2160 Pixel", exp: "Erklärung: 4K UHD bietet mit 3840x2160 Pixeln die vierfache Full-HD-Auflösung.\nQuelle: VESA Display Standard." },
-    { type: "mc", q: "13. Was ist die Hauptaufgabe eines Rechnermonitors?", options: ["Dauerhafte Speicherung von Anwendungsdaten", "Visuelle Anzeige von verarbeiteten Daten", "Ausdrucken von Grafiken auf Papier", "Automatisches Löschen fehlerhafter Daten"], answer: "Visuelle Anzeige von verarbeiteten Daten", exp: "Erklärung: Der Monitor ist das primäre optische Ausgabegerät im E-V-A-Prinzip.\nQuelle: E-V-A-Prinzip Grundwissen IT." },
-    { type: "mc", q: "14. Was versteht man unter einem Curved-Monitor?", options: ["Ein Monitor mit beweglicher Schwenkhalterung", "Ein physikalisch gebogener Bildschirm", "Ein reiner Touchscreen-Monitor", "Ein Videoprojektor für Beamer"], answer: "Ein physikalisch gebogener Bildschirm", exp: "Erklärung: Die Krümmung passt sich dem natürlichen Blickfeld des menschlichen Auges an.\nQuelle: VESA Ergonomie-Standards." },
-    { type: "mc", q: "15. Was gibt die Angabe Hertz (Hz) bei einem Monitor an?", options: ["Das Gesamtgewicht des Displays", "Die Bildwiederholrate pro Sekunde", "Die maximale physikalische Auflösung", "Die Lautsprecher-Ausgangslautstärke"], answer: "Die Bildwiederholrate pro Sekunde", exp: "Erklärung: Hertz misst, wie viele Einzelbilder der Monitor pro Sekunde aufbaut.\nQuelle: Hardware-Grundlagen Westermann." },
-    { type: "mc", q: "16. Welches Leistungsmerkmal ist bei der Auswahl eines Gaming-Monitors besonders wichtig?", options: ["Eine möglichst hohe Bildwiederholrate", "Eine extrem niedrige Bildauflösung", "Ein alter Röhrenbildschirm (CRT)", "Ein reiner Schwarz-Weiß-Bildschirm"], answer: "Eine möglichst hohe Bildwiederholrate", exp: "Erklärung: Hohe Bildwiederholraten (z.B. 144Hz+) sorgen für flüssige Bewegungsdarstellungen.\nQuelle: IT-Fachinformatiker Kompendium." },
-    { type: "mc", q: "17. Was zeichnet einen sogenannten Smart-Monitor aus?", options: ["Integriertes eigenes Betriebssystem für Apps", "Funktionsfähigkeit komplett ohne Stromzufuhr", "Integrierte Papier-Druckfunktion", "Möglichkeit zum mobilen Dokumentenscannen"], answer: "Integriertes eigenes Betriebssystem für Apps", exp: "Erklärung: Smart-Monitore können ohne angeschlossenen PC Streaming-Apps ausführen.\nQuelle: Hardware-Hersteller Spezifikationen." },
-    { type: "mc", q: "18. Was bedeutet eine größere Zoll-Angabe bei der Bildschirmspezifikation?", options: ["Einen physikalisch größeren Bildschirm", "Einen automatisch größeren Arbeitsspeicher", "Eine höhere CPU-Taktfrequenz", "Eine schnellere Internetverbindung"], answer: "Einen physikalisch größeren Bildschirm", exp: "Erklärung: Zoll misst die Bildschirmdiagonale (1 Zoll = 2,54 cm).\nQuelle: IT-Standard-Maßeinheiten." },
-    { type: "mc", q: "19. Was beschreibt die Auflösung eines Monitors?", options: ["Gesamtzahl der Bildpunkte (Pixel)", "Einstellbare Tonlautstärke", "Gesamtgewicht in Kilogramm", "Elektrischer Stromverbrauch"], answer: "Gesamtzahl der Bildpunkte (Pixel)", exp: "Erklärung: Die Auflösung bestimmt die Schärfe durch die Anzahl der Pixel in Breite und Höhe.\nQuelle: ISO 9241-307." },
-    { type: "mc", q: "20. Wozu dient die HDMI-Schnittstelle am Monitor erster Linie?", options: ["Kombinierte Bild- und Tonübertragung", "Nichts als reine Stromversorgung", "Automatische lokale Datensicherung", "Kühlung interner Baugruppen"], answer: "Kombinierte Bild- und Tonübertragung", exp: "Erklärung: HDMI überträgt hochauflösende digitale Video- und Audiosignale simultan.\nQuelle: HDMI Licensing Standard." },
+  <rect x="10" y="34" width="40" height="26" class="box"/><text x="30" y="47" class="num">6</text>
+  <rect x="55" y="34" width="160" height="26" class="box"/><text x="135" y="47" class="txt">Darstellung</text>
 
-    // Paneltechnologien (21-30)
-    { type: "mc", q: "21. Wofür steht die Abkürzung LCD?", options: ["Large Color Display", "Liquid Crystal Display", "Low Computer Display", "Light Control Device"], answer: "Liquid Crystal Display", exp: "Erklärung: LCD bedeutet Flüssigkristallanzeige (Liquid Crystal Display).\nQuelle: IT-Kompendium Displaytechnik." },
-    { type: "mc", q: "22. Welcher Panel-Typ ist bekannt für besonders hohe Farbtreue und Blickwinkelstabilität?", options: ["TN-Panel", "IPS-Panel", "CRT-Röhre", "VGA-Grafikkarte"], answer: "IPS-Panel", exp: "Erklärung: IPS (In-Plane Switching) bietet hervorragende Blickwinkel und Farbtreue.\nQuelle: IT-Handbuch Hardware." },
-    { type: "mc", q: "23. Welches Display-Panel ist in der Herstellung meist am günstigsten?", options: ["OLED-Panel", "IPS-Panel", "TN-Panel", "Mini-LED Panel"], answer: "TN-Panel", exp: "Erklärung: TN-Panels (Twisted Nematic) sind preiswert herzustellen und bieten schnelle Reaktionszeiten.\nQuelle: IT-Kompendium Displaytechnik." },
-    { type: "mc", q: "24. Welcher Panel-Typ bietet konstruktionsbedingt besonders hohe Kontrastwerte?", options: ["VA-Panel", "TN-Panel", "VGA-Anschluss", "PS/2-Schnittstelle"], answer: "VA-Panel", exp: "Erklärung: VA-Panels (Vertical Alignment) zeichnen sich durch sehr hohe statische Kontrakte aus.\nQuelle: IT-Hardware Fachwissen." },
-    { type: "mc", q: "25. Was ist das Hauptmerkmal der OLED-Technologie?", options: ["Integreter Nadeldrucker", "Display aus selbstleuchtenden Pixeln", "Spezielles Netzwerk-Kupferkabel", "Integrierte Hauptprozessor-Unit"], answer: "Display aus selbstleuchtenden Pixeln", exp: "Erklärung: OLED-Pixel leuchten selbst und benötigen keine Hintergrundbeleuchtung.\nQuelle: Display-Technologien Fachbuch." },
-    { type: "mc", q: "26. Was beschreibt die Reaktionszeit eines Monitor-Panels?", options: ["Schaltgeschwindigkeit für Farbwechsel in ms", "Elektrischer Stromverbrauch pro Stunde", "Maximale Akustik-Lautstärke", "Physikalische Gehäusegröße"], answer: "Schaltgeschwindigkeit für Farbwechsel in ms", exp: "Erklärung: Sie misst die Zeit, die ein Pixel für den Wechsel von einer Farbe zur anderen benötigt.\nQuelle: VESA Test-Standards." },
-    { type: "mc", q: "27. In welcher Maßeinheit wird die Helligkeit eines Bildschirms gemessen?", options: ["Watt (W)", "Volt (V)", "Candela pro Quadratmeter (cd/m²)", "Meter (m)"], answer: "Candela pro Quadratmeter (cd/m²)", exp: "Erklärung: Die Leuchtdichte (Helligkeit) wird technisch in cd/m² angegeben.\nQuelle: SI-Einheiten / IT-Standard." },
-    { type: "mc", q: "28. Was bedeutet ein hoher Kontrastwert bei Bildschirmen?", options: ["Große Helligkeitsunterschiede zwischen Weiß und Schwarz", "Ein zwangsläufig extrem hoher Stromverbrauch", "Ein höheres physikalisches Gesamtgewicht", "Ein langsamer arbeitendes Display"], answer: "Große Helligkeitsunterschiede zwischen Weiß und Schwarz", exp: "Erklärung: Kontrast beschreibt das Verhältnis zwischen dunkelstem Schwarz und hellstem Weiß.\nQuelle: ISO 9241-307." },
-    { type: "mc", q: "29. Welchen messtechnischen Vorteil bietet OLED gegenüber LCDs?", options: ["Darstellung von absolut echtem Schwarz", "Eingeschränkter Farbraum", "Verringerung der Pixelanzahl", "Deutlich niedrigerer Kontrast"], answer: "Darstellung von absolut echtem Schwarz", exp: "Erklärung: Durch Abschalten einzelner Pixel erreicht OLED einen unendlichen Kontrast und echtes Schwarz.\nQuelle: Displaytechnologie Westermann." },
-    { type: "mc", q: "30. Für welches Anwendungsgebiet eignet sich ein IPS-Monitor besonders gut?", options: ["Professionelle Grafik- und Bildbearbeitung", "Ausdrucken langer Dokumente", "Einlesen von Papierscanns", "Netzwerk-Verkabelungen"], answer: "Professionelle Grafik- und Bildbearbeitung", exp: "Erklärung: Die hohe Farbtreue prädestiniert IPS für Grafik- und Bildbearbeitung.\nQuelle: DGUV Empfehlung Bildbearbeitung." },
+  <rect x="10" y="63" width="40" height="26" class="box"/><text x="30" y="76" class="num">5</text>
+  <rect x="55" y="63" width="160" height="26" class="box"/><text x="135" y="76" class="txt">Sitzung</text>
 
-    // PC-Komponenten (31-40)
-    { type: "mc", q: "31. Was bedeutet die Abkürzung CPU im PC-System?", options: ["Hauptprozessor (Central Processing Unit)", "Magnetische Festplatte", "Gehäusestruktur", "Netzteil zur Stromversorgung"], answer: "Hauptprozessor (Central Processing Unit)", exp: "Erklärung: CPU steht für Central Processing Unit, die zentrale Recheneinheit.\nQuelle: IT-Systemelektroniker Grundlagen." },
-    { type: "mc", q: "32. Was ist die fundamentale Aufgabe der CPU?", options: ["Ausführung von Berechnungen und Befehlen", "Gedruckte Dokumente erzeugen", "Bilder direkt auf Papier anzeigen", "Daten dauerhaft stromlos speichern"], answer: "Ausführung von Berechnungen und Befehlen", exp: "Erklärung: Die CPU führt alle logischen und arithmetischen Befehle des Rechners aus.\nQuelle: E-V-A-Prinzip / CPU-Architektur." },
-    { type: "mc", q: "33. Wofür steht der Begriff RAM im Rechner?", options: ["Flüchtiger Arbeitsspeicher (Random Access Memory)", "Dauerhafte SSD-Festplatte", "Ergonomischer Monitor", "Dokumentenscanner"], answer: "Flüchtiger Arbeitsspeicher (Random Access Memory)", exp: "Erklärung: RAM (Random Access Memory) dient als schneller, flüchtiger Zwischenspeicher.\nQuelle: Rechnerarchitektur Westermann." },
-    { type: "mc", q: "34. Welches Bauteil speichert Daten auch nach dem Ausschalten dauerhaft?", options: ["RAM-Arbeitsspeicher", "SSD-Speicherlaufwerk", "Prozessor-Cache", "CPU-Kerne"], answer: "SSD-Speicherlaufwerk", exp: "Erklärung: SSDs speichern Daten nicht-flüchtig auf Halbleiterspeichern.\nQuelle: Tabellenbuch IT." },
-    { type: "mc", q: "35. Welcher Vorteil zeichnet eine SSD gegenüber einer HDD aus?", options: ["Deutlich schnellere Lese- und Schreibgeschwindigkeiten", "Geringere Geschwindigkeit im Datentransfer", "Größeres physikalisches Gehäuse", "Höheres Gesamtgewicht"], answer: "Deutlich schnellere Lese- und Schreibgeschwindigkeiten", exp: "Erklärung: SSDs greifen elektronisch ohne Mechanik extrem schnell auf Daten zu.\nQuelle: Hardware-Kompendium." },
-    { type: "mc", q: "36. Welches Bauteil verbindet alle internen Komponenten des Rechners miteinander?", options: ["Mausleitung", "Mainboard (Hauptplatine)", "Tastaturkabel", "Druckerschnittstelle"], answer: "Mainboard (Hauptplatine)", exp: "Erklärung: Das Mainboard stellt Bussysteme und Schnittstellen für alle Teile bereit.\nQuelle: Tabellenbuch IT." },
-    { type: "mc", q: "37. Was ist ein PCIe-Steckplatz auf der Hauptplatine?", options: ["Erweiterungssteckplatz für Grafikkarten etc.", "Eine externe Festplatte", "Ein internes Stromkabel", "Das Betriebssystem"], answer: "Erweiterungssteckplatz für Grafikkarten etc.", exp: "Erklärung: PCI Express bindet schnelle Erweiterungskarten direkt an das System an.\nQuelle: PCI-SIG Spezifikationen." },
-    { type: "mc", q: "38. Was ist ein CPU-Sockel?", options: ["Steckplatz zur Aufnahme des Prozessors", "Das PC-Netzteil", "Ein Gehäuselüfter", "Eine M.2-SSD"], answer: "Steckplatz zur Aufnahme des Prozessors", exp: "Erklärung: Der Sockel stellt den mechanischen und elektrischen Kontakt zur CPU her.\nQuelle: Mainboard-Handbuch." },
-    { type: "mc", q: "39. Was beschreibt der Begriff BIOS?", options: ["Grundlegende Firmware des Mainboards", "Ein hochauflösender Monitor", "Ein Netzwerk-Router", "Ein Nadeldrucker"], answer: "Grundlegende Firmware des Mainboards", exp: "Erklärung: Das Basic Input/Output System startet die Hardware und lädt den Bootloader.\nQuelle: IT-Kompendium." },
-    { type: "mc", q: "40. Was ist UEFI?", options: ["Ein Betriebssystem", "Der moderne Nachfolger des klassischen BIOS", "Eine externe Festplatte", "Ein Netzwerkkabel"], answer: "Der moderne Nachfolger des klassischen BIOS", exp: "Erklärung: UEFI ersetzt das BIOS mit mehr Speicher- und Sicherheitsfunktionen (z.B. Secure Boot).\nQuelle: UEFI Forum Spezifikation." },
+  <rect x="10" y="92" width="40" height="26" class="box"/><text x="30" y="105" class="num">4</text>
+  <rect x="55" y="92" width="160" height="26" class="box"/><text x="135" y="105" class="txt">Transport</text>
 
-    // IT-Sicherheit (41-50)
-    { type: "mc", q: "41. Welchen Themenbereich regelt die DSGVO primär?", options: ["Monitorspezifikationen", "Datenschutz personenbezogener Daten", "Drucker-Garantien", "Mainboard-Formfaktoren"], answer: "Datenschutz personenbezogener Daten", exp: "Erklärung: Die DSGVO regelt die Verarbeitung personenbezogener Daten EU-weit.\nQuelle: DSGVO Art. 1." },
-    { type: "mc", q: "42. Was schützt der Datenschutzrechtliche Rahmen?", options: ["Personenbezogene Daten natürlicher Personen", "Das PC-Metallgehäuse", "Monitore vor Kratzern", "Lüfter vor Staub"], answer: "Personenbezogene Daten natürlicher Personen", exp: "Erklärung: Datenschutz schützt das Grundrecht auf informationelle Selbstbestimmung.\nQuelle: DSGVO Art. 1 / BDSG." },
-    { type: "mc", q: "43. Was bedeutet das Schutzziel der Vertraulichkeit?", options: ["Daten sind nur für Berechtigte einsehbar", "Daten werden schneller gespeichert", "Daten werden automatisch gelöscht", "Daten werden ausgedruckt"], answer: "Daten sind nur für Berechtigte einsehbar", exp: "Erklärung: Vertraulichkeit schützt Informationen vor unbefugter Offenlegung.\nQuelle: BSI IT-Grundschutz." },
-    { type: "mc", q: "44. Was beschreibt das Schutzziel der Integrität?", options: ["Daten bleiben korrekt und unverfälscht", "Daten belegen mehr Speicherplatz", "Datenübertragung wird schneller", "Hardware wird günstiger"], answer: "Daten bleiben korrekt und unverfälscht", exp: "Erklärung: Integrität stellt sicher, dass Daten nicht unbefugt verändert werden können.\nQuelle: BSI IT-Grundschutz." },
-    { type: "mc", q: "45. Was beinhaltet das Schutzziel der Verfügbarkeit?", options: ["Systeme/Daten sind für Berechtigte erreichbar", "Daten bleiben geheim", "Daten sind veraltet", "Daten sind unlesbar verschlüsselt"], answer: "Systeme/Daten sind für Berechtigte erreichbar", exp: "Erklärung: Verfügbarkeit sichert den zeitgerechten Zugriff auf Daten und Systeme.\nQuelle: BSI IT-Grundschutz." },
-    { type: "mc", q: "46. Wie werden die Schutzziele Vertraulichkeit, Integrität und Verfügbarkeit zusammenfassend genannt?", options: ["GDPR-Standard", "CIA-Triade", "VPN-Tunnel", "WLAN-Standard"], answer: "CIA-Triade", exp: "Erklärung: CIA steht für Confidentiality, Integrity, and Availability.\nQuelle: ISO/IEC 27001." },
-    { type: "mc", q: "47. Was versteht man unter dem Begriff Malware?", options: ["Ein Betriebssystem", "Sammelbegriff für Schadsoftware", "Ein Internet-Browser", "Ein Computermonitor"], answer: "Sammelbegriff für Schadsoftware", exp: "Erklärung: Malware (Malicious Software) umfasst Viren, Würmer, Trojaner etc.\nQuelle: BSI Glossar." },
-    { type: "mc", q: "48. Was ist ein Computervirus?", options: ["Eine spezifische Art von Malware", "Ein RAM-Baustein", "Eine schnelle SSD", "Ein Hauptprozessor"], answer: "Eine spezifische Art von Malware", exp: "Erklärung: Ein Virus verbreitet sich durch Anfügen an andere Dateien/Programme.\nQuelle: BSI IT-Sicherheit." },
-    { type: "mc", q: "49. Was zeichnet Ransomware aus?", options: ["Verschlüsselungs- und Erpressersoftware", "Drucker-Treiber-Software", "Ein Webbrowser-Add-on", "Ein Tabellenkalkulationsprogramm"], answer: "Verschlüsselungs- und Erpressersoftware", exp: "Erklärung: Ransomware sperrt Systeme/Daten und fordert Lösegeld zur Freischaltung.\nQuelle: BSI Lagebericht IT-Sicherheit." },
+  <rect x="10" y="121" width="40" height="26" class="box"/><text x="30" y="134" class="num">3</text>
+  <rect x="55" y="121" width="160" height="26" class="box"/><text x="135" y="134" class="txt">Vermittlung</text>
 
-    // Kalkulationsaufgabe (50)
-    { 
-        type: "table", 
-        q: "50. Kalkulation: Ein IT-Händler kauft Monitore ein. Der Listeneinkaufspreis beträgt 200,00 €. Er erhält 10 % Lieferrabatt. Die Bezugskosten betragen 10,00 €. Berechnen Sie den Bezugspreis:",
-        exp: "Erklärung:\nListeneinkaufspreis: 200,00 €\n- Rabatt (10%): 20,00 €\n= Zieleinkaufspreis: 180,00 €\n+ Bezugskosten: 10,00 €\n= Bezugspreis: 190,00 €.\nQuelle: Handelskalkulation / Westermann IT-Handelswissen.",
-        rows: [
-            { label: "Listeneinkaufspreis (LEP)", val: "200,00", readonly: true },
-            { label: "- Lieferrabatt (10%)", val: "20,00", readonly: true },
-            { label: "= Zieleinkaufspreis (ZEP)", key: "180" },
-            { label: "+ Bezugskosten", val: "10,00", readonly: true },
-            { label: "= Bezugspreis (Einstandspreis)", key: "190" }
-        ]
-    }
+  <rect x="10" y="150" width="40" height="26" class="box"/><text x="30" y="163" class="num">2</text>
+  <rect x="55" y="150" width="160" height="26" class="box"/><text x="135" y="163" class="txt">Sicherung</text>
+
+  <rect x="10" y="179" width="40" height="26" class="box"/><text x="30" y="192" class="num">1</text>
+  <rect x="55" y="179" width="160" height="26" class="box"/><text x="135" y="192" class="txt">Bitübertragung</text>
+</svg>`;
+
+const svgCable = `
+<svg width="350" height="180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer Sheath -->
+  <ellipse cx="120" cy="90" rx="90" ry="70" fill="#e0e0e0" stroke="#333" stroke-width="2"/>
+  <!-- Foil Shielding (S/FTP) -->
+  <ellipse cx="120" cy="90" rx="82" ry="62" fill="none" stroke="#888" stroke-width="2" stroke-dasharray="4,3"/>
+  <!-- Pairs with individual foil -->
+  <circle cx="85" cy="65" r="22" fill="#d0e0ff" stroke="#333"/>
+  <circle cx="155" cy="65" r="22" fill="#d0ffd0" stroke="#333"/>
+  <circle cx="85" cy="115" r="22" fill="#ffe0d0" stroke="#333"/>
+  <circle cx="155" cy="115" r="22" fill="#fff0d0" stroke="#333"/>
+  <!-- Conductors -->
+  <circle cx="78" cy="60" r="6" fill="#ff9933"/><circle cx="92" cy="70" r="6" fill="#ffffff" stroke="#333"/>
+  <circle cx="148" cy="60" r="6" fill="#33cc33"/><circle cx="162" cy="70" r="6" fill="#ffffff" stroke="#333"/>
+  <circle cx="78" cy="110" r="6" fill="#3366cc"/><circle cx="92" cy="120" r="6" fill="#ffffff" stroke="#333"/>
+  <circle cx="148" cy="110" r="6" fill="#996633"/><circle cx="162" cy="120" r="6" fill="#ffffff" stroke="#333"/>
+
+  <!-- Labels -->
+  <line x1="120" y1="20" x2="230" y2="30" stroke="#333" stroke-width="1.5"/>
+  <circle cx="230" cy="30" r="10" fill="#fff" stroke="#333"/><text x="230" y="34" font-family="sans-serif" font-size="12" text-anchor="middle">1</text>
+  
+  <line x1="180" y1="35" x2="230" y2="65" stroke="#333" stroke-width="1.5"/>
+  <circle cx="230" cy="65" r="10" fill="#fff" stroke="#333"/><text x="230" y="69" font-family="sans-serif" font-size="12" text-anchor="middle">2</text>
+
+  <line x1="105" y1="65" x2="230" y2="100" stroke="#333" stroke-width="1.5"/>
+  <circle cx="230" cy="100" r="10" fill="#fff" stroke="#333"/><text x="230" y="104" font-family="sans-serif" font-size="12" text-anchor="middle">3</text>
+
+  <line x1="85" y1="115" x2="230" y2="135" stroke="#333" stroke-width="1.5"/>
+  <circle cx="230" cy="135" r="10" fill="#fff" stroke="#333"/><text x="230" y="139" font-family="sans-serif" font-size="12" text-anchor="middle">2</text>
+
+  <line x1="155" y1="115" x2="230" y2="160" stroke="#333" stroke-width="1.5"/>
+  <circle cx="230" cy="160" r="10" fill="#fff" stroke="#333"/><text x="230" y="164" font-family="sans-serif" font-size="12" text-anchor="middle">3</text>
+</svg>`;
+
+const svgFiber = `
+<svg width="420" height="150" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer Sheath (1) -->
+  <path d="M 20 30 L 150 30 L 150 120 L 20 120 Z" fill="#cccccc" stroke="#333" stroke-width="1.5"/>
+  <ellipse cx="20" cy="75" rx="15" ry="45" fill="#bbbbbb" stroke="#333"/>
+  <!-- Coating (2) -->
+  <path d="M 150 42 L 230 42 L 230 108 L 150 108 Z" fill="#e6f2ff" stroke="#333" stroke-width="1.5"/>
+  <!-- Cladding (3) -->
+  <path d="M 230 54 L 300 54 L 300 96 L 230 96 Z" fill="#99ccff" stroke="#333" stroke-width="1.5"/>
+  <!-- Core (4) -->
+  <path d="M 300 66 L 380 66 L 380 84 L 300 84 Z" fill="#ffcc00" stroke="#333" stroke-width="1.5"/>
+
+  <!-- Labels -->
+  <circle cx="100" cy="135" r="10" fill="#fff" stroke="#333"/><text x="100" y="139" font-family="sans-serif" font-size="12" text-anchor="middle">1</text><text x="120" y="139" font-family="sans-serif" font-size="11">Mantel (Außenmantel)</text>
+  <circle cx="190" cy="125" r="10" fill="#fff" stroke="#333"/><text x="190" y="129" font-family="sans-serif" font-size="12" text-anchor="middle">2</text><text x="210" y="129" font-family="sans-serif" font-size="11">Beschichtung (Coating)</text>
+  <circle cx="265" cy="115" r="10" fill="#fff" stroke="#333"/><text x="265" y="119" font-family="sans-serif" font-size="12" text-anchor="middle">3</text><text x="285" y="119" font-family="sans-serif" font-size="11">Cladding (Mantelglas)</text>
+  <circle cx="340" cy="105" r="10" fill="#fff" stroke="#333"/><text x="340" y="109" font-family="sans-serif" font-size="12" text-anchor="middle">4</text><text x="360" y="109" font-family="sans-serif" font-size="11">Kern (Core)</text>
+</svg>`;
+
+const svgMultimode = `
+<svg width="420" height="120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Core and Cladding -->
+  <rect x="50" y="20" width="320" height="20" fill="#e0e0e0" stroke="#333"/><text x="10" y="35" font-family="sans-serif" font-size="11">Kern</text>
+  <rect x="50" y="40" width="320" height="40" fill="#ffffff" stroke="#333"/>
+  <rect x="50" y="80" width="320" height="20" fill="#e0e0e0" stroke="#333"/><text x="5" y="95" font-family="sans-serif" font-size="11">Cladding</text>
+
+  <!-- Multiple Light Rays (Multimode) -->
+  <path d="M 50 60 L 90 40 L 150 80 L 210 40 L 270 80 L 330 40 L 370 60" fill="none" stroke="#ff0000" stroke-width="2"/>
+  <path d="M 50 60 L 120 40 L 240 80 L 360 40 L 370 60" fill="none" stroke="#cc0000" stroke-dasharray="3,2" stroke-width="1.5"/>
+  <path d="M 50 60 L 70 80 L 110 40 L 150 80 L 190 40 L 230 80 L 270 40 L 310 80 L 350 40 L 370 60" fill="none" stroke="#ff6666" stroke-width="1"/>
+</svg>`;
+
+const svgFrame = `
+<svg width="420" height="80" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .f-box { fill: #f0f4f8; stroke: #003366; stroke-width: 1.5; }
+    .f-title { font-family: sans-serif; font-size: 11px; font-weight: bold; text-anchor: middle; }
+    .f-sub { font-family: sans-serif; font-size: 10px; fill: #d9534f; font-weight: bold; text-anchor: middle; }
+  </style>
+  <rect x="5" y="10" width="60" height="50" class="f-box"/><text x="35" y="32" class="f-title">Preamble</text><text x="35" y="48" class="f-sub">7 Byte</text>
+  <rect x="65" y="10" width="40" height="50" class="f-box"/><text x="85" y="32" class="f-title">SFD</text><text x="85" y="48" class="f-sub">1 Byte</text>
+  <rect x="105" y="10" width="65" height="50" class="f-box"/><text x="137" y="32" class="f-title">Ziel-MAC</text><text x="137" y="48" class="f-sub">6 Byte</text>
+  <rect x="170" y="10" width="65" height="50" class="f-box"/><text x="202" y="32" class="f-title">Quell-MAC</text><text x="202" y="48" class="f-sub">6 Byte</text>
+  <rect x="235" y="10" width="45" height="50" class="f-box"/><text x="257" y="32" class="f-title">Typ</text><text x="257" y="48" class="f-sub">2 Byte</text>
+  <rect x="280" y="10" width="80" height="50" class="f-box"/><text x="320" y="32" class="f-title">Payload</text><text x="320" y="48" class="f-sub">46–1500 Byte</text>
+  <rect x="360" y="10" width="55" height="50" class="f-box"/><text x="387" y="32" class="f-title">FCS</text><text x="387" y="48" class="f-sub">4 Byte</text>
+</svg>`;
+
+// --- DIE 50 FRAGEN AUS DEM BILD ---
+const questions = [
+    // 1-10
+    { type: "mc", q: "1. Was ist die Hauptaufgabe eines Clients?", options: ["Dienste anfordern", "Dienste bereitstellen", "Netzwerke verbinden", "IP-Adressen vergeben"], answer: "Dienste anfordern", exp: "Erklärung: Ein Client fordert Dienste von einem Server an (Client-Server-Modell)." },
+    { type: "mc", q: "2. Welche Aussage über einen Server ist richtig?", options: ["Ein Server stellt mindestens einen Dienst bereit.", "Nur spezielle Serverhardware kann Server sein.", "Ein Server kann nie ein Client sein.", "Ein Server vergibt MAC-Adressen."], answer: "Ein Server stellt mindestens einen Dienst bereit.", exp: "Erklärung: Server definieren sich über ihre Softwarefunktion (Dienste bereitstellen)." },
+    { type: "mc", q: "3. Was ist ein typisches Beispiel für ein PAN (Personal Area Network)?", options: ["Verbindung Smartphone – Bluetooth-Kopfhörer", "Firmennetzwerk", "Netzwerk eines Bürogebäudes", "Verbindung zweier Standorte über Glasfaser"], answer: "Verbindung Smartphone – Bluetooth-Kopfhörer", exp: "Erklärung: PAN umfasst die persönliche Nahbereichsverbindung (z. B. Bluetooth)." },
+    { type: "mc", q: "4. Welche Abkürzung steht für „Wide Area Network“?", options: ["WAN", "LAN", "MAN", "PAN"], answer: "WAN", exp: "Erklärung: WAN steht für Wide Area Network (weltweites/weiträumiges Netzwerk)." },
+    { type: "mc", q: "5. Welches Protokoll übersetzt Namen in IP-Adressen?", options: ["DNS", "DHCP", "HTTP", "FTP"], answer: "DNS", exp: "Erklärung: DNS (Domain Name System) löst Domainnamen in IP-Adressen auf." },
+    { type: "mc", q: "6. Welches Protokoll vergibt IP-Konfigurationen?", options: ["DHCP", "DNS", "ARP", "ICMP"], answer: "DHCP", exp: "Erklärung: DHCP vergibt automatisch IP-Adresse, Subnetzmaske, Gateway etc." },
+    { type: "mc", q: "7. Was ist der Hauptunterschied zwischen MAC- und IP-Adresse?", options: ["MAC ist hardwarebasiert (lokal), IP ist logisch (netzwerkweit).", "MAC ist logisch, IP ist physisch.", "MAC wird vom DHCP-Server vergeben.", "IP ist fest im BIOS gespeichert."], answer: "MAC ist hardwarebasiert (lokal), IP ist logisch (netzwerkweit).", exp: "Erklärung: Die MAC-Adresse ist im Netzwerkinterface fest eingebrannt (Layer 2), die IP-Adresse wird logisch zugewiesen (Layer 3)." },
+    { type: "mc", q: "8. Auf welcher OSI-Schicht arbeitet ein Switch hauptsächlich?", options: ["Schicht 2", "Schicht 1", "Schicht 3", "Schicht 4"], answer: "Schicht 2", exp: "Erklärung: Ein Standard-Switch (Layer 2) arbeitet auf der Sicherungsschicht anhand von MAC-Adressen." },
+    { type: "mc", q: "9. Auf welcher OSI-Schicht arbeitet ein Router hauptsächlich?", options: ["Schicht 3", "Schicht 1", "Schicht 2", "Schicht 7"], answer: "Schicht 3", exp: "Erklärung: Router verbinden Netze auf Schicht 3 (Vermittlungsschicht) anhand von IP-Adressen." },
+    { type: "mc", q: "10. Wie viele Schichten besitzt das OSI-Modell?", options: ["7", "4", "5", "6"], answer: "7", exp: "Erklärung: Das ISO/IEC 7498-1 OSI-Referenzmodell besteht aus genau 7 Schichten." },
+
+    // 11-15
+    { type: "mc", q: "11. Welche Schichten werden im TCP/IP-Modell zur Anwendungsschicht zusammengefasst?", options: ["OSI 5, 6 und 7", "OSI 1 und 2", "OSI 2 und 3", "OSI 3 und 4"], answer: "OSI 5, 6 und 7", exp: "Erklärung: Sitzung (5), Darstellung (6) und Anwendung (7) bilden im TCP/IP-Modell die Anwendungsschicht." },
+    { type: "mc", q: "12. Welches Protokoll gehört zur Transportschicht?", options: ["TCP", "IP", "Ethernet", "ARP"], answer: "TCP", exp: "Erklärung: TCP (und UDP) arbeitet auf der Transportschicht (OSI-Schicht 4)." },
+    { type: "mc", q: "13. Welche Aussage über TCP ist richtig?", options: ["TCP garantiert die Reihenfolge der Daten.", "TCP ist verbindungslos.", "TCP verwendet keine Bestätigungen.", "TCP ist langsamer als UDP, weil es keine Header hat."], answer: "TCP garantiert die Reihenfolge der Daten.", exp: "Erklärung: TCP ist verbindungsorientiert und stellt durch Sequenznummern die korrekte Reihenfolge sicher." },
+    { type: "mc", q: "14. Welche Anwendung nutzt typischerweise UDP?", options: ["Video-Streaming in Echtzeit", "Sicherer Datei-Download", "E-Mail-Versand (SMTP)", "Webzugriff (HTTP)"], answer: "Video-Streaming in Echtzeit", exp: "Erklärung: UDP verzichtet auf Fehlerkorrektur zugunsten von geringer Latenz bei Echtzeit-Übertragungen." },
+    { type: "mc", q: "15. Welche Reihenfolge ist korrekt beim TCP 3-Way-Handshake?", options: ["SYN – SYN-ACK – ACK", "ACK – SYN – SYN-ACK", "SYN – SYN-ACK – ACK – ACK", "SYN-ACK – ACK – SYN"], answer: "SYN – SYN-ACK – ACK", exp: "Erklärung: Der Verbindungsaufbau bei TCP erfolgt über SYN -> SYN-ACK -> ACK." },
+
+    // Bildliche Aufgaben (16-25)
+    { type: "mc", q: "16. Welche OSI-Schicht ist für die logische Adressierung (IP) und das Routing zuständig?", img: svgOSI, options: ["Schicht 3", "Schicht 1", "Schicht 2", "Schicht 4"], answer: "Schicht 3", exp: "Erklärung: Schicht 3 (Vermittlungsschicht / Network Layer) regelt Routing und IP-Adressierung." },
+    { type: "mc", q: "17. Welche Bezeichnung passt zu dem in der Abbildung gezeigten Kabel?", img: svgCable, options: ["S/FTP", "U/UTP", "F/UTP", "U/FTP"], answer: "S/FTP", exp: "Erklärung: S/FTP bedeutet Gesamtschirmung aus Geflecht (Screened) und Folienabschirmung der einzelnen Paare (Foiled)." },
+    { type: "mc", q: "18. Welche Funktion hat die Schirmung bei Twisted-Pair-Kabeln?", options: ["Schutz vor elektromagnetischen Störungen", "Erhöhung der Kabellänge", "Erhöhung der Datenrate", "Verringerung der Anzahl der Adern"], answer: "Schutz vor elektromagnetischen Störungen", exp: "Erklärung: Die Schirmung schützt Datenleitung vor elektrischen und magnetischen Störfeldern." },
+    { type: "mc", q: "19. Welche Komponente führt das Licht in einer Glasfaser?", img: svgFiber, options: ["4", "1", "2", "3"], answer: "4", exp: "Erklärung: Der Kern (Core - Nummer 4) leitet die Lichtwellen im Zentrum der Glasfaser." },
+    { type: "mc", q: "20. In welcher Faserart treten die in der Abbildung gezeigten Lichtwege auf?", img: svgMultimode, options: ["Multimode", "Singlemode", "Koaxialkabel", "Twisted Pair"], answer: "Multimode", exp: "Erklärung: Mehrere Lichtmodi/Lichtwege gleichzeitig sind charakteristisch für Multimode-Glasfasern." },
+    { type: "mc", q: "21. Welcher Aufbau entspricht einem Ethernet-II-Frame?", img: svgFrame, options: ["Preamble – SFD – Ziel – Quelle – Typ – Payload – FCS", "Preamble – SFD – Ziel-MAC – Quell-MAC – Payload – FCS – SFD", "Quelle – Ziel – Typ – Preamble – Payload – FCS – SFD", "Preamble – Ziel – Quelle – Payload – Typ – SFD – FCS"], answer: "Preamble – SFD – Ziel – Quelle – Typ – Payload – FCS", exp: "Erklärung: Die exakte Ethernet-II Reihenfolge laut Standard." },
+
+    // Szenario-Aufgaben (26-40)
+    { type: "mc", q: "26. Ein PC hat keine Verbindung zum Netzwerk. Die Link-LED der Netzwerkkarte leuchtet nicht. Was prüfen Sie zuerst?", options: ["Netzwerkkabel und phys. Verbindung", "IP-Konfiguration", "DNS-Server", "Firewall-Regeln"], answer: "Netzwerkkabel und phys. Verbindung", exp: "Erklärung: Fehlender Link zeigt ein Problem auf OSI-Schicht 1 (Kabel/Steckverbindung) an." },
+    { type: "mc", q: "27. Ein Benutzer kann das Gateway pingen, aber keine Webseite aufrufen. Was ist am wahrscheinlichsten defekt?", options: ["DNS-Konfiguration", "Netzwerkkarte", "Netzteil", "RAM-Modul"], answer: "DNS-Konfiguration", exp: "Erklärung: Da IP-Pings klappen, steht die Netzwerkverbindung. Fehler liegt bei der Namensauflösung (DNS)." },
+    { type: "mc", q: "28. Nach einem Umbau funktionieren alle PCs in einem Raum außer einem. Die Kabel und Ports sind korrekt. Was ist die wahrscheinlichste Ursache?", options: ["Falsche VLAN-Konfiguration", "Falsche IP-Adresse", "Defektes Patchpanel", "VLAN-Tagging am Endgerät deaktiviert"], answer: "Falsche VLAN-Konfiguration", exp: "Erklärung: Ein falsch zugewiesener Switchport (VLAN) isoliert den PC vom restlichen Raum-Netz." },
+    { type: "mc", q: "29. Ein Unternehmen überträgt eine 50 GB große Datei über eine 1 Gbit/s Verbindung. Wie lange dauert die Übertragung theoretisch? (1 Byte = 8 Bit)", options: ["ca. 6 Minuten 40 Sekunden", "ca. 5 Minuten", "ca. 11 Minuten", "ca. 50 Minuten"], answer: "ca. 6 Minuten 40 Sekunden", exp: "Erklärung: 50 GB = 400 Gbit. 400 Gbit / 1 Gbit/s = 400 Sekunden = 6 Min 40 Sek." },
+    { type: "mc", q: "30. Ein Access Point soll per Netzwerkkabel mit Strom versorgt werden. Welches Verfahren wird eingesetzt?", options: ["PoE (Power over Ethernet)", "DHCP", "DNS", "ARP"], answer: "PoE (Power over Ethernet)", exp: "Erklärung: PoE (IEEE 802.3af/at/bt) liefert Strom über Datenleitungen." },
+    { type: "mc", q: "31. Zwischen zwei Gebäuden (300 m Entfernung) soll eine stabile, störsichere Verbindung mit 10 Gbit/s realisiert werden. Welches Medium ist am besten geeignet?", options: ["Singlemode-Glasfaser", "U/UTP-Kupferkabel", "Koaxialkabel", "Multimode-Glasfaser"], answer: "Singlemode-Glasfaser", exp: "Erklärung: Singlemode-Glasfaser ist ideal für Strecken >300m und galvanische Entkopplung zwischen Gebäuden." },
+    { type: "mc", q: "32. Ein Switch leitet Daten an alle Ports weiter, auch wenn der Empfänger bekannt ist. Woran liegt das?", options: ["Der Switch arbeitet wie ein Hub", "Loop im Netzwerk", "Falsches VLAN", "MAC-Adresstabelle ist leer"], answer: "Der Switch arbeitet wie ein Hub", exp: "Erklärung: Wenn die MAC-Tabelle leer ist (oder geflutet wird), verhält sich der Switch wie ein Hub (Flooding)." },
+    { type: "mc", q: "33. Ein Client erhält keine IP-Adresse. Wo sollten Sie zuerst prüfen?", options: ["DHCP-Server ist erreichbar", "Eintrag im DNS-Server", "MAC-Adresse des Clients", "Subnetzmaske des Routers"], answer: "DHCP-Server ist erreichbar", exp: "Erklärung: Keine IP-Zuweisung deutet auf Erreichbarkeitsprobleme des DHCP-Servers hin." },
+    { type: "mc", q: "34. Ein Twisted-Pair-Kabel ist direkt parallel zu einer 230V-Stromleitung verlegt. Welche Auswirkung kann das haben?", options: ["Elektromagnetische Störungen (EMI)", "Erhöhte Bandbreite", "Kürzere Laufzeit", "Keine Auswirkung"], answer: "Elektromagnetische Störungen (EMI)", exp: "Erklärung: Parallele Stromleitungen induzieren Störspannungen in Datenkabeln." },
+    { type: "mc", q: "35. Der Download einer Datei ist sehr langsam, obwohl die Leitung 1 Gbit/s hat. Viele Kollegen nutzen gleichzeitig das Netzwerk. Was ist am wahrscheinlichsten?", options: ["Überlastung der Bandbreite (Durchsatz < Bandbreite)", "Defekte Festplatte am Client", "Falscher Kabeltyp", "Falsche MAC-Adresse"], answer: "Überlastung der Bandbreite (Durchsatz < Bandbreite)", exp: "Erklärung: Geteilte Bandbreite verringert den tatsächlichen Durchsatz pro Client." },
+
+    // Rechen- und Planungsaufgaben (36-50)
+    { type: "mc", q: "36. Ein Netzwerkkabel ist 85 m lang. Ist das zulässig laut Ethernet-Standard?", options: ["Ja, bis max. 100 m zulässig", "Nein, maximal 50 m erlaubt", "Nein, maximal 75 m erlaubt", "Ja, bis maximal 500 m zulässig"], answer: "Ja, bis max. 100 m zulässig", exp: "Erklärung: Die maximale Nutzlänge bei TP-Kabeln (Channel) beträgt 100 Meter (90m Verlegekabel + 10m Patchkabel)." },
+    { type: "mc", q: "37. Wie viele nutzbare Host-IP-Adressen stehen in einem IPv4 Subnetz /24 zur Verfügung?", options: ["254", "256", "255", "512"], answer: "254", exp: "Erklärung: 2^8 - 2 (Netz-ID und Broadcast) = 254 nutzbare Host-IPs." },
+    { type: "mc", q: "38. Sie planen 3 Etagen mit je 24 Arbeitsplätzen (je 2 Ports). Wie viele Ports benötigt das Patchpanel pro Etage mindestens?", options: ["48 Ports", "24 Ports", "72 Ports", "96 Ports"], answer: "48 Ports", exp: "Erklärung: 24 Arbeitsplätze x 2 Ports = 48 Ports pro Etage." },
+    { type: "mc", q: "39. Wie viele Höheneinheiten (HE) belegt ein 48-Port Patchpanel typischerweise im 19-Zoll-Schrank?", options: ["1 HE", "2 HE", "4 HE", "6 HE"], answer: "1 HE", exp: "Erklärung: Standard 48-Port High-Density Patchpanels belegen meist 1 Höheneinheit (1 HE = 1,75 Zoll)." },
+    { type: "mc", q: "40. Welche Übertragungsrate bietet der Standard 10GBASE-T?", options: ["10 Gbit/s", "1 Gbit/s", "100 Mbit/s", "100 Gbit/s"], answer: "10 Gbit/s", exp: "Erklärung: 10GBASE-T überträgt 10 Gigabit pro Sekunde über Twisted-Pair-Kabel." },
+    { type: "mc", q: "41. Sie planen 3 Etagen mit 24 Arbeitsplätzen. Wie viele Patchpanels (à 24 Ports, 2 Ports/Platz) benötigen Sie insgesamt?", options: ["6", "3", "12", "24"], answer: "6", exp: "Erklärung: Pro Etage 48 Ports (2 x 24er Panels). Bei 3 Etagen = 6 Panels." },
+    { type: "mc", q: "42. Welche Kategorie von Twisted-Pair-Kabeln wird für 10GBASE-T bis 100m gefordert?", options: ["Kategorie 6A (Cat 6A)", "Kategorie 5e (Cat 5e)", "Kategorie 6 (Cat 6)", "Kategorie 3 (Cat 3)"], answer: "Kategorie 6A (Cat 6A)", exp: "Erklärung: Cat 6A unterstützt 10 Gbit/s bis zu den vollen 100 Metern (500 MHz)." },
+    { type: "mc", q: "43. Welche Wellenlänge wird häufig bei Singlemode-Glasfasern (OS2) verwendet?", options: ["1310 nm / 1550 nm", "850 nm", "650 nm", "400 nm"], answer: "1310 nm / 1550 nm", exp: "Erklärung: Singlemode (OS1/OS2) nutzt typischerweise 1310 nm und 1550 nm Infrarotlicht." },
+    { type: "mc", q: "44. Ein Kupferkabel hat einen Widerstand von ca. 8,4 Ω pro 100m. Wie hoch ist der Widerstand für 90m?", options: ["ca. 7,56 Ω", "ca. 8,4 Ω", "ca. 75,6 Ω", "ca. 9,0 Ω"], answer: "ca. 7,56 Ω", exp: "Erklärung: 8,4 Ω / 100m * 90m = 7,56 Ω." },
+    { type: "mc", q: "45. Welche Aussage zu VLANs ist richtig?", options: ["VLANs trennen Broadcast-Domänen logisch auf Layer 2.", "VLANs erhöhen die physikalische Bandbreite.", "VLANs ersetzen den Router vollständig.", "VLANs funktionieren nur ohne Switches."], answer: "VLANs trennen Broadcast-Domänen logisch auf Layer 2.", exp: "Erklärung: Virtual Local Area Networks teilen ein physikalisches Netz in logische Broadcast-Domänen auf." },
+    { type: "mc", q: "46. Welcher Standard definiert das VLAN-Tagging in Ethernet-Frames?", options: ["IEEE 802.1Q", "IEEE 802.11", "IEEE 802.3", "IEEE 802.1X"], answer: "IEEE 802.1Q", exp: "Erklärung: IEEE 802.1Q fügt dem Ethernet-Header das 4-Byte VLAN-Tag hinzu." },
+    { type: "mc", q: "47. Welche Funktion hat Wake-on-LAN (WoL)?", options: ["Einschalten eines ausgeschalteten PCs per Magic Packet", "Backup über das Netzwerk", "Neustart eines Routers", "Verschlüsselung von Daten"], answer: "Einschalten eines ausgeschalteten PCs per Magic Packet", exp: "Erklärung: WoL sendet ein spezielles Datenpaket (Magic Packet) an die MAC-Adresse zum Starten." },
+    { type: "mc", q: "48. Welche Norm beschreibt die strukturierte Verkabelung in Europa?", options: ["EN 50173 / ISO/IEC 11801", "TIA/EIA-568", "DIN VDE 0888", "IEEE 802.3"], answer: "EN 50173 / ISO/IEC 11801", exp: "Erklärung: EN 50173 ist der europäische Standard für anwendungsneutrale Verkabelungssysteme." },
+    { type: "mc", q: "49. Wie lautet die maximale Dämpfung/Verlustleistung, die bei Abnahme einer Glasfaserstrecke gemessen wird?", options: ["Dämpfungsmessung in dB", "Widerstandsmessung in Ohm", "Spannungsmessung in Volt", "Frequenzmessung in Hz"], answer: "Dämpfungsmessung in dB", exp: "Erklärung: Glasfasermessungen (OTDR) ermitteln den Signalverlust in Dezibel (dB)." },
+    { type: "mc", q: "50. Welche Adernpaare werden bei 100BASE-TX (Fast Ethernet) zur Übertragung genutzt?", options: ["Adernpaare 1-2 und 3-6", "Adernpaare 4-5 und 7-8", "Alle 4 Adernpaare", "Nur Adernpaar 1-2"], answer: "Adernpaare 1-2 und 3-6", exp: "Erklärung: Fast Ethernet (100 Mbit/s) benötigt nur 2 Paare (1/2 und 3/6). Gigabit benötigt alle 4 Paare." }
 ];
 
-// --- TEST 2 (30 PEKİŞTİRME / VERTIEFUNGSFRAGEN) ---
-const test2Questions = [
-    { type: "mc", q: "1. Welches Dokument wird vom Auftraggeber (Kunden) zur Definition aller Anforderungen erstellt?", options: ["Pflichtenheft", "Lastenheft", "Arbeitsstättenverordnung", "Übergabeprotokoll"], answer: "Lastenheft", exp: "Erklärung: Das Lastenheft beschreibt das 'WAS' aus Kundensicht.\nQuelle: DIN 69901 / IT-Projektmanagement." },
-    { type: "mc", q: "2. Welches Dokument beschreibt die konkrete technische Umsetzung durch den IT-Dienstleister?", options: ["Lastenheft", "Pflichtenheft", "Handelsregisterauszug", "DSGVO-Erklärung"], answer: "Pflichtenheft", exp: "Erklärung: Das Pflichtenheft beschreibt das 'WIE' aus Auftragnehmersicht.\nQuelle: DIN 69901 / IT-Projektmanagement." },
-    { type: "mc", q: "3. Auf welcher Schicht des OSI-Modells arbeitet eine MAC-Adresse?", options: ["Layer 1 (Physikalische Schicht)", "Layer 2 (Sicherungsschicht)", "Layer 3 (Netzwerkschicht)", "Layer 7 (Anwendungsschicht)"], answer: "Layer 2 (Sicherungsschicht)", exp: "Erklärung: Die MAC-Adresse identifiziert Netzwerkkarten eindeutig auf Schicht 2.\nQuelle: ISO/IEC 7498-1 (OSI-Modell)." },
-    { type: "mc", q: "4. Wofür steht das Protokoll DHCP im Netzwerkbereich?", options: ["Automatisierte Vergabe von IP-Konfigurationen", "Auflösung von Domainnamen", "Verschlüsselung von E-Mails", "Sichere Dateiübertragung"], answer: "Automatisierte Vergabe von IP-Konfigurationen", exp: "Erklärung: DHCP teilt Clients dynamisch IP-Adressen und Subnetzmasken zu.\nQuelle: RFC 2131." },
-    { type: "mc", q: "5. Welches Gerät verbindet Netzwerke unterschiedlicher IP-Subnetze auf Schicht 3?", options: ["Switch", "Router", "Hub", "Repeater"], answer: "Router", exp: "Erklärung: Router leiten Datenpakete zwischen verschiedenen Netzen weiter.\nQuelle: IT-Netzwerktechnik Westermann." },
-    { type: "mc", q: "6. Was versteht man unter dem Begriff Hot-Swap bei Serverkomponenten?", options: ["Tausch von Festplatten/Netzteilen im laufenden Betrieb", "Automatische Übertaktung bei Hitze", "Kühlung durch Flüssigkeitskreisläufe", "Abschaltung des Servers bei Überlast"], answer: "Tausch von Festplatten/Netzteilen im laufenden Betrieb", exp: "Erklärung: Hot-Swap ermöglicht Komponententausch ohne Serverausfallzeit.\nQuelle: Server-Hardware Handbuch." },
-    { type: "mc", q: "7. Was ist die Hauptfunktion von ECC-Arbeitsspeicher (Error Correcting Code)?", options: ["Erkennung und Korrektur von Speicherfehlern", "Höhere Taktraten für Gaming-Szenarien", "Integrierte RGB-Beleuchtung", "Niedrigerer Anschaffungspreis"], answer: "Erkennung und Korrektur von Speicherfehlern", exp: "Erklärung: ECC-RAM korrigiert Einzelbit-Fehler zur Erhöhung der Serversicherheit.\nQuelle: JEDEC RAM-Standards." },
-    { type: "mc", q: "8. Welcher RAID-Level bietet Spiegelung für hohe Ausfallsicherheit bei 2 Festplatten?", options: ["RAID 0", "RAID 1", "RAID 5", "RAID 10"], answer: "RAID 1", exp: "Erklärung: RAID 1 spiegelt alle Daten identisch auf zwei Platten.\nQuelle: Storage-Grundlagen." },
-    { type: "mc", q: "9. Wie viele Festplatten werden mindestens für ein RAID-5-Array benötigt?", options: ["1 Festplatte", "2 Festplatten", "3 Festplatten", "4 Festplatten"], answer: "3 Festplatten", exp: "Erklärung: RAID 5 verteilt Paritätsinformationen über mindestens 3 Laufwerke.\nQuelle: Storage-Grundlagen." },
-    { type: "mc", q: "10. Was beinhaltet die 3-2-1-Backup-Regel?", options: ["3 Kopien, 2 verschiedene Medien, 1 Sicherung extern gelagert", "3 Server, 2 Switches, 1 Router", "3 Tage, 2 Wochen, 1 Monat Aufbewahrung", "3 Admins, 2 Passwörter, 1 Schlüssel"], answer: "3 Kopien, 2 verschiedenen Medien, 1 Sicherung extern gelagert", exp: "Erklärung: Die Empfehlung des BSI lautet: 3 Datenkopien auf 2 Medien, davon 1 offsite.\nQuelle: BSI Empfehlung Datensicherung." },
-
-    // Weitere Fachfragen (11-28)
-    { type: "mc", q: "11. Welches Dateisystem wird standardmäßig bei modernen Windows-Systemen genutzt?", options: ["FAT32", "NTFS", "ext4", "exFAT"], answer: "NTFS", exp: "Erklärung: NTFS bietet Rechteverwaltung, Journaling und Unterstützung großer Dateien.\nQuelle: Microsoft System-Dokumentation." },
-    { type: "mc", q: "12. Welches Schutzziel schützt vor unbefugter Datenänderung?", options: ["Vertraulichkeit", "Integrität", "Verfügbarkeit", "Authentizität"], answer: "Integrität", exp: "Erklärung: Integrität stellt sicher, dass Daten unversehrt und korrekt sind.\nQuelle: BSI Grundschutz." },
-    { type: "mc", q: "13. Welcher Mangel liegt vor, wenn eine falsche Ware (Aliud) geliefert wird?", options: ["Sachmangel nach § 434 BGB", "Rechtsmangel nach § 435 BGB", "Garantiefall", "Verzug"], answer: "Sachmangel nach § 434 BGB", exp: "Erklärung: Nach § 434 Abs. 3 BGB steht die Lieferung einer anderen Sache einem Sachmangel gleich.\nQuelle: BGB § 434." },
-    { type: "mc", q: "14. Welche Mindest-Gewährleistungsfrist gilt gesetzlich beim Kauf von Neuwaren durch Verbraucher?", options: ["6 Monate", "12 Monate", "24 Monate", "36 Monate"], answer: "24 Monate", exp: "Erklärung: Die gesetzliche Verjährungsfrist für Mängelansprüche beträgt 2 Jahre.\nQuelle: BGB § 438." },
-    { type: "mc", q: "15. Was regelt das Jugendarbeitsschutzgesetz (JArbSchG)?", options: ["Besondere Arbeitszeit- und Ruhepausenregeln für Unter-18-Jährige", "Garantiezeiten von IT-Geräten", "Gehaltsstufen für Auszubildende", "Kündigungsfristen nach der Probezeit"], answer: "Besondere Arbeitszeit- und Ruhepausenregeln für Unter-18-Jährige", exp: "Erklärung: Das JArbSchG schützt Jugendliche im Arbeitsleben.\nQuelle: JArbSchG § 1." },
-    { type: "mc", q: "16. Was versteht man unter Phishing?", options: ["Versuch, vertrauliche Zugangsdaten über gefälschte E-Mails zu erlangen", "Anschluss eines Netzwerkkabels", "Reinigung von Hardwarekomponenten", "Sicherung von Datenbanken"], answer: "Versuch, vertrauliche Zugangsdaten über gefälschte E-Mails zu erlangen", exp: "Erklärung: Phishing täuscht vertrauenswürdige Absender vor.\nQuelle: BSI Lagebericht." },
-    { type: "mc", q: "17. Was beschreibt das E-V-A-Prinzip der Datenverarbeitung?", options: ["Eingabe -> Verarbeitung -> Ausgabe", "Energie -> Verbrauch -> Analyse", "Einbau -> Verbindung -> Ablauf", "Emulation -> Code -> Ausgabe"], answer: "Eingabe -> Verarbeitung -> Ausgabe", exp: "Erklärung: Das EVA-Prinzip ist das Grundmodell der Computer-Datenverarbeitung.\nQuelle: IT-Grundwissen." },
-    { type: "mc", q: "18. Wofür steht die Abkürzung USV im Bereich der IT-Infrastruktur?", options: ["Unterbrechungsfreie Stromversorgung", "Universal Server Link", "Ultra Security System", "Umwelt-Schutz-Verordnung"], answer: "Unterbrechungsfreie Stromversorgung", exp: "Erklärung: Eine USV schützt IT-Geräte bei Stromausfällen und Überspannungen.\nQuelle: IT-Infrastruktur Standards." },
-    { type: "mc", q: "19. Welcher Standard definiert drahtlose lokale Netzwerke (WLAN)?", options: ["IEEE 802.3", "IEEE 802.11", "ISO 9001", "DIN 5008"], answer: "IEEE 802.11", exp: "Erklärung: IEEE 802.11 definiert die Spezifikationen für WLAN-Verbindungen.\nQuelle: IEEE Standards Association." },
-    { type: "mc", q: "20. Was zeichnet eine Grafikkarte (GPU) im Vergleich zur CPU aus?", options: ["Tausende kleine Kerne für hochparallele Berechnungen", "Nur ein einziger hochgetakteter Rechenkern", "Reiner Arbeitsspeicher für Office-Anwendungen", "Direkte Verbindung zum Netzteil"], answer: "Tausende kleine Kerne für hochparallele Berechnungen", exp: "Erklärung: GPUs verarbeiten viele Datenströme (z.B. Pixel) gleichzeitig.\nQuelle: Hardware-Architektur Westermann." },
-    { type: "mc", q: "21. Wofür dient die DNS-Namensauflösung im Internet?", options: ["Übersetzung von Domainnamen in IP-Adressen", "Automatische Vergabe von IP-Adressen", "Sichere Verschlüsselung von Webseiten", "Formatierung von Speicherlaufwerken"], answer: "Übersetzung von Domainnamen in IP-Adressen", exp: "Erklärung: DNS wandelt z.B. google.de in die zugehörige IP-Adresse um.\nQuelle: RFC 1035." },
-    { type: "mc", q: "22. Welches Verschlüsselungsprotokoll sichert den Aufruf von HTTPS-Webseiten?", options: ["TLS / SSL", "FTP", "DHCP", "TELNET"], answer: "TLS / SSL", exp: "Erklärung: HTTPS nutzt TLS (Transport Layer Security) zur Verschlüsselung.\nQuelle: IETF Web Security." },
-    { type: "mc", q: "23. Was zeichnet ein S/FTP-Netzwerkkabel aus?", options: ["Geflecht- und Folienabschirmung gegen elektromagnetische Störungen", "Reine Kunststoffhülle ohne jede Schirmung", "Kabel rein für Stromübertragung", "Glasfaserkabel für Unterseeverbindungen"], answer: "Geflecht- und Folienabschirmung gegen elektromagnetische Störungen", exp: "Erklärung: S/FTP schützt Datenleitungen optimal vor Außenstörungen.\nQuelle: ISO/IEC 11801." },
-    { type: "mc", q: "24. Welches Gütesiegel belohnt besonders umweltfreundliche und energieeffiziente IT-Geräte?", options: ["Blauer Engel", "CE-Kennzeichnung", "TÜV-Süd Gütesiegel", "GS-Zeichen"], answer: "Blauer Engel", exp: "Erklärung: Der Blaue Engel ist das deutsche Umweltzeichen für nachhaltige Produkte.\nQuelle: Umweltbundesamt." },
-    { type: "mc", q: "25. Was bedeutet DaaS im Cloud-Computing-Bereich?", options: ["Desktop as a Service", "Data as a Security", "Database as a System", "Disk as a Storage"], answer: "Desktop as a Service", exp: "Erklärung: DaaS stellt virtuelle Desktop-Umgebungen über die Cloud bereit.\nQuelle: Cloud Architecture Standards." },
-    { type: "mc", q: "26. Was versteht man unter Social Engineering im Sicherheitskontext?", options: ["Menschliche Beeinflussung zur Preisgabe von vertraulichen Daten", "Entwicklung sozialer Netzwerke", "Erstellung von Gruppenrichtlinien", "Konfiguration von Firewalls"], answer: "Menschliche Beeinflussung zur Preisgabe von vertraulichen Daten", exp: "Erklärung: Social Engineering nutzt den Faktor Mensch als Schwachstelle aus.\nQuelle: BSI IT-Sicherheit." },
-    { type: "mc", q: "27. Welches Verfahren dient dem systematischen Vergleich von System-Alternativen?", options: ["Nutzwertanalyse", "Rückwärtskalkulation", "Wasserfallmodell", "Gefährdungsbeurteilung"], answer: "Nutzwertanalyse", exp: "Erklärung: Die Nutzwertanalyse bewertet Alternativen anhand gewichteter Kriterien.\nQuelle: IT-Projektmanagement Westermann." },
-    { type: "mc", q: "28. Welches Schutzziel stellt sicher, dass ein Dienst jederzeit erreichbar bleibt?", options: ["Verfügbarkeit", "Integrität", "Vertraulichkeit", "Authentizität"], answer: "Verfügbarkeit", exp: "Erklärung: Verfügbarkeit verhindert Systemausfälle und Sperrungen.\nQuelle: BSI Grundschutz." },
-
-    // Weitere Kalkulationen im Test 2 (29-30)
-    { 
-        type: "table", 
-        q: "29. Vorwärtskalkulation: Bezugspreis = 100,00 €. Handlungskostenzuschlag = 20 %. Gewinnzuschlag = 10 %. Berechnen Sie den Barverkaufspreis:",
-        exp: "Erklärung:\nBezugspreis: 100,00 €\n+ Handlungskosten (20%): 20,00 €\n= Selbstkosten: 120,00 €\n+ Gewinnzuschlag (10% auf Selbstkosten): 12,00 €\n= Barverkaufspreis: 132,00 €.\nQuelle: Handelskalkulation Westermann.",
-        rows: [
-            { label: "Bezugspreis", val: "100,00", readonly: true },
-            { label: "+ Handlungskosten (20%)", key: "20" },
-            { label: "= Selbstkosten", key: "120" },
-            { label: "+ Gewinnzuschlag (10%)", key: "12" },
-            { label: "= Barverkaufspreis", key: "132" }
-        ]
-    },
-    { 
-        type: "table", 
-        q: "30. Rückwärtskalkulation: Barverkaufspreis = 220,00 €. Gewinnzuschlag = 10 % (auf Selbstkosten). Berechnen Sie die Selbstkosten:",
-        exp: "Erklärung:\nBarverkaufspreis = Selbstkosten * 1,10\nSelbstkosten = 220,00 € / 1,10 = 200,00 €.\nGewinnzuschlag = 20,00 €.\nQuelle: Handelskalkulation Westermann.",
-        rows: [
-            { label: "Barverkaufspreis (netto)", val: "220,00", readonly: true },
-            { label: "- Gewinnzuschlag (10% auf Selbstkosten)", key: "20" },
-            { label: "= Selbstkosten", key: "200" }
-        ]
-    }
-];
-
-let currentTest = 1;
-let activeQuestions = test1Questions;
 let currentQ = 0;
 let score = 0;
 let currentShuffledOptions = [];
 
-function switchTest(testNum) {
-    currentTest = testNum;
-    document.getElementById("btn-test1").classList.toggle("active", testNum === 1);
-    document.getElementById("btn-test2").classList.toggle("active", testNum === 2);
-    
-    activeQuestions = testNum === 1 ? test1Questions : test2Questions;
-    currentQ = 0;
-    score = 0;
-    showQuestion();
-}
-
 function showQuestion() {
-    const q = activeQuestions[currentQ];
-    document.getElementById("progress").innerText = `Test ${currentTest} - Frage ${currentQ + 1} von ${activeQuestions.length}`;
+    const q = questions[currentQ];
+    document.getElementById("progress").innerText = `Frage ${currentQ + 1} von ${questions.length}`;
     const container = document.getElementById("question-content");
     const feedback = document.getElementById("feedback-area");
     feedback.innerHTML = "";
@@ -274,37 +293,22 @@ function showQuestion() {
 
     let html = `<div class="question-text">${q.q}</div>`;
 
-    if (q.type === "mc") {
-        currentShuffledOptions = shuffleArray(q.options);
-        html += `<div id="options-container">`;
-        currentShuffledOptions.forEach((opt, idx) => {
-            html += `<button class="option" onclick="checkMC(${idx})">${opt}</button>`;
-        });
-        html += `</div>`;
-    } else if (q.type === "open") {
-        html += `
-            <input type="text" id="open-answer" class="text-input" placeholder="Antwort eingeben..." autocomplete="off">
-            <button class="submit-btn" onclick="checkOpen()">Antwort prüfen</button>
-        `;
-    } else if (q.type === "table") {
-        html += `<table class="kalkulation-table"><tr><th>Position</th><th>Wert (€)</th></tr>`;
-        q.rows.forEach((row, idx) => {
-            html += `<tr><td>${row.label}</td><td>`;
-            if (row.readonly) {
-                html += `<strong>${row.val}</strong>`;
-            } else {
-                html += `<input type="text" id="table-val-${idx}" placeholder="Wert eingeben" autocomplete="off">`;
-            }
-            html += `</td></tr>`;
-        });
-        html += `</table><button class="submit-btn" onclick="checkTable()">Tabelle prüfen</button>`;
+    if (q.img) {
+        html += `<div class="q-image-container">${q.img}</div>`;
     }
+
+    currentShuffledOptions = shuffleArray(q.options);
+    html += `<div id="options-container">`;
+    currentShuffledOptions.forEach((opt, idx) => {
+        html += `<button class="option" onclick="checkMC(${idx})">${opt}</button>`;
+    });
+    html += `</div>`;
 
     container.innerHTML = html;
 }
 
 function checkMC(selectedIndex) {
-    const q = activeQuestions[currentQ];
+    const q = questions[currentQ];
     const selectedOption = currentShuffledOptions[selectedIndex];
     const optionsBtns = document.querySelectorAll(".option");
     optionsBtns.forEach(btn => btn.disabled = true);
@@ -321,65 +325,6 @@ function checkMC(selectedIndex) {
             }
         });
         showFeedback(false, `Falsch! Richtige Antwort: ${q.answer}\n\n${q.exp}`);
-    }
-    document.getElementById("next-btn").style.display = "inline-block";
-}
-
-function checkOpen() {
-    const q = activeQuestions[currentQ];
-    const inputEle = document.getElementById("open-answer");
-    const input = inputEle ? inputEle.value : "";
-    const btn = document.querySelector(".submit-btn");
-    btn.disabled = true;
-
-    if (!input || input.trim() === "") {
-        showFeedback(false, `Keine Antwort eingegeben! Richtige Antwort: ${Array.isArray(q.answer) ? q.answer[0] : q.answer}\n\n${q.exp}`);
-        document.getElementById("next-btn").style.display = "inline-block";
-        return;
-    }
-
-    let isCorrect = false;
-    if (Array.isArray(q.answer)) {
-        isCorrect = q.answer.some(ans => isSimilar(input, ans));
-    } else {
-        isCorrect = isSimilar(input, q.answer);
-    }
-
-    if (isCorrect) {
-        score++;
-        showFeedback(true, `Richtig!\n\n${q.exp}`);
-    } else {
-        showFeedback(false, `Falsch! Richtige Antwort: ${Array.isArray(q.answer) ? q.answer[0] : q.answer}\n\n${q.exp}`);
-    }
-    document.getElementById("next-btn").style.display = "inline-block";
-}
-
-function checkTable() {
-    const q = activeQuestions[currentQ];
-    let allCorrect = true;
-    let hasEmpty = false;
-    const btn = document.querySelector(".submit-btn");
-    btn.disabled = true;
-
-    q.rows.forEach((row, idx) => {
-        if (!row.readonly) {
-            const inputEle = document.getElementById(`table-val-${idx}`);
-            const inputVal = inputEle ? inputEle.value : "";
-            if (!inputVal || inputVal.trim() === "") {
-                hasEmpty = true;
-            }
-            if (!isSimilar(inputVal, row.key)) {
-                allCorrect = false;
-            }
-        }
-    });
-
-    if (!hasEmpty && allCorrect) {
-        score++;
-        showFeedback(true, `Alle Tabelleneinträge sind richtig!\n\n${q.exp}`);
-    } else {
-        let answersText = q.rows.filter(r => !r.readonly).map(r => `${r.label}: ${r.key}`).join(" | ");
-        showFeedback(false, `Falsch oder unvollständig! Richtige Werte: ${answersText}\n\n${q.exp}`);
     }
     document.getElementById("next-btn").style.display = "inline-block";
 }
@@ -401,7 +346,7 @@ function showFeedback(isCorrect, text) {
 
 function nextQuestion() {
     currentQ++;
-    if (currentQ < activeQuestions.length) {
+    if (currentQ < questions.length) {
         showQuestion();
     } else {
         finishQuiz();
@@ -409,13 +354,13 @@ function nextQuestion() {
 }
 
 function getRangliste() {
-    const data = localStorage.getItem(`lf02_rangliste_test${currentTest}`);
+    const data = localStorage.getItem(`lf03_rangliste`);
     if (data) {
         return JSON.parse(data);
     }
     return [
-        { name: "Max Mustermann", score: Math.round(activeQuestions.length * 0.9), max: activeQuestions.length, date: "15.09.2026" },
-        { name: "IT-Profi", score: Math.round(activeQuestions.length * 0.8), max: activeQuestions.length, date: "16.09.2026" }
+        { name: "Netzwerk-Profi", score: 48, max: 50, date: "17.09.2026" },
+        { name: "SysAdmin_2026", score: 42, max: 50, date: "17.09.2026" }
     ];
 }
 
@@ -426,12 +371,12 @@ function saveRanglisteEntry(name) {
     list.push({
         name: name.trim(),
         score: score,
-        max: activeQuestions.length,
+        max: questions.length,
         date: today
     });
     list.sort((a, b) => b.score - a.score);
     list = list.slice(0, 10);
-    localStorage.setItem(`lf02_rangliste_test${currentTest}`, JSON.stringify(list));
+    localStorage.setItem(`lf03_rangliste`, JSON.stringify(list));
     renderRangliste(name.trim());
 }
 
@@ -466,27 +411,23 @@ function renderRangliste(highlightName = null) {
 }
 
 function finishQuiz() {
-    const passed = score >= (activeQuestions.length / 2);
+    const passed = score >= (questions.length / 2);
     
     const imgSrc = passed 
         ? "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7qE2VAxuXWeyvJIY/giphy.webp"
         : "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzgxbGplZnkzdnFhanE2M3d5bDIybTZiN2J1Zm1qbzk4OHppdGdudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9u3TZfpmeDLkD6/giphy.gif";
 
-    const nextActionBtn = (currentTest === 1)
-        ? `<button class="submit-btn" onclick="switchTest(2)" style="margin-top:20px; background-color:#28a745;">Weiter zu Test 2 (30 Vertiefungsfragen)</button>`
-        : `<button class="submit-btn" onclick="switchTest(1)" style="margin-top:20px;">Zurück zu Test 1</button>`;
-
     document.getElementById("quiz-card").innerHTML = `
         <div id="score-board">
-            <h2>Test ${currentTest} Beendet!</h2>
-            <p style="font-size: 1.3em;">Ergebnis: <strong>${score}</strong> von <strong>${activeQuestions.length}</strong> Punkten (${Math.round(score/activeQuestions.length*100)}%)</p>
+            <h2>Lernzielkontrolle LF03 Beendet!</h2>
+            <p style="font-size: 1.3em;">Ergebnis: <strong>${score}</strong> von <strong>${questions.length}</strong> Punkten (${Math.round(score/questions.length*100)}%)</p>
             <div class="img-container">
                 <img src="${imgSrc}" alt="Ergebnis Bild">
             </div>
-            <div class="meme-text">${passed ? 'Klasse Leistung! Du hast diesen Abschnitt bestanden! 🎉' : 'Das war leider nichts... Zeit für eine Wiederholung! 😭'}</div>
+            <div class="meme-text">${passed ? 'Herzlichen Glückwunsch! Du bist bestens auf die LF03 IHK-Prüfung vorbereitet! 🎉' : 'Das war leider noch nicht ausreichend. Geh die Themen noch einmal durch! 😭'}</div>
             
             <div class="rangliste-container">
-                <h3>🏆 Rangliste für Test ${currentTest}</h3>
+                <h3>🏆 Rangliste LF03</h3>
                 <div class="rangliste-form" id="rangliste-form-box">
                     <input type="text" id="player-name" placeholder="Deinen Namen eintragen..." autocomplete="off">
                     <button class="submit-btn" style="margin-top:0;" onclick="submitScore()">In Rangliste eintragen</button>
@@ -494,7 +435,7 @@ function finishQuiz() {
                 <div id="rangliste-table-container"></div>
             </div>
             
-            ${nextActionBtn}
+            <button class="submit-btn" onclick="location.reload()" style="margin-top:20px;">Test erneut starten</button>
         </div>
     `;
     
@@ -509,8 +450,7 @@ function submitScore() {
     }
 }
 
-// Start mit Test 1
-switchTest(1);
+showQuestion();
 </script>
 
 </body>
