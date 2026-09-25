@@ -41,7 +41,7 @@
 
 <div class="card" id="quiz-card">
     <h1>LERNZIELKONTROLLE LF03</h1>
-    <div class="subtitle">CLIENTS IN NETZWERKE EINBINDEN (80 IHK-Prüfungsaufgaben)</div>
+    <div class="subtitle">CLIENTS IN NETZWERKE EINBINDEN - 1. WOCHE (80 LZK-Prüfungsaufgaben)</div>
     <div id="progress" class="progress"></div>
     <div id="question-content"></div>
     <div id="feedback-area"></div>
@@ -69,16 +69,6 @@ function levenshtein(a, b) {
         }
     }
     return matrix[b.length][a.length];
-}
-
-function isSimilar(input, target) {
-    if (!input || input.trim() === "") return false;
-    let cleanInput = input.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-    let cleanTarget = target.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-    if (cleanInput === "" || cleanTarget === "") return false;
-    if (cleanInput === cleanTarget) return true;
-    let distance = levenshtein(cleanInput, cleanTarget);
-    return distance <= (cleanTarget.length <= 4 ? 0 : 2);
 }
 
 function shuffleArray(array) {
@@ -110,8 +100,6 @@ const incorrectMemes = [
 
 const svgOSI = `<svg width="320" height="220" xmlns="http://www.w3.org/2000/svg"><style>.box{fill:#f8f9fa;stroke:#333;stroke-width:1.5;}.txt{font-family:sans-serif;font-size:13px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;}.num{font-family:sans-serif;font-size:13px;font-weight:bold;fill:#003366;text-anchor:middle;dominant-baseline:middle;}</style><rect x="10" y="5" width="40" height="26" class="box"/><text x="30" y="18" class="num">7</text><rect x="55" y="5" width="160" height="26" class="box"/><text x="135" y="18" class="txt">Anwendung</text><rect x="10" y="34" width="40" height="26" class="box"/><text x="30" y="47" class="num">6</text><rect x="55" y="34" width="160" height="26" class="box"/><text x="135" y="47" class="txt">Darstellung</text><rect x="10" y="63" width="40" height="26" class="box"/><text x="30" y="76" class="num">5</text><rect x="55" y="63" width="160" height="26" class="box"/><text x="135" y="76" class="txt">Sitzung</text><rect x="10" y="92" width="40" height="26" class="box"/><text x="30" y="105" class="num">4</text><rect x="55" y="92" width="160" height="26" class="box"/><text x="135" y="105" class="txt">Transport</text><rect x="10" y="121" width="40" height="26" class="box"/><text x="30" y="134" class="num">3</text><rect x="55" y="121" width="160" height="26" class="box"/><text x="135" y="134" class="txt">Vermittlung</text><rect x="10" y="150" width="40" height="26" class="box"/><text x="30" y="163" class="num">2</text><rect x="55" y="150" width="160" height="26" class="box"/><text x="135" y="163" class="txt">Sicherung</text><rect x="10" y="179" width="40" height="26" class="box"/><text x="30" y="192" class="num">1</text><rect x="55" y="179" width="160" height="26" class="box"/><text x="135" y="192" class="txt">Bitübertragung</text></svg>`;
 const svgCable = `<svg width="350" height="180" xmlns="http://www.w3.org/2000/svg"><ellipse cx="120" cy="90" rx="90" ry="70" fill="#e0e0e0" stroke="#333" stroke-width="2"/><ellipse cx="120" cy="90" rx="82" ry="62" fill="none" stroke="#888" stroke-width="2" stroke-dasharray="4,3"/><circle cx="85" cy="65" r="22" fill="#d0e0ff" stroke="#333"/><circle cx="155" cy="65" r="22" fill="#d0ffd0" stroke="#333"/><circle cx="85" cy="115" r="22" fill="#ffe0d0" stroke="#333"/><circle cx="155" cy="115" r="22" fill="#fff0d0" stroke="#333"/><circle cx="78" cy="60" r="6" fill="#ff9933"/><circle cx="92" cy="70" r="6" fill="#ffffff" stroke="#333"/><circle cx="148" cy="60" r="6" fill="#33cc33"/><circle cx="162" cy="70" r="6" fill="#ffffff" stroke="#333"/><circle cx="78" cy="110" r="6" fill="#3366cc"/><circle cx="92" cy="120" r="6" fill="#ffffff" stroke="#333"/><circle cx="148" cy="110" r="6" fill="#996633"/><circle cx="162" cy="120" r="6" fill="#ffffff" stroke="#333"/><line x1="120" y1="20" x2="230" y2="30" stroke="#333" stroke-width="1.5"/><circle cx="230" cy="30" r="10" fill="#fff" stroke="#333"/><text x="230" y="34" font-family="sans-serif" font-size="12" text-anchor="middle">1</text><line x1="180" y1="35" x2="230" y2="65" stroke="#333" stroke-width="1.5"/><circle cx="230" cy="65" r="10" fill="#fff" stroke="#333"/><text x="230" y="69" font-family="sans-serif" font-size="12" text-anchor="middle">2</text><line x1="105" y1="65" x2="230" y2="100" stroke="#333" stroke-width="1.5"/><circle cx="230" cy="100" r="10" fill="#fff" stroke="#333"/><text x="230" y="104" font-family="sans-serif" font-size="12" text-anchor="middle">3</text><line x1="85" y1="115" x2="230" y2="135" stroke="#333" stroke-width="1.5"/><circle cx="230" cy="135" r="10" fill="#fff" stroke="#333"/><text x="230" y="139" font-family="sans-serif" font-size="12" text-anchor="middle">2</text><line x1="155" y1="115" x2="230" y2="160" stroke="#333" stroke-width="1.5"/><circle cx="230" cy="160" r="10" fill="#fff" stroke="#333"/><text x="230" y="164" font-family="sans-serif" font-size="12" text-anchor="middle">3</text></svg>`;
-const svgFiber = `<svg width="420" height="150" xmlns="http://www.w3.org/2000/svg"><path d="M 20 30 L 150 30 L 150 120 L 20 120 Z" fill="#cccccc" stroke="#333" stroke-width="1.5"/><ellipse cx="20" cy="75" rx="15" ry="45" fill="#bbbbbb" stroke="#333"/><path d="M 150 42 L 230 42 L 230 108 L 150 108 Z" fill="#e6f2ff" stroke="#333" stroke-width="1.5"/><path d="M 230 54 L 300 54 L 300 96 L 230 96 Z" fill="#99ccff" stroke="#333" stroke-width="1.5"/><path d="M 300 66 L 380 66 L 380 84 L 300 84 Z" fill="#ffcc00" stroke="#333" stroke-width="1.5"/><circle cx="100" cy="135" r="10" fill="#fff" stroke="#333"/><text x="100" y="139" font-family="sans-serif" font-size="12" text-anchor="middle">1</text><text x="120" y="139" font-family="sans-serif" font-size="11">Mantel (Außenmantel)</text><circle cx="190" cy="125" r="10" fill="#fff" stroke="#333"/><text x="190" y="129" font-family="sans-serif" font-size="12" text-anchor="middle">2</text><text x="210" y="129" font-family="sans-serif" font-size="11">Beschichtung (Coating)</text><circle cx="265" cy="115" r="10" fill="#fff" stroke="#333"/><text x="265" y="119" font-family="sans-serif" font-size="12" text-anchor="middle">3</text><text x="285" y="119" font-family="sans-serif" font-size="11">Cladding (Mantelglas)</text><circle cx="340" cy="105" r="10" fill="#fff" stroke="#333"/><text x="340" y="109" font-family="sans-serif" font-size="12" text-anchor="middle">4</text><text x="360" y="109" font-family="sans-serif" font-size="11">Kern (Core)</text></svg>`;
-const svgMultimode = `<svg width="420" height="120" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="20" width="320" height="20" fill="#e0e0e0" stroke="#333"/><text x="10" y="35" font-family="sans-serif" font-size="11">Kern</text><rect x="50" y="40" width="320" height="40" fill="#ffffff" stroke="#333"/><rect x="50" y="80" width="320" height="20" fill="#e0e0e0" stroke="#333"/><text x="5" y="95" font-family="sans-serif" font-size="11">Cladding</text><path d="M 50 60 L 90 40 L 150 80 L 210 40 L 270 80 L 330 40 L 370 60" fill="none" stroke="#ff0000" stroke-width="2"/><path d="M 50 60 L 120 40 L 240 80 L 360 40 L 370 60" fill="none" stroke="#cc0000" stroke-dasharray="3,2" stroke-width="1.5"/><path d="M 50 60 L 70 80 L 110 40 L 150 80 L 190 40 L 230 80 L 270 40 L 310 80 L 350 40 L 370 60" fill="none" stroke="#ff6666" stroke-width="1"/></svg>`;
 
 const questions = [
     // 1-10
@@ -126,7 +114,7 @@ const questions = [
     { type: "mc", q: "9. Auf welcher OSI-Schicht arbeitet ein Router hauptsächlich?", options: ["Schicht 3", "Schicht 1", "Schicht 2", "Schicht 7"], answer: "Schicht 3", exp: "Erklärung: Router arbeiten auf der Vermittlungsschicht (Network Layer) und leiten Datenpakete logisch anhand von IP-Adressen zwischen Subnetzen weiter." },
     { type: "mc", q: "10. Wie viele Schichten besitzt das OSI-Modell?", options: ["7", "4", "5", "6"], answer: "7", exp: "Erklärung: Das ISO/IEC 7498-1 OSI-Referenzmodell ist strukturiert in exakt 7 Schichten (von Bitübertragung bis Anwendung)." },
 
-    // 11-20
+    // 11-18
     { type: "mc", q: "11. Welche Schichten werden im TCP/IP-Modell zur Anwendungsschicht zusammengefasst?", options: ["OSI 5, 6 und 7", "OSI 1 und 2", "OSI 2 und 3", "OSI 3 und 4"], answer: "OSI 5, 6 und 7", exp: "Erklärung: Die OSI-Schichten 5 (Sitzung), 6 (Darstellung) und 7 (Anwendung) werden im vereinfachten TCP/IP-Schichtenmodell direkt als Anwendungsschicht (Application Layer) zusammengefasst." },
     { type: "mc", q: "12. Welches Protokoll gehört zur Transportschicht?", options: ["TCP", "IP", "Ethernet", "ARP"], answer: "TCP", exp: "Erklärung: Transmission Control Protocol (TCP) stellt die Ende-zu-Ende-Kommunikation auf der OSI-Transportschicht (Schicht 4) bereit." },
     { type: "mc", q: "13. Welche Aussage über TCP ist richtig?", options: ["TCP garantiert die Reihenfolge der Daten.", "TCP ist verbindungslos.", "TCP verwendet keine Bestätigungen.", "TCP ist langsamer als UDP, weil es keine Header hat."], answer: "TCP garantiert die Reihenfolge der Daten.", exp: "Erklärung: TCP ist verbindungsorientiert und nutzt Sequenznummern sowie Bestätigungen (ACKs), um Datenverlust auszuschließen und korrekte Reihenfolge zu garantieren." },
@@ -135,17 +123,18 @@ const questions = [
     { type: "mc", q: "16. Welche OSI-Schicht ist für die logische Adressierung (IP) und das Routing zuständig?", img: svgOSI, options: ["Schicht 3", "Schicht 1", "Schicht 2", "Schicht 4"], answer: "Schicht 3", exp: "Erklärung: Schicht 3 (Vermittlungsschicht / Network Layer) ermöglicht die netzwerkweite Adressierung (IP) und Wegfindung (Routing)." },
     { type: "mc", q: "17. Welche Bezeichnung passt zu dem in der Abbildung gezeigten Kabel?", img: svgCable, options: ["S/FTP", "U/UTP", "F/UTP", "U/FTP"], answer: "S/FTP", exp: "Erklärung: S/FTP (Screened Foiled Twisted Pair) beschreibt ein Kabel mit Kupfergeflecht-Gesamtschirm (S) und foliengeschirmten einzelnen Adernpaaren (FTP)." },
     { type: "mc", q: "18. Welche Funktion hat die Schirmung bei Twisted-Pair-Kabeln?", options: ["Schutz vor elektromagnetischen Störungen", "Erhöhung der Kabellänge", "Erhöhung der Datenrate", "Verringerung der Anzahl der Adern"], answer: "Schutz vor elektromagnetischen Störungen", exp: "Erklärung: Die metallische Schirmung schützt die übertragenen Datensignale vor externer elektromagnetischer Einstrahlung (EMI) sowie Nahnebensprechen (Crosstalk)." },
-    { type: "mc", q: "19. Welche Komponente führt das Licht in einer Glasfaser?", img: svgFiber, options: ["4", "1", "2", "3"], answer: "4", exp: "Erklärung: Der lichtleitende Kern (Core – Beschriftung 4) besteht aus hochreinem Glas und überträgt die optischen Signale." },
-    { type: "mc", q: "20. In welcher Faserart treten die in der Abbildung gezeigten Lichtwege auf?", img: svgMultimode, options: ["Multimode", "Singlemode", "Koaxialkabel", "Twisted Pair"], answer: "Multimode", exp: "Erklärung: Multimode-Fasern besitzen einen dickeren Kern, wodurch sich mehrere Lichtwellenmodi mit unterschiedlichen Reflexionswinkeln gleichzeitig ausbreiten." },
 
-    // GEÄNDERTE FRAGE 25 (Subnetzmaske)
+    // NEUE FRAGEN 19 UND 20 (ERSETZEN DIE ALTEN BILDERBILD-FRAGEN 19 UND 20)
+    { type: "mc", q: "19. Welcher Stecker-Typ wird typischerweise für Glasfaserverbindungen (LWL) in modernen Switch- und Patchpanel-Umgebungen als Small-Form-Factor-Stecker verwendet?", options: ["LC-Stecker", "RJ45-Stecker", "BNC-Stecker", "D-Sub-Stecker"], answer: "LC-Stecker", exp: "Erklärung: Der LC-Stecker (Lucent Connector) ist der gängigste SFF-Glasfaserstecker in modernen Rechenzentren und Switches, da er durch seine kompakte Bauform eine hohe Portdichte erlaubt." },
+    { type: "mc", q: "20. Was unterscheidet eine Singlemode-Glasfaser (OS2) grundlegend von einer Multimode-Glasfaser (OM4)?", options: ["Singlemode hat einen sehr dünnen Kern, nutzt Laser und eignet sich für sehr lange Strecken.", "Multimode nutzt Laserlicht für Strecken bis zu 40 Kilometern.", "Singlemode-Fasern sind aus Kupfer gefertigt.", "Multimode-Fasern besitzen überhaupt keinen Glaskern."], answer: "Singlemode hat einen sehr dünnen Kern, nutzt Laser und eignet sich für sehr lange Strecken.", exp: "Erklärung: Singlemode (OS2) hat einen extrem dünnen Kerndurchmesser (~9 µm), nutzt präzise Halbleiterlaser und vermeidet Modendispersion, weshalb es Reichweiten von vielen Kilometern ohne Signalverlust erreicht." },
+
+    // 21-24
     { type: "mc", q: "21. Welche Wirkung hat die Erhöhung einer Subnetzmaske von /24 (255.255.255.0) auf /26 (255.255.255.192)?", options: ["Das Netzwerk wird in 4 kleinere Subnetze mit weniger Hosts unterteilt.", "Die Anzahl der verfügbaren Hosts pro Subnetz vervierfacht sich.", "Der Router wird nicht mehr für das Netzwerkgateway benötigt.", "Die MAC-Adressen der Clients ändern sich automatisch."], answer: "Das Netzwerk wird in 4 kleinere Subnetze mit weniger Hosts unterteilt.", exp: "Erklärung: Bei Subnetting mit /26 verbleiben 6 Bits für den Hostanteil (2^6 - 2 = 62 Hosts). Das ursprüngliche /24 Netz wird in 4 gleich große Subnetze getrennt." },
-
     { type: "mc", q: "22. Welche Funktion hat die Schirmung bei Twisted-Pair-Kabeln?", options: ["Schutz vor elektromagnetischen Störungen", "Erhöhung der Kabellänge", "Erhöhung der Datenrate", "Verringerung der Anzahl der Adern"], answer: "Schutz vor elektromagnetischen Störungen", exp: "Erklärung: Schirmfaktoren verringern die Signalverfälschung durch Fremdfelder." },
-    { type: "mc", q: "23. Welche Komponente führt das Licht in einer Glasfaser?", img: svgFiber, options: ["4", "1", "2", "3"], answer: "4", exp: "Erklärung: Der Kerndurchmesser bestimmt den Übertragungsmodus der Glasfaser." },
-    { type: "mc", q: "24. In welcher Faserart treten die in der Abbildung gezeigten Lichtwege auf?", img: svgMultimode, options: ["Multimode", "Singlemode", "Koaxialkabel", "Twisted Pair"], answer: "Multimode", exp: "Erklärung: Modendispersion ist die Folge mehrerer paralleler Lichtwege im Multimode." },
+    { type: "mc", q: "23. Warum wird bei der Gebäudeverkabelung zwischen Primär-, Sekundär- und Tertiärbereich unterschieden?", options: ["Um strukturierte und erweiterbare Netzwerkarchitekturen zu gewährleisten.", "Weil Kupferkabel nur im Primärbereich zugelassen sind.", "Weil Router ausschließlich im Tertiärbereich eingesetzt werden.", "Um die Anzahl der benötigten IP-Adressen zu reduzieren."], answer: "Um strukturierte und erweiterbare Netzwerkarchitekturen zu gewährleisten.", exp: "Erklärung: Die Trennung in 3 Bereiche laut EN 50173 schafft eine übersichtliche, herstellerneutrale und skalierbare Verkabelungsstruktur." },
+    { type: "mc", q: "24. Welche Aufgabe hat der Sekundärbereich (Gebäudebereich/Risewiring) in der strukturierten Verkabelung?", options: ["Verbindung zwischen dem Gebäudeverteiler (GV) und den Etagenverteilern (EV).", "Anbindung der einzelnen Arbeitsplatzdosen an den Etagenverteiler.", "Verbindung zwischen verschiedenen Standorten über das Internet.", "Direkte Stromversorgung der Serverräume."], answer: "Verbindung zwischen dem Gebäudeverteiler (GV) und den Etagenverteilern (EV).", exp: "Erklärung: Der Sekundärbereich verbindet vertikal innerhalb eines Gebäudes den zentralen Gebäudeverteiler mit den einzelnen Etagenverteilern (meist über Glasfaser)." },
 
-    // NEU GEÄNDERTE FRAGE 25 (Layer-2 Switch MAC Tabelle)
+    // 25
     { type: "mc", q: "25. Wie verhält sich ein Layer-2-Switch, wenn er ein Unicast-Frame empfängt, dessen Ziel-MAC-Adresse nicht in seiner MAC-Adresstabelle eingetragen ist?", options: ["Er sendet das Frame an alle aktiven Ports außer dem Empfangsport (Flooding).", "Er verwirft das Paket sofort und sendet eine ICMP-Fehlermeldung.", "Er leitet das Frame direkt an das Standard-Gateway weiter.", "Er fordert den Client zur Neueingabe der IP-Adresse auf."], answer: "Er sendet das Frame an alle aktiven Ports außer dem Empfangsport (Flooding).", exp: "Erklärung: Ist der Ziel-Port unbekannt (Unknown Unicast), nutzt der Switch temporär Flooding an alle Ports, um den Empfänger zu finden." },
 
     // 26-29
@@ -154,7 +143,7 @@ const questions = [
     { type: "mc", q: "28. Nach einem Umbau funktionieren alle PCs in einem Raum außer einem. Die Kabel und Ports sind korrekt. Was ist die wahrscheinlichste Ursache?", options: ["Falsche VLAN-Konfiguration", "Falsche IP-Adresse", "Defektes Patchpanel", "VLAN-Tagging am Endgerät deaktiviert"], answer: "Falsche VLAN-Konfiguration", exp: "Erklärung: Ist der entsprechende Switch-Port im falschen VLAN eingeteilt, verbleibt der Client isoliert in einer falschen Broadcast-Domäne." },
     { type: "mc", q: "29. Ein Unternehmen überträgt eine 50 GB große Datei über eine 1 Gbit/s Verbindung. Wie lange dauert die Übertragung theoretisch? (1 Byte = 8 Bit)", options: ["ca. 6 Minuten 40 Sekunden", "ca. 5 Minuten", "ca. 11 Minuten", "ca. 50 Minuten"], answer: "ca. 6 Minuten 40 Sekunden", exp: "Erklärung: 50 GB * 8 = 400 Gbit. 400 Gbit / 1 Gbit/s = 400 Sekunden. 400 Sekunden / 60 = 6 Minuten und 40 Sekunden." },
 
-    // MODIFIZIERTE FRAGE 30 (Klartext ohne Klammern)
+    // 30
     { type: "mc", q: "30. Ein Access Point soll per Netzwerkkabel mit Strom versorgt werden. Welches Verfahren wird eingesetzt?", options: ["PoE", "DHCP", "DNS", "ARP"], answer: "PoE", exp: "Erklärung: Power over Ethernet (PoE nach IEEE 802.3af/at/bt) führt die Versorgungsspannung direkt über die verdrillten Adern des Ethernet-Kabels zu." },
 
     // 31-34
@@ -163,10 +152,10 @@ const questions = [
     { type: "mc", q: "33. Ein Client erhält keine IP-Adresse. Wo sollten Sie zuerst prüfen?", options: ["DHCP-Server ist erreichbar", "Eintrag im DNS-Server", "MAC-Adresse des Clients", "Subnetzmaske des Routers"], answer: "DHCP-Server ist erreichbar", exp: "Erklärung: Erhält ein Client keine IP-Zuweisung, schlägt die automatisierte Bereitstellung fehl. Der DHCP-Server oder die Verbindung zu ihm ist unterbrochen." },
     { type: "mc", q: "34. Ein Twisted-Pair-Kabel ist direkt parallel zu einer 230V-Stromleitung verlegt. Welche Auswirkung kann das haben?", options: ["Elektromagnetische Störungen (EMI)", "Erhöhte Bandbreite", "Kürzere Laufzeit", "Keine Auswirkung"], answer: "Elektromagnetische Störungen (EMI)", exp: "Erklärung: Wechselstromfelder induzieren Störspannungen in parallele Datenkabel, was zu massiven Paketverlusten führt." },
 
-    // MODIFIZIERTE FRAGE 35 (Klartext ohne Klammern)
+    // 35
     { type: "mc", q: "35. Der Download einer Datei ist sehr langsam, obwohl die Leitung 1 Gbit/s hat. Viele Kollegen nutzen gleichzeitig das Netzwerk. Was ist am wahrscheinlichsten?", options: ["Überlastung der Bandbreite", "Defekte Festplatte am Client", "Falscher Kabeltyp", "Falsche MAC-Adresse"], answer: "Überlastung der Bandbreite", exp: "Erklärung: Bandbreite beschreibt das Maximum der Leitung. Teilen sich viele Clients das Netz, sinkt der tatsächlich nutzbare Durchsatz pro User enorm." },
 
-    // 36-45
+    // 36-41
     { type: "mc", q: "36. Ein Netzwerkkabel ist 85 m lang. Ist das zulässig laut Ethernet-Standard?", options: ["Ja, bis max. 100 m zulässig", "Nein, maximal 50 m erlaubt", "Nein, maximal 75 m erlaubt", "Ja, bis maximal 500 m zulässig"], answer: "Ja, bis max. 100 m zulässig", exp: "Erklärung: Die Gesamtlänge eines Channel-Links bei Twisted-Pair-Kabeln darf laut ISO/IEC 11801 maximal 100 m betragen (90 m Verlegekabel + 10 m Patchkabel)." },
     { type: "mc", q: "37. Wie viele nutzbare Host-IP-Adressen stehen in einem IPv4 Subnetz /24 zur Verfügung?", options: ["254", "256", "255", "512"], answer: "254", exp: "Erklärung: Ein /24 Netz hat 8 Host-Bits (2^8 = 256 Adressen). Davon werden die Netz-ID (erste) und die Broadcast-Adresse (letzte) abgezogen -> 254 nutzbare Host-IPs." },
     { type: "mc", q: "38. Sie planen 3 Etagen mit je 24 Arbeitsplätzen (je 2 Ports). Wie viele Ports benötigt das Patchpanel pro Etage mindestens?", options: ["48 Ports", "24 Ports", "72 Ports", "96 Ports"], answer: "48 Ports", exp: "Erklärung: 24 Arbeitsplätze * 2 Ports = 48 Netzwerk-Dosen-Ports pro Etage." },
@@ -174,80 +163,49 @@ const questions = [
     { type: "mc", q: "40. Welche Übertragungsrate bietet der Standard 10GBASE-T?", options: ["10 Gbit/s", "1 Gbit/s", "100 Mbit/s", "100 Gbit/s"], answer: "10 Gbit/s", exp: "Erklärung: Die Nomenklatur beschreibt es direkt: 10G = 10 Gigabit pro Sekunde über Baseband Twisted Pair (-T)." },
     { type: "mc", q: "41. Sie planen 3 Etagen mit 24 Arbeitsplätzen. Wie viele Patchpanels (à 24 Ports, 2 Ports/Platz) benötigen Sie insgesamt?", options: ["6", "3", "12", "24"], answer: "6", exp: "Erklärung: 3 Etagen * 48 Ports = 144 Ports gesamt. 144 Ports / 24 Ports pro Panel = 6 Patchpanels." },
 
-    // NEU GEÄNDERTE FRAGE 42 (VLAN Trunking)
+    // 42-45
     { type: "mc", q: "42. Welche Aufgabe hat ein VLAN-Trunk (Tagged Port nach IEEE 802.1Q) zwischen zwei Switches?", options: ["Er überträgt Daten mehrerer VLANs über eine gemeinsame physische Leitung.", "Er erhöht die elektrische Stromstärke für PoE-Geräte.", "Er verbindet den Switch direkt mit dem Internet-Provider.", "Er wandelt Kupfer-Signale automatisch in Glasfaser um."], answer: "Er überträgt Daten mehrerer VLANs über eine gemeinsame physische Leitung.", exp: "Erklärung: Auf einem Trunk-Port fügt der Switch jedem Frame einen 4-Byte 802.1Q Tag hinzu, um Daten verschiedener VLANs über ein einziges Kabel getrennt zu transportieren." },
-
     { type: "mc", q: "43. Welche Wellenlänge wird häufig bei Singlemode-Glasfasern (OS2) verwendet?", options: ["1310 nm / 1550 nm", "850 nm", "650 nm", "400 nm"], answer: "1310 nm / 1550 nm", exp: "Erklärung: Singlemode-Fasern sind für langwelliges Infrarotlicht im Dämpfungsminimum bei 1310 nm und 1550 nm optimiert." },
     { type: "mc", q: "44. Ein Kupferkabel hat einen Widerstand von ca. 8,4 Ω pro 100m. Wie hoch ist der Widerstand für 90m?", options: ["ca. 7,56 Ω", "ca. 8,4 Ω", "ca. 75,6 Ω", "ca. 9,0 Ω"], answer: "ca. 7,56 Ω", exp: "Erklärung: Dreisatz: 8,4 Ω / 100 m = 0,084 Ω/m. 0,084 Ω/m * 90 m = 7,56 Ω." },
     { type: "mc", q: "45. Welche Aussage zu VLANs ist richtig?", options: ["VLANs trennen Broadcast-Domänen logisch auf Layer 2.", "VLANs erhöhen die physikalische Bandbreite.", "VLANs ersetzen den Router vollständig.", "VLANs funktionieren nur ohne Switches."], answer: "VLANs trennen Broadcast-Domänen logisch auf Layer 2.", exp: "Erklärung: Ein Virtual LAN unterteilt ein physisches Switched-Netzwerk in mehrere unabhängige logische Broadcast-Segmente." },
 
-    // NEU GEÄNDERTE FRAGE 46 (Untagged vs Tagged)
+    // 46-50
     { type: "mc", q: "46. Was passiert mit einem ungetaggten Ethernet-Frame, wenn es an einem Switch-Port eintrifft, der als Access-Port für VLAN 10 konfiguriert ist?", options: ["Der Switch weist dem Frame intern das VLAN 10 zu.", "Das Frame wird sofort als fehlerhaft verworfen.", "Der Switch leitet das Paket an alle VLANs weiter.", "Das Paket wird automatisch im Router verschlüsselt."], answer: "Der Switch weist dem Frame intern das VLAN 10 zu.", exp: "Erklärung: Ein Access-Port nimmt ungetaggte Frames von Endgeräten entgegen und ordnet sie intern fest der hinterlegten VLAN-ID (z. B. VLAN 10) zu." },
-
     { type: "mc", q: "47. Welche Funktion hat Wake-on-LAN (WoL)?", options: ["Einschalten eines ausgeschalteten PCs per Magic Packet", "Backup über das Netzwerk", "Neustart eines Routers", "Verschlüsselung von Daten"], answer: "Einschalten eines ausgeschalteten PCs per Magic Packet", exp: "Erklärung: WoL horcht über die Standby-Stromversorgung der Netzwerkkarte auf ein 'Magic Packet' (6x FF + 12x Ziel-MAC) und startet den Hauptprozessor." },
     { type: "mc", q: "48. Welche Norm beschreibt die strukturierte Verkabelung in Europa?", options: ["EN 50173 / ISO/IEC 11801", "TIA/EIA-568", "DIN VDE 0888", "IEEE 802.3"], answer: "EN 50173 / ISO/IEC 11801", exp: "Erklärung: Die europäische Norm EN 50173 definiert herstellerneutrale Vorgaben für Anwendungs- und Standortverkabelung." },
     { type: "mc", q: "49. Wie lautet die messtechnische Größe bei Abnahme einer Glasfaserstrecke?", options: ["Dämpfungsmessung in dB", "Widerstandsmessung in Ohm", "Spannungsmessung in Volt", "Frequenzmessung in Hz"], answer: "Dämpfungsmessung in dB", exp: "Erklärung: Dämpfung (gemessen in Dezibel) beschreibt den Verlust an Lichtleistung über die Glasfaserstrecke inklusive Steckverbindungen und Spleiße." },
-    { type: "mc", q: "50. Welche Adernpaare werden bei 100BASE-TX (Fast Ethernet) zur Übertragung genutzt?", options: ["Adernpaare 1-2 und 3-6", "Adernpaare 4-5 und 7-8", "Alle 4 Adernpaare", "Nur Adernpaar 1-2"], answer: "Adernpaare 1-2 und 3-6", exp: "Erklärung: Fast Ethernet mit 100 Mbit/s benötigt lediglich 2 Adernpaare (Pins 1, 2 für TX und Pins 3, 6 für RX). erst Gigabit nutzt alle 4 Paare." },
+    { type: "mc", q: "50. Welche Adernpaare werden bei 100BASE-TX (Fast Ethernet) zur Übertragung genutzt?", options: ["Adernpaare 1-2 und 3-6", "Adernpaare 4-5 und 7-8", "Alle 4 Adernpaare", "Nur Adernpaar 1-2"], answer: "Adernpaare 1-2 und 3-6", exp: "Erklärung: Fast Ethernet mit 100 Mbit/s benötigt lediglich 2 Adernpaare (Pins 1, 2 für TX und Pins 3, 6 für RX). Erst Gigabit nutzt alle 4 Paare." },
 
-    // NEUE NEU STRUKTURIERTE FRAGEN 51-80 IT LAUT VORGABE
+    // 51-80
     { type: "mc", q: "Aufgabe 51: Welche Aussage beschreibt den Unterschied zwischen Bandbreite und Durchsatz am besten?", options: ["Beide Begriffe haben dieselbe Bedeutung.", "Bandbreite ist die theoretische Kapazität, Durchsatz die tatsächlich erreichte Leistung.", "Durchsatz ist immer größer als die Bandbreite.", "Bandbreite wird nur bei WLAN verwendet."], answer: "Bandbreite ist die theoretische Kapazität, Durchsatz die tatsächlich erreichte Leistung.", exp: "Erklärung: Bandbreite bezeichnet das theoretische Maximum der Leitung (z. B. 1 Gbit/s). Der Durchsatz (Throughput) misst die tatsächliche Netto-Datenrate im Betrieb unter Berücksichtigung von Overhead und Auslastung." },
-
     { type: "mc", q: "Aufgabe 52: Ein Netzwerk hat eine Bandbreite von 1 Gbit/s. Gemessen werden 850 Mbit/s. Welche Aussage trifft zu?", options: ["Der Durchsatz beträgt 1 Gbit/s.", "Die Bandbreite beträgt 850 Mbit/s.", "Der Durchsatz beträgt 850 Mbit/s.", "Das Netzwerk ist defekt."], answer: "Der Durchsatz beträgt 850 Mbit/s.", exp: "Erklärung: Der real gemessene Wert im Betrieb entspricht dem Durchsatz (850 Mbit/s), während die nominale Kapazität (1 Gbit/s) die Bandbreite ist." },
-
     { type: "mc", q: "Aufgabe 53: Welche Einheit wird normalerweise für Netzwerkgeschwindigkeiten verwendet?", options: ["Byte", "Volt", "Bit pro Sekunde", "Hertz"], answer: "Bit pro Sekunde", exp: "Erklärung: Datenübertragungsraten in Netzwerken werden standardmäßig in Bit pro Sekunde (bit/s, Mbit/s, Gbit/s) gemessen. Speicherkapazitäten dagegen in Byte." },
-
     { type: "mc", q: "Aufgabe 54: Eine Datei ist 8 GB groß. Wie viele Gigabit entsprechen diesem Wert?", options: ["8 Gbit", "16 Gbit", "32 Gbit", "64 Gbit"], answer: "64 Gbit", exp: "Erklärung: 1 Byte besteht aus 8 Bits. Rechnungsansatz: 8 Gigabyte * 8 Bit = 64 Gigabit." },
-
     { type: "mc", q: "Aufgabe 55: Welche Aussage über Ethernet stimmt?", options: ["Ethernet verwendet MAC-Adressen.", "Ethernet arbeitet auf OSI-Schicht 7.", "Ethernet nutzt ausschließlich Glasfaser.", "Ethernet verwendet keine Frames."], answer: "Ethernet verwendet MAC-Adressen.", exp: "Erklärung: Ethernet ist die dominierende Schicht-2-Technologie und nutzt physikalische 48-Bit MAC-Adressen zur Adressierung von Datenpaketen (Frames)." },
-
     { type: "mc", q: "Aufgabe 56: Welche Komponente prüft die Ziel-MAC-Adresse eines Ethernet-Frames?", options: ["Switch", "Patchpanel", "Netzteil", "USV"], answer: "Switch", exp: "Erklärung: Ein Layer-2-Switch bewertet die Ziel-MAC im Ethernet-Header, um das Paket gezielt an den richtigen Port weiterzuleiten." },
-
     { type: "mc", q: "Aufgabe 57: Welches Feld eines Ethernet-Frames enthält die eigentlichen Nutzdaten?", options: ["FCS", "Payload", "SFD", "EtherType"], answer: "Payload", exp: "Erklärung: Der Payload-Bereich trägt die Nutzdaten der höheren Schichten (z. B. das IP-Paket). Er umfasst zwischen 46 und 1500 Bytes." },
-
     { type: "mc", q: "Aufgabe 58: Welche Aufgabe besitzt die FCS im Ethernet-Frame?", options: ["Verschlüsselung", "Fehlererkennung", "Komprimierung", "Routing"], answer: "Fehlererkennung", exp: "Erklärung: Die Frame Check Sequence (FCS) beinhaltet einen 32-Bit CRC-Prüfwert, mit dem der Empfänger prüft, ob Übertragungsfehler vorliegen." },
-
     { type: "mc", q: "Aufgabe 59: Welche maximale Standard-MTU wird bei Ethernet normalerweise verwendet?", options: ["512 Byte", "1024 Byte", "1500 Byte", "9000 Byte"], answer: "1500 Byte", exp: "Erklärung: Die Maximum Transmission Unit (MTU) für Standard-Ethernet beträgt 1500 Bytes Payload (ohne Ethernet-Header)." },
-
     { type: "mc", q: "Aufgabe 60: Eine Datei wird in viele kleinere Ethernet-Frames zerlegt. Warum geschieht das?", options: ["Weil die MTU begrenzt ist", "Weil MAC-Adressen zu kurz sind", "Weil Ethernet keine Nutzdaten übertragen kann", "Weil Switches keine großen Dateien unterstützen"], answer: "Weil die MTU begrenzt ist", exp: "Erklärung: Da ein Ethernet-Frame maximal 1500 Byte Nutzlast transportieren kann, müssen größere Datensätze (z. B. Dateien) in viele kleinere Segmente/Pakete fragmentiert werden." },
-
     { type: "mc", q: "Aufgabe 61: Ein Benutzer erhält nach dem Einschalten des PCs automatisch eine gültige IP-Adresse. Welcher Dienst war dafür verantwortlich?", options: ["DNS", "DHCP", "HTTP", "FTP"], answer: "DHCP", exp: "Erklärung: Dynamic Host Configuration Protocol (DHCP) verteilt automatisiert IP-Adressen, Subnetzmasken und Standard-Gateways an Clients." },
-
     { type: "mc", q: "Aufgabe 62: Ein Benutzer kennt nur den Namen eines Servers. Welcher Dienst hilft bei der Ermittlung der IP-Adresse?", options: ["DNS", "DHCP", "ARP", "TCP"], answer: "DNS", exp: "Erklärung: Das Domain Name System (DNS) löst Hostnamen in die dazugehörigen IP-Adressen auf." },
-
     { type: "mc", q: "Aufgabe 63: Ein Administrator möchte einen ausgeschalteten PC über das Netzwerk starten. Welche Technik wird verwendet?", options: ["VLAN", "Wake-on-LAN", "DHCP", "NAT"], answer: "Wake-on-LAN", exp: "Erklärung: Wake-on-LAN (WoL) sendet ein spezielles Aufweck-Paket (Magic Packet) an die Netzwerkarte des ausgeschalteten PCs." },
-
     { type: "mc", q: "Aufgabe 64: Warum wird bei Wake-on-LAN die MAC-Adresse verwendet?", options: ["Der ausgeschaltete PC besitzt keine aktive IP-Kommunikation.", "Die MAC-Adresse ist schneller.", "Die IP-Adresse ist zu lang.", "DHCP funktioniert sonst nicht."], answer: "Der ausgeschaltete PC besitzt keine aktive IP-Kommunikation.", exp: "Erklärung: Da das Betriebssystem heruntergefahren ist, ist kein IP-Stapel aktiv. Nur die Netzwerkkarte verarbeitet auf Schicht 2 Daten anhand ihrer festen MAC-Adresse." },
-
     { type: "mc", q: "Aufgabe 65: Ein Unternehmen möchte mehrere Access Points mit Strom versorgen, ohne zusätzliche Steckdosen zu installieren. Welche Technik eignet sich dafür?", options: ["DNS", "TCP", "PoE", "OSPF"], answer: "PoE", exp: "Erklärung: Power over Ethernet (PoE) führt Gleichstrom direkt über das RJ45-Netzwerkkabel zu den Endgeräten." },
-
     { type: "mc", q: "Aufgabe 66: Nach Installation eines neuen Access Points startet das Gerät nicht. Welche Ursache ist am wahrscheinlichsten?", options: ["DNS-Eintrag fehlt", "PoE wird nicht bereitgestellt", "Browser nicht aktuell", "DHCP deaktiviert"], answer: "PoE wird nicht bereitgestellt", exp: "Erklärung: Startet ein PoE-Gerät ohne separates Netzteil überhaupt nicht, liefert der Switch-Port keine PoE-Versorgungsspannung." },
-
     { type: "mc", q: "Aufgabe 67: Ein Netzwerk verwendet Cat 5e. Welche Datenrate ist typischerweise möglich?", options: ["1 Gbit/s", "10 Gbit/s über 100 m", "40 Gbit/s", "100 Gbit/s"], answer: "1 Gbit/s", exp: "Erklärung: Kategorie 5e (Cat 5e) ist für Übertragungsfrequenzen bis 100 MHz spezifiziert und unterstützt Gigabit-Ethernet (1 Gbit/s) bis 100 m." },
-
     { type: "mc", q: "Aufgabe 68: Ein Unternehmen möchte 10 Gbit/s über 100 m Kupfer übertragen. Welche Kabelkategorie eignet sich am besten?", options: ["Cat 5", "Cat 5e", "Cat 6a", "Cat 3"], answer: "Cat 6a", exp: "Erklärung: Kategorie 6a (Cat 6a) ist bis 500 MHz spezifiziert und sichert den Betrieb von 10GBASE-T über die volle Distanz von 100 Metern." },
-
     { type: "mc", q: "Aufgabe 69: Ein Netzwerktechniker entdeckt ein U/UTP-Kabel. Welche Aussage trifft zu?", options: ["Gesamtschirm vorhanden", "Paarschirm vorhanden", "Keine Schirmung vorhanden", "Glasfaserkabel"], answer: "Keine Schirmung vorhanden", exp: "Erklärung: U/UTP steht für Unshielded / Unshielded Twisted Pair – weder der Gesamtmantel noch die einzelnen Adernpaare besitzen eine Metallschirmung." },
-
     { type: "mc", q: "Aufgabe 70: Ein Mitarbeiter knickt ein Netzwerkkabel sehr stark. Welche Folge kann auftreten?", options: ["Verbesserter Durchsatz", "Erhöhte Signalstörungen", "Höhere Bandbreite", "Kürzere MAC-Adresse"], answer: "Erhöhte Signalstörungen", exp: "Erklärung: Starkes Knicken verändert die Verdrillung und Geometrie der Adern, was zu Wellenwiderstandsänderungen, Signalreflexionen und hoher Dämpfung führt." },
-
     { type: "mc", q: "Aufgabe 71: Welche Abkürzung steht für Gebäudeverteiler?", options: ["EV", "SV", "GV", "AP"], answer: "GV", exp: "Erklärung: In der strukturierten Verkabelung steht GV für Gebäudeverteiler (Primärbereich)." },
-
     { type: "mc", q: "Aufgabe 72: Welche Abkürzung steht für Etagenverteiler?", options: ["EV", "GV", "SV", "AP"], answer: "EV", exp: "Erklärung: EV steht für Etagenverteiler (Tertiärbereich). SV steht für Standortverteiler." },
-
     { type: "mc", q: "Aufgabe 73: Wo befindet sich typischerweise ein Patchpanel?", options: ["Arbeitsplatz", "Etagenverteiler", "Monitor", "Drucker"], answer: "Etagenverteiler", exp: "Erklärung: Das Patchpanel ist im Verteilerschrank des Etagenverteilers (EV) eingebaut und schließt die Verlegekabel ab." },
-
     { type: "mc", q: "Aufgabe 74: Welche Aussage über ein Patchpanel ist richtig?", options: ["Es verteilt aktiv Daten.", "Es benötigt eine eigene IP-Adresse.", "Es ist eine passive Komponente.", "Es arbeitet als Router."], answer: "Es ist eine passive Komponente.", exp: "Erklärung: Ein Patchpanel benötigt keinen elektrischen Strom und ist ein rein passives Verbindungselement zum Auflegen fester Verlegekabel." },
-
     { type: "mc", q: "Aufgabe 75: Welche Topologie wird bei der strukturierten Verkabelung verwendet?", options: ["Bus", "Ring", "Hierarchischer Stern", "Full Mesh"], answer: "Hierarchischer Stern", exp: "Erklärung: Die Norm EN 50173 fordert eine hierarchische Sterntopologie (Standortverteiler -> Gebäudeverteiler -> Etagenverteiler -> Endgerät)." },
-
     { type: "mc", q: "Aufgabe 76: Was bedeutet SNR?", options: ["Signal-to-Noise Ratio", "Server Network Routing", "Secure Network Range", "Switch Node Response"], answer: "Signal-to-Noise Ratio", exp: "Erklärung: Signal-to-Noise Ratio (SNR) bezeichnet den Signal-Rausch-Abstand zwischen dem Nutzsignal und den Störgeräuschen." },
-
     { type: "mc", q: "Aufgabe 77: Welcher SNR-Wert ist grundsätzlich besser?", options: ["Niedriger SNR", "Hoher SNR", "Beide gleich", "Nicht relevant"], answer: "Hoher SNR", exp: "Erklärung: Ein hoher SNR-Wert bedeutet, dass das Nutzsignal deutlich stärker ist als das Hintergrundrauschen, was zu fehlerfreier Übertragung führt." },
-
     { type: "mc", q: "Aufgabe 78: Welche Maßnahme reduziert EMI besonders wirksam?", options: ["Netzwerkkabel direkt neben Stromleitungen verlegen", "Größeren Abstand zu Stromleitungen einhalten", "Kabel stärker knicken", "DHCP deaktivieren"], answer: "Größeren Abstand zu Stromleitungen einhalten", exp: "Erklärung: Physische Distanz schwächt elektromagnetische Felder (EMI) ab. Mindestabstände zu Starkstromleitungen verhindern Induktion." },
-
     { type: "mc", q: "Aufgabe 79: Welche Ursache führt typischerweise zu Crosstalk?", options: ["Übersprechen zwischen benachbarten Aderpaaren", "Falsche DNS-Einstellungen", "Fehlerhafte IP-Adresse", "Defekte Festplatte"], answer: "Übersprechen zwischen benachbarten Aderpaaren", exp: "Erklärung: Crosstalk (Nah-/Fernnebensprechen) entsteht durch kapazitive/induktive Kopplung zwischen nebeneinanderliegenden Aderpaaren im Kabel." },
-
     { type: "mc", q: "Aufgabe 80: Welcher Vorteil entsteht durch differentielle Signalübertragung?", options: ["Größere Bildschirme", "Höhere Auflösung", "Bessere Unterdrückung elektromagnetischer Störungen", "Schnellere Prozessoren"], answer: "Bessere Unterdrückung elektromagnetischer Störungen", exp: "Erklärung: Bei differentieller Übertragung (Twisted Pair) werden invertierte Signale gesendet. Störungen treffen beide Adern gleich und löschen sich bei der Differenzbildung am Empfänger aus (Gleichtaktausblendung)." }
 ];
 
@@ -326,7 +284,7 @@ function nextQuestion() {
 }
 
 function getRangliste() {
-    const data = localStorage.getItem(`lf03_rangliste_80_final`);
+    const data = localStorage.getItem(`lf03_rangliste_80_v3`);
     if (data) {
         return JSON.parse(data);
     }
@@ -348,7 +306,7 @@ function saveRanglisteEntry(name) {
     });
     list.sort((a, b) => b.score - a.score);
     list = list.slice(0, 10);
-    localStorage.setItem(`lf03_rangliste_80_final`, JSON.stringify(list));
+    localStorage.setItem(`lf03_rangliste_80_v3`, JSON.stringify(list));
     renderRangliste(name.trim());
 }
 
