@@ -2,22 +2,27 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>LERNZIELKONTROLLE LF03 – CLIENTS IN NETZWERKE EINBINDEN | 1. WOCHE (95 Aufgaben)</title>
+    <title>LERNZIELKONTROLLE LF03 – CLIENTS IN NETZWERKE EINBINDEN (200 Fragen)</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #eef2f5; color: #333; }
-        .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 850px; margin: auto; }
+        .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 900px; margin: auto; }
         h1 { text-align: center; color: #003366; margin-bottom: 5px; font-size: 1.8em; }
         .subtitle { text-align: center; color: #555; margin-bottom: 20px; font-weight: 600; border-bottom: 2px solid #003366; padding-bottom: 10px; }
-        .progress { font-weight: bold; color: #666; margin-bottom: 15px; font-size: 1.1em; }
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .menu-btn { background: #003366; color: white; border: none; padding: 20px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; text-align: left; transition: background 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .menu-btn:hover { background: #002244; }
+        .menu-btn span { display: block; font-size: 0.85em; font-weight: normal; margin-top: 5px; opacity: 0.9; }
+        .progress { font-weight: bold; color: #666; margin-bottom: 15px; font-size: 1.1em; display: flex; justify-content: space-between; align-items: center; }
         .question-text { font-size: 1.2em; font-weight: 600; margin-bottom: 15px; line-height: 1.4; }
-        .q-image-container { text-align: center; margin-bottom: 20px; background: #fafafa; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0; }
-        .q-image-container svg { max-width: 100%; height: auto; }
         .option { display: block; width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; text-align: left; font-size: 16px; transition: background 0.2s; box-sizing: border-box; }
         .option:hover { background: #eef2f5; }
+        .option { min-height: 58px; }
         .correct { background: #d4edda !important; border-color: #c3e6cb !important; color: #155724; font-weight: bold; }
         .incorrect { background: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24; font-weight: bold; }
-        .submit-btn, #next-btn { background: #003366; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; margin-top: 15px; transition: background 0.2s; font-weight: bold; }
-        .submit-btn:hover, #next-btn:hover { background: #002244; }
+        .submit-btn, #next-btn, .back-btn, .prev-btn { background: #003366; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; margin-top: 15px; transition: background 0.2s; font-weight: bold; }
+        .submit-btn:hover, #next-btn:hover, .prev-btn:hover { background: #002244; }
+        .back-btn, .prev-btn { background: #6c757d; margin-right: 10px; }
+        .back-btn:hover, .prev-btn:hover { background: #5a6268; }
         #next-btn { display: none; }
         .feedback { margin-top: 15px; font-size: 1em; padding: 14px; border-radius: 6px; line-height: 1.5; color: #111111 !important; font-weight: 500; }
         .feedback-correct { background: #d4edda; border: 1px solid #c3e6cb; }
@@ -26,49 +31,496 @@
         .feedback-img { margin-top: 15px; text-align: center; }
         .feedback-img img { max-width: 280px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .img-container { margin-top: 20px; text-align: center; }
-        .img-container img { max-width: 400px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); border: 3px solid #003366; }
+        .img-container img { max-width: 280px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
         .meme-text { font-size: 1.3em; font-weight: bold; margin-top: 15px; color: #222; }
-        .rangliste-container { margin-top: 30px; text-align: left; background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
-        .rangliste-form { display: flex; gap: 10px; margin-bottom: 20px; }
-        .rangliste-form input { flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
-        table.rangliste-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-        table.rangliste-table th, table.rangliste-table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-        table.rangliste-table th { background: #f2f2f2; }
-        .highlight-row { background-color: #d1ecf1 !important; font-weight: bold; }
+        .matching-container { margin: 15px 0; }
+        .matching-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #ddd; }
+        .matching-row select { padding: 8px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc; max-width: 300px; }
     </style>
 </head>
 <body>
 
 <div class="card" id="quiz-card">
     <h1>LERNZIELKONTROLLE LF03</h1>
-    <div class="subtitle">CLIENTS IN NETZWERKE EINBINDEN | 1. WOCHE (95 LZK-Prüfungsaufgaben)</div>
-    <div id="progress" class="progress"></div>
-    <div id="question-content"></div>
-    <div id="feedback-area"></div>
-    <button id="next-btn" onclick="nextQuestion()">Nächste Frage</button>
+    <div class="subtitle">Wähle eine der 4 Tabellen (je 50 Fragen) aus!</div>
+    <div id="menu-container"></div>
 </div>
 
 <script>
-function levenshtein(a, b) {
-    var matrix = [];
-    var i, j;
-    if (a.length === 0) return b.length;
-    if (b.length === 0) return a.length;
-    for (i = 0; i <= b.length; i++) { matrix[i] = [i]; }
-    for (j = 0; j <= a.length; j++) { matrix[0][j] = j; }
-    for (i = 1; i <= b.length; i++) {
-        for (j = 1; j <= a.length; j++) {
-            if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-                matrix[i][j] = Math.min(
-                    matrix[i - 1][j - 1] + 1,
-                    Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
-                );
-            }
-        }
+const correctMemes = ["https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExenowNmMyZ3p6azc4OGh6OXRqaTQwdzRiYTRrenFsNTNndGtia2VxNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26BRuYXWpqOoIFnzO/giphy.gif", "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExanNsaG51MTM5dnNtMXZjOW84MTg1Mm5oajd3YzkzYWNlemZiOXJndyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3rgXBQIDHkFNniTNRu/giphy.gif"];
+
+const incorrectMemes = ["https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNzV4eW5zaDczM3E2cWY2Y3dlMm81c3AxZmo2NDZxNTlseXBlY3ozaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nR4L10XlJcSeQ/giphy.gif", "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWN6NHM4c2UzM3I4Yng3bnh0OGl5cGNpMjd6cDRsdno0emFhcWlvZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LyJ6KPlrFdKnK/giphy.gif"];
+
+const tabellen = [
+    {
+        id: 1,
+        title: "Tabelle 1: Elektrotechnik, Grundlagen, Topologien & OSI",
+        desc: "Stromgefahren, AWG, Topologien, Client-Server & OSI-Modell (50 Fragen).",
+        questions: [
+            { type: "mc", q: "1. Welche Einheit wird für die elektrische Spannung verwendet?", options: ["Ampere", "Volt", "Ohm", "Watt"], answer: "Volt", exp: "Die Spannung wird in Volt (V) gemessen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "2. Welche Stromstärke kann bei Wechselstrom bereits lebensgefährliches Herzkammerflimmern verursachen?", options: ["Etwa 0,5 mA", "Etwa 5 mA", "Etwa 50 mA", "Etwa 500 mA"], answer: "Etwa 50 mA", exp: "Ab ca. 50 mA besteht akute Lebensgefahr für das Herz. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "3. Welche Bauteile können auch nach dem Trennen vom Stromnetz gefährlich sein?", options: ["Kondensatoren", "USV-Anlagen", "Netzteile", "Passive Patchpanel"], answer: "Kondensatoren", exp: "Kondensatoren und USV-Akkus speichern gefährliche Restenergien. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "4. Welche Arbeit darf eine IT-Fachkraft ohne Elektrozusatzausbildung durchführen?", options: ["Eine 230-V-Wandsteckdose austauschen", "Ein Netzteil intern reparieren", "Ein RJ45-Netzwerkkabel crimpen", "Eine fest angeschlossene Starkstromleitung verlegen"], answer: "Ein RJ45-Netzwerkkabel crimpen", exp: "ITler dürfen Datenkabel konfektionieren, aber nicht an festen 230V-Netzen arbeiten. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "5. Wovon hängt der elektrische Widerstand eines Leiters ab?", options: ["Material, Leiterlänge und Leiterquerschnitt", "Nur von der IP-Adresse", "Nur von der Kabellfarbe", "Von der MAC-Adresse"], answer: "Material, Leiterlänge und Leiterquerschnitt", exp: "Der Widerstand berechnet sich aus Materialkonstante, Länge und Querschnitt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "6. Welche Aussage zum AWG-Standard ist richtig?", options: ["Je kleiner die AWG-Zahl, desto dicker der Draht.", "Je größer die AWG-Zahl, desto dicker der Draht.", "AWG beschreibt die exakte Kabellänge.", "AWG ist ein WLAN-Standard."], answer: "Je kleiner die AWG-Zahl, desto dicker der Draht.", exp: "AWG (American Wire Gauge) verhält sich umgekehrt: kleinerer Wert = dickerer Draht. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "7. Welches Kabel ist für lange PoE-Verbindungen (geringerer Widerstand) besser geeignet?", options: ["AWG 28", "AWG 26", "AWG 24", "AWG 30"], answer: "AWG 24", exp: "AWG 24 ist dicker und hat einen geringeren Widerstand als AWG 26 oder 28. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "8. Ein Access Point erhält am Ende einer langen Leitung zu wenig Leistung. Was ist die Ursache?", options: ["Spannungsabfall auf der Leitung", "Zu hoher Datendurchsatz", "Falsche MAC-Adresse", "DNS-Fehler"], answer: "Spannungsabfall auf der Leitung", exp: "Der ohmsche Widerstand führt bei langen Strecken zu einem Spannungsabfall. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "9. Zuordnung von Personengruppen und Berechtigungen:", pairs: [
+                { item: "Elektrofachkraft", target: "Darf selbstständig elektrotechnische Arbeiten prüfen und freigeben" },
+                { item: "Elektrotechnisch unterwiesene Person", target: "Darf elektrotechnische Arbeiten unter Leitung und Aufsicht ausführen" },
+                { item: "IT-Fachkraft", target: "Darf Netzwerkgeräte anschließen, aber keine 230-V-Anlage reparieren" }
+            ], options: [
+                "Darf selbstständig elektrotechnische Arbeiten prüfen und freigeben",
+                "Darf elektrotechnische Arbeiten unter Leitung und Aufsicht ausführen",
+                "Darf Netzwerkgeräte anschließen, aber keine 230-V-Anlage reparieren"
+            ], exp: "Die Befugnisse sind nach DIN VDE streng nach Ausbildung und Unterweisung gestaffelt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "10. Welche Gefahren gehen von USV-Anlagen aus?", options: ["Hohe Ströme und gespeicherte elektrische Energie", "Ausschließlich DNS-Ausfälle", "Nur langsame Internetverbindungen", "Keine Gefahren"], answer: "Hohe Ströme und gespeicherte elektrische Energie", exp: "USV-Batterien können enorme Kurzschlussströme liefern und auch bei Netzausfall tödliche Spannungen führen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "11. Welche Topologie verwendet ein gemeinsames Übertragungsmedium (Shared Medium)?", options: ["Stern", "Bus", "Baum", "Vollvermaschung"], answer: "Bus", exp: "Beim Bus teilen sich alle Stationen exakt dieselbe physikalische Leitung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "12. Welche Topologie dominiert in modernen Büro-LANs?", options: ["Bus", "Ring", "Stern", "Vollvermaschung"], answer: "Stern", exp: "Moderne LANs nutzen strukturierte Sterntopologien mit zentralen Switches. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "13. Welchen Vorteil hat eine Stern-Topologie mit Switch?", options: ["Ein Kabelausfall betrifft normalerweise nur ein einzelnes Endgerät.", "Es wird kein zentrales Gerät benötigt.", "Alle Geräte teilen immer eine Kollisionsdomäne.", "Es gibt keine Kabellängenbegrenzung."], answer: "Ein Kabelausfall betrifft normalerweise nur ein einzelnes Endgerät.", exp: "Das Netz bleibt stabil, da Leitungsfehler isoliert am jeweiligen Port anliegen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "14. Welcher Nachteil besteht bei einer einfachen Stern-Topologie?", options: ["Der zentrale Switch ist ein Single Point of Failure.", "Jeder Client benötigt 10 Netzwerkkarten.", "Man kann nur Glasfaser verwenden.", "Es gibt keine IP-Adressen."], answer: "Der zentrale Switch ist ein Single Point of Failure.", exp: "Fällt der Switch aus, bricht die Kommunikation des gesamten Sterns zusammen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "15. Wie viele direkte Verbindungen benötigt ein Full Mesh (Vollvermaschung) mit 10 Geräten?", options: ["10", "20", "45", "90"], answer: "45", exp: "Formel: n * (n - 1) / 2 = 10 * 9 / 2 = 45. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "16. Ein Gebäude besitzt einen Core-Switch und pro Etage weitere Access-Switches. Welche Topologie liegt vor?", options: ["Bus", "Ring", "Baum (hierarchisch)", "Punkt-zu-Punkt"], answer: "Baum (hierarchisch)", exp: "Die hierarchische Vernetzung von Verteilerstrukturen bildet eine Baumstruktur. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "17. Was beschreibt die physische Topologie?", options: ["Den tatsächlichen physischen Kabelverlauf", "Die logische IP-Adressvergabe", "Die DNS-Hierarchie", "Die Portnummern"], answer: "Den tatsächlichen physischen Kabelverlauf", exp: "Die physische Topologie zeigt, wie Kabel und Geräte im Raum real verkabelt sind. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "18. Ein Netzwerk mit Hub ist physisch sternförmig. Wie arbeitet es logisch?", options: ["Wie ein Bus (Shared Medium)", "Wie ein Full Mesh", "Wie ein Router", "Wie ein VLAN-Trunk"], answer: "Wie ein Bus (Shared Medium)", exp: "Da ein Hub alle Signale an jeden Port weiterleitet, teilen sich alle physikalischen Stern-Arme logisch eine Kollisionsdomäne wie ein Bus. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "19. Zuordnung von Topologie und Eigenschaft:", pairs: [
+                { item: "Bus", target: "Gemeinsames Übertragungsmedium" },
+                { item: "Stern", target: "Zentrales Kopplungselement (Switch)" },
+                { item: "Baum", target: "Hierarchischer Aufbau" },
+                { item: "Mesh", target: "Mehrere alternative redundante Wege" }
+            ], options: [
+                "Gemeinsames Übertragungsmedium",
+                "Zentrales Kopplungselement (Switch)",
+                "Hierarchischer Aufbau",
+                "Mehrere alternative redundante Wege"
+            ], exp: "Jede Topologie besitzt spezifische Strukturmerkmale. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "20. Wofür steht die Netzwerk-Abkürzung PAN?", options: ["Personal Area Network", "Public Access Network", "Private Application Node", "Protocol Area Network"], answer: "Personal Area Network", exp: "Ein PAN ist ein persönliches Nahbereichsnetzwerk (z.B. per Bluetooth). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "21. Welches Beispiel beschreibt ein LAN?", options: ["Netzwerk innerhalb eines Bürogebäudes", "Bluetooth-Kopfhörer", "Weltweites Internet", "Satellitenverbindung"], answer: "Netzwerk innerhalb eines Bürogebäudes", exp: "Ein LAN (Local Area Network) deckt lokale Bereiche wie Büros oder Firmen ab. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "22. Welche Aussage ist richtig?", options: ["Das Internet ist ein großes WAN.", "Jedes LAN ist automatisch ein WAN.", "PAN und WAN sind identisch.", "Ein WAN hat max. 10 Meter Reichweite."], answer: "Das Internet ist ein großes WAN.", exp: "Das Internet verbindet weltweite Netze und stellt das größte WAN dar. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "23. Zuordnung der Netzwerkgrößen:", pairs: [
+                { item: "PAN", target: "Bluetooth-Verbindung im persönlichen Umfeld" },
+                { item: "LAN", target: "Lokales Firmennetz im Gebäude" },
+                { item: "WAN", target: "Verbindung räumlich getrennter weltweiter Standorte" }
+            ], options: [
+                "Bluetooth-Verbindung im persönlichen Umfeld",
+                "Lokales Firmennetz im Gebäude",
+                "Verbindung räumlich getrennter weltweiter Standorte"
+            ], exp: "Klassifizierung nach geografischer Ausdehnung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "24. Welche Rolle fordert einen Netzwerkdienst an?", options: ["Client", "Server", "Switch", "Patchpanel"], answer: "Client", exp: "Clients initiieren Verbindungen und fordern Dienste an. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "25. Welche Aussage zum Client-Server-Prinzip ist richtig?", options: ["Ein Gerät kann gleichzeitig Client- und Serverrollen übernehmen.", "Ein Server muss immer ein Großrechner sein.", "Ein Client kann niemals Daten bereitstellen.", "Die Rolle wird ausschließlich durch die Gehäusefarbe bestimmt."], answer: "Ein Gerät kann gleichzeitig Client- und Serverrollen übernehmen.", exp: "In modernen Netzen agieren Rechner je nach Anwendung flexibel als Client oder Server. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "26. Ein normaler Arbeitsplatz-PC stellt einen freigegebenen Ordner im Netz bereit. Welche Rolle übernimmt er primär?", options: ["Dateiserver (neben seiner Client-Rolle)", "DHCP-Relay", "Router", "DNS-Resolver"], answer: "Dateiserver (neben seiner Client-Rolle)", exp: "Durch das Bereitstellen von Ressourcen agiert der PC in diesem Moment als Server. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "27. Was ist ein Netzwerkprotokoll?", options: ["Ein standardisiertes Kommunikationsregelwerk", "Ein spezieller Kabeltyp", "Eine physische MAC-Adresse", "Eine grafische Benutzeroberfläche"], answer: "Ein standardisiertes Kommunikationsregelwerk", exp: "Protokolle definieren Syntax, Semantik und Ablauf der Datenübertragung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "28. Wie viele Schichten besitzt das ISO/OSI-Referenzmodell?", options: ["4", "5", "7", "8"], answer: "7", exp: "Das OSI-Modell ist starr in 7 logische Schichten unterteilt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "29. Auf welcher OSI-Schicht arbeitet ein klassischer Hub?", options: ["Schicht 1", "Schicht 2", "Schicht 3", "Schicht 7"], answer: "Schicht 1", exp: "Ein Hub arbeitet rein auf Schicht 1 (Bitübertragungsschicht). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "30. Auf welcher OSI-Schicht arbeitet ein klassischer Ethernet-Switch?", options: ["Schicht 1", "Schicht 2", "Schicht 3", "Schicht 7"], answer: "Schicht 2", exp: "Switches werten MAC-Adressen auf Schicht 2 aus. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "31. Welche Hauptaufgabe hat die OSI-Schicht 3?", options: ["Logische Adressierung und Routing", "MAC-Adressierung", "Grafische Darstellung", "Bitübertragung"], answer: "Logische Adressierung und Routing", exp: "Schicht 3 ist für IP-Adressen und das Weiterleiten über Netzwerkgrenzen zuständig. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "32. Auf welcher OSI-Schicht befinden sich TCP und UDP?", options: ["Anwendungsschicht", "Transportschicht (Schicht 4)", "Sicherungsschicht", "Bitübertragungsschicht"], answer: "Transportschicht (Schicht 4)", exp: "TCP und UDP regeln als Transportschicht-Protokolle die Datenabsicherung und Ports. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "33. Zuordnung von Geräten/Konzepten und OSI-Schichten:", pairs: [
+                { item: "Hub", target: "Schicht 1" },
+                { item: "Switch", target: "Schicht 2" },
+                { item: "Router", target: "Schicht 3" },
+                { item: "HTTP / Webbrowser", target: "Schicht 7" }
+            ], options: [
+                "Schicht 1",
+                "Schicht 2",
+                "Schicht 3",
+                "Schicht 7"
+            ], exp: "Klassische Zuordnung von Netzwerkhardware und Diensten zu OSI-Schichten. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "34. Wie wird das Hinzufügen von Headern beim Durchlaufen der Schichten nach unten genannt?", options: ["Kapselung (Encapsulation)", "Fragmentierung", "Authentifizierung", "Crosstalk"], answer: "Kapselung (Encapsulation)", exp: "Jede Schicht fügt ihre Protokollinformationen hinzu (Kapselung). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "35. Ein Client hat IP, aber Port 443 ist gesperrt. Auf welcher OSI-Schicht liegt das Problem?", options: ["Schicht 4 (Transportschicht)", "Schicht 1", "Schicht 2", "Schicht 5"], answer: "Schicht 4 (Transportschicht)", exp: "Ports gehören zur Transportschicht (Schicht 4). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "36. In welcher Reihenfolge erfolgt eine systematische Fehlersuche typischerweise?", options: ["Von unten nach oben (Schicht 1 bis 7)", "Von oben nach unten", "In zufälliger Reihenfolge", "Nur auf Schicht 7"], answer: "Von unten nach oben (Schicht 1 bis 7)", exp: "Man prüft zuerst die physische Verbindung (Kabel/Link), bevor man komplexe Dienste untersucht. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "37. Wie viele Schichten besitzt das TCP/IP-Modell in der Praxis?", options: ["3", "4", "5", "7"], answer: "4", exp: "Das TCP/IP-Modell ist kompakter aufgebaut und umfasst 4 Schichten. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "38. Zuordnung der TCP/IP-Schichten zu Protokollen:", pairs: [
+                { item: "Anwendung", target: "HTTP und DNS" },
+                { item: "Transport", target: "TCP und UDP" },
+                { item: "Internet", target: "IP und ICMP" },
+                { item: "Netzzugang", target: "Ethernet und WLAN" }
+            ], options: [
+                "HTTP und DNS",
+                "TCP und UDP",
+                "IP und ICMP",
+                "Ethernet und WLAN"
+            ], exp: "Genaue Einordnung der Protokolle in das TCP/IP-Referenzmodell. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "39. Welche OSI-Schichten werden im TCP/IP-Modell zur Anwendungsschicht zusammengefasst?", options: ["OSI 5, 6 und 7", "OSI 1 und 2", "OSI 2 und 3", "OSI 3 und 4"], answer: "OSI 5, 6 und 7", exp: "Die obersten drei OSI-Schichten bilden gemeinsam die TCP/IP-Anwendungsschicht. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "40. Welche Aussage beschreibt den Unterschied zwischen OSI und TCP/IP richtig?", options: ["OSI ist ein theoretisches Referenzmodell, TCP/IP praxisorientiert.", "TCP/IP hat mehr Schichten als OSI.", "OSI wird nur für WLAN genutzt.", "TCP/IP enthält keine Transportschicht."], answer: "OSI ist ein theoretisches Referenzmodell, TCP/IP praxisorientiert.", exp: "OSI dient als theoretischer Standard, während TCP/IP das reale Internet-Protokollfundament darstellt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "41. Welche Adresse arbeitet hauptsächlich auf Schicht 2?", options: ["MAC-Adresse", "IPv4-Adresse", "TCP-Port", "FQDN"], answer: "MAC-Adresse", exp: "Die MAC-Adresse ist die eindeutige Schicht-2-Hardwareadresse. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "42. Wie lang ist eine klassische MAC-Adresse?", options: ["48 Bit", "32 Bit", "16 Bit", "128 Bit"], answer: "48 Bit", exp: "MAC-Adressen sind 48 Bit lang (6 Bytes). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "43. Welcher Teil einer MAC-Adresse kennzeichnet die OUI (Herstellerkennung)?", options: ["Die ersten 3 Bytes", "Die letzten 3 Bytes", "Die gesamte Adresse", "Der EtherType"], answer: "Die ersten 3 Bytes", exp: "Die IEEE vergibt die ersten drei Bytes als eindeutige Hersteller-OUI. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "44. Mit welchem Befehl wird unter Windows die MAC-Adresse angezeigt?", options: ["ipconfig /all", "tracert", "route delete", "ping"], answer: "ipconfig /all", exp: "'ipconfig /all' listet die physikalische Adresse (MAC) samt Netzwerkinformationen auf. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "45. Was ist ein Ethernet-Frame?", options: ["Die Dateneinheit der Sicherungsschicht", "Eine DNS-Zone", "Eine Routing-Tabelle", "Ein Spannungswert"], answer: "Die Dateneinheit der Sicherungsschicht", exp: "Daten werden auf Schicht 2 in Frames gekapselt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "46. Zuordnung der Ethernet-Frame-Komponenten:", pairs: [
+                { item: "Ziel-MAC", target: "Adresse des Empfängers im lokalen Netz" },
+                { item: "Quell-MAC", target: "Adresse des Absenders" },
+                { item: "EtherType", target: "Kennzeichnet das transportierte Protokoll (z.B. IPv4)" },
+                { item: "FCS", target: "Prüfsumme zur Fehlererkennung" }
+            ], options: [
+                "Adresse des Empfängers im lokalen Netz",
+                "Adresse des Absenders",
+                "Kennzeichnet das transportierte Protokoll (z.B. IPv4)",
+                "Prüfsumme zur Fehlererkennung"
+            ], exp: "Aufbau eines standardmäßigen Ethernet-II-Frames. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "47. Wie groß ist die Standard-MTU bei Ethernet?", options: ["1500 Byte", "512 Byte", "9000 Byte", "64 Byte"], answer: "1500 Byte", exp: "Die Standard-Nutzlast (MTU) eines Ethernet-Frames beträgt 1500 Bytes. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "48. Welches Feld im Ethernet-Frame verwendet CRC-32 zur Fehlererkennung?", options: ["FCS", "Payload", "Präambel", "EtherType"], answer: "FCS", exp: "Die Frame Check Sequence sichert das Frame gegen Übertragungsfehler ab. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "49. Welche Aufgabe hat die Präambel am Anfang des Ethernet-Frames?", options: ["Synchronisation des Empfängertakts", "IP-Vergabe", "Verschlüsselung", "VLAN-Zuordnung"], answer: "Synchronisation des Empfängertakts", exp: "Die Präambel synchronisiert die Takte von Sender und Empfänger. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "50. Welcher EtherType kennzeichnet IPv4?", options: ["0x0800", "0x0806", "0x8100", "0x86DD"], answer: "0x0800", exp: "Der Hexadezimalwert 0x0800 steht für IPv4-Datenverkehr. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." }
+        ]
+    },
+    {
+        id: 2,
+        title: "Tabelle 2: Ethernet, MAC, Medien & Störungen",
+        desc: "Duplex, CSMA/CD, Switches, STP, Kupfer-/Glasfaserkabel, EMV & Crosstalk (50 Fragen).",
+        questions: [
+            { type: "mc", q: "1. Was beschreibt Simplex-Kommunikation?", options: ["Kommunikation nur in eine Richtung", "Kommunikation gleichzeitig in beide Richtungen", "Kommunikation abwechselnd", "Vierfaches VLAN-Tagging"], answer: "Kommunikation nur in eine Richtung", exp: "Simplex erlaubt Datenfluss rein unidirektional (z.B. Radiobroadcasting). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "2. Welches Alltagsbeispiel entspricht Halbduplex?", options: ["Walkie-Talkie", "Telefonat", "Radio", "Glasfaser-Vollduplex"], answer: "Walkie-Talkie", exp: "Bei Halbduplex können zwar beide Stationen senden, aber nicht gleichzeitig auf derselben Frequenz/Leitung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "3. Warum wird CSMA/CD in modernen geswitchten Vollduplex-Netzen nicht benötigt?", options: ["Jeder Switch-Port bildet eine eigene Kollisionsdomäne.", "Es gibt keine MAC-Adressen mehr.", "Switches nutzen ausschließlich WLAN.", "Frames haben keine Prüfsumme."], answer: "Jeder Switch-Port bildet eine eigene Kollisionsdomäne.", exp: "Durch getrennte Sende- und Empfangsleitungen im Vollduplex entstehen keine Kollisionen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "4. Welches Zugriffsverfahren wird in WLAN-Netzwerken verwendet?", options: ["CSMA/CA", "CSMA/CD", "DORA", "NAT"], answer: "CSMA/CA", exp: "WLAN nutzt Collision Avoidance (Vermeidung), da Funkkollisionen während des Sendens nicht messbar sind. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "5. Wie arbeitet ein klassischer Hub?", options: ["Er wiederholt elektrische Signale an alle Ports (Flooding).", "Er leitet gezielt nach MAC weiter.", "Er routet zwischen IP-Netzen.", "Er vergibt DHCP-Leases."], answer: "Er wiederholt elektrische Signale an alle Ports (Flooding).", exp: "Ein Hub ist ein rein passiver Repeater auf Schicht 1. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "6. Wie lernt ein Switch seine MAC-Adresstabelle?", options: ["Aus der Quell-MAC eingehender Frames", "Durch Abfrage beim DNS-Server", "Aus der Ziel-IP", "Manuell per Konsole"], answer: "Aus der Quell-MAC eingehender Frames", exp: "Ein Switch speichert die Absender-MAC und den Port, auf dem sie empfangen wurde. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "7. Ein Switch kennt die Ziel-MAC eines Frames nicht. Was tut er?", options: ["Er flutet das Frame an alle Ports im selben VLAN.", "Er verwirft es immer sofort.", "Er schickt es an den Provider.", "Er ändert die IP-Adresse."], answer: "Er flutet das Frame an alle Ports im selben VLAN.", exp: "Unbekannte Unicast-Frames werden als Notlösung an alle Ports des VLANs geflutet. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "8. Welche MAC-Adresse kennzeichnet einen Ethernet-Broadcast?", options: ["FF:FF:FF:FF:FF:FF", "00:00:00:00:00:00", "127:00:00:00:00:01", "192.168.1.255"], answer: "FF:FF:FF:FF:FF:FF", exp: "Die FF:FF:FF:FF:FF:FF ist die universelle Broadcast-Zieladresse auf Schicht 2. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "9. Welche Switching-Methode prüft das vollständige Frame inklusive FCS auf Fehler?", options: ["Store-and-Forward", "Cut-Through", "Simplex", "Fragment-Free"], answer: "Store-and-Forward", exp: "Store-and-Forward liest das gesamte Frame ein und prüft die CRC-Prüfsumme. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "10. Zuordnung von Switch-Funktionen:", pairs: [
+                { item: "VLAN", target: "Logische Netztrennung" },
+                { item: "STP", target: "Schleifenvermeidung in redundanten Netzen" },
+                { item: "SNMP", target: "Netzwerküberwachung und Monitoring" },
+                { item: "LACP", target: "Portbündelung (Link Aggregation)" }
+            ], options: [
+                "Logische Netztrennung",
+                "Schleifenvermeidung in redundanten Netzen",
+                "Netzwerküberwachung und Monitoring",
+                "Portbündelung (Link Aggregation)"
+            ], exp: "Managed Switches bieten diese Kernfunktionen für Enterprise-Netzwerke. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "11. Wofür wird STP (Spanning Tree Protocol) verwendet?", options: ["Verhinderung von Netzwerkschleifen", "DNS-Namensauflösung", "IP-Vergabebeschleunigung", "Frame-Komprimierung"], answer: "Verhinderung von Netzwerkschleifen (Loops) auf Layer 2", exp: "STP blockiert redundante Switch-Pfade logisch, um Broadcast-Stürme zu verhindern. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "12. Zwei Switch-Ports wurden versehentlich als Schleife verbunden. Was entsteht ohne STP?", options: ["Ein verheerender Broadcast-Sturm", "Eine DHCP-Lease", "Ein DNS-Cache", "APIPA-Modus"], answer: "Ein verheerender Broadcast-Sturm", exp: "Broadcasts kreisen endlos im Kreis und überlasten Switches und Leitungen vollständig. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "13. Was bewirkt Link Aggregation (z.B. LACP)?", options: ["Mehrere physische Ports werden zu einer logischen Verbindung gebündelt.", "Ein Port wird in mehrere IPs aufgeteilt.", "Alle VLANs werden gelöscht.", "Der DNS-Cache wird erweitert."], answer: "Mehrere physische Ports werden zu einer logischen Verbindung gebündelt.", exp: "Link Aggregation erhöht Bandbreite und Ausfallsicherheit zwischen Switches. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "14. Wozu dient Port Mirroring?", options: ["Zum Spiegeln von Datenverkehr für Analyse- und Diagnosezwecke", "Zur Stromversorgung von APs", "Zur DHCP-Vergabe", "Zur WLAN-Verschlüsselung"], answer: "Zum Spiegeln von Datenverkehr für Analyse- und Diagnosezwecke", exp: "Port Mirroring leitet den Verkehr eines Ports zu einem Analyse-Port (z.B. für Wireshark) um. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "15. Aus wie vielen Adern besteht ein typisches Ethernet-Twisted-Pair-Kabel?", options: ["8 Adern", "2 Adern", "4 Adern", "16 Adern"], answer: "8 Adern (4 Paare)", exp: "Standard-Ethernetkabel (RJ45) besitzen 4 verdrillte Adernpaare (8 Adern). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "16. Warum werden Adernpaare in Netzwerkkabeln verdrillt?", options: ["Um Störungen und elektromagnetisches Crosstalk zu reduzieren", "Um IP-Adressen zu speichern", "Um PoE zu blockieren", "Um VLAN-Tags zu erzeugen"], answer: "Um Störungen und elektromagnetisches Crosstalk zu reduzieren", exp: "Das Verdrillen sorgt dafür, dass äußere Störfelder auf beide Adern gleich wirken und sich auslöschen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "17. Zuordnung von Kabel-Schirmungsarten:", pairs: [
+                { item: "U/UTP", target: "Keinerlei Schirmung (ungeschirmt)" },
+                { item: "F/UTP", target: "Folienschirm außen, keine Paarschirmung" },
+                { item: "U/FTP", target: "Kein Gesamtschirm, aber Folienschirm pro Paar" },
+                { item: "S/FTP", target: "Geflechtschirm außen und Folienschirm pro Paar" }
+            ], options: [
+                "Keinerlei Schirmung (ungeschirmt)",
+                "Folienschirm außen, keine Paarschirmung",
+                "Kein Gesamtschirm, aber Folienschirm pro Paar",
+                "Geflechtschirm außen und Folienschirm pro Paar"
+            ], options_display: "Standardisierte ISO/IEC 11801 Schirmungsbezeichnungen.",
+            exp: "Die Buchstaben vor dem Schrägstrich beschreiben den Gesamtschirm, danach den Paarschirm. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "18. Was kann passieren, wenn der Schirm eines geschirmten Kabels nicht korrekt geerdet ist?", options: ["Er kann wie eine Antenne wirken und Störungen einfangen", "Er erhöht die IP-Adresse", "Er ersetzt das Gateway", "Er erzeugt eine DHCP-Lease"], answer: "Er kann wie eine Antenne wirken und Störungen einfangen", exp: "Ein ungederter Schirm leitet Störungen nicht ab, sondern wirkt im schlimmsten Fall als Empfangsantenne. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "19. Wie groß ist der typische Kerndurchmesser einer Singlemode-Glasfaser (OS2)?", options: ["9 µm", "50 µm", "62,5 mm", "125 mm"], answer: "9 µm", exp: "Singlemode hat einen sehr dünnen Kern (9 Mikrometer) für weite Distanzen per Laser. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "20. Warum erreicht Singlemode größere Entfernungen als Multimode?", options: ["Es besitzt wesentlich weniger modale Dispersion", "Es verwendet Kupferadern", "Es sendet Broadcasts", "Es benötigt keine Lichtquelle"], answer: "Es besitzt wesentlich weniger modale Dispersion", exp: "Da nur ein Lichtpfad (Mode) existiert, gibt es keine Laufzeitunterschiede durch Lichtreflexionen im Kern. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "21. Zuordnung von Glasfaser-Bestandteilen:", pairs: [
+                { item: "Kern (Core)", target: "Innerer Glasbereich, durch den das Licht geleitet wird" },
+                { item: "Cladding (Mantel)", target: "Umhüllung mit niedrigerem Brechungsindex zur Totalreflexion" },
+                { item: "Beschichtung (Coating)", target: "Mechanischer Schutzlack gegen Beschädigung und Feuchtigkeit" },
+                { item: "Außenmantel", target: "Robuster äußerer Schutz für die Kabelverlegung" }
+            ], options: [
+                "Innerer Glasbereich, durch den das Licht geleitet wird",
+                "Umhüllung mit niedrigerem Brechungsindex zur Totalreflexion",
+                "Mechanischer Schutzlack gegen Beschädigung und Feuchtigkeit",
+                "Robuster äußerer Schutz für die Kabelverlegung"
+            ], exp: "Schichtaufbau von LWL-Kabeln. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "22. Was bedeutet Dämpfung in der Übertragungstechnik?", options: ["Die Abnahme der Signalstärke über die Streckenlänge", "Die Zunahme der Signalstärke", "Die Namensauflösung", "Die MAC-Änderung"], answer: "Die Abnahme der Signalstärke über die Streckenlänge", exp: "Dämpfung beschreibt den Signalverlust in Dezibel (dB) auf dem Übertragungsmedium. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "23. Was bedeutet ein hoher SNR-Wert (Signal-to-Noise Ratio)?", options: ["Das Verhältnis von Nutzsignal zu Rauschen ist günstig", "Das Störsignal ist stärker als das Nutzsignal", "Die Leitung ist unterbrochen", "Keine IP vorhanden"], answer: "Das Verhältnis von Nutzsignal zu Rauschen ist günstig", exp: "Ein hoher SNR bedeutet sauberes Signal bei geringem Hintergrundrauschen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "24. Ein Kabel verläuft lange parallel neben einer 230V-Starkstromleitung. Welcher Effekt droht?", options: ["EMI", "NAT-Überlastung", "DNS-Ausfall", "APIPA"], answer: "EMI", exp: "Starkstromfelder induzieren Störspannungen in parallel laufende Datenkabel. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "25. Zuordnung von Gegenmaßnahmen gegen Störungen:", pairs: [
+                { item: "Abstand einhalten", target: "Schützt wirksam vor elektromagnetischen Feldern (EMI)" },
+                { item: "Paarschirmung / Verdrillung", target: "Reduziert gegenseitiges Übersprechen (Crosstalk)" },
+                { item: "90-Grad-Kreuzung", target: "Verringert Kopplungen bei notwendiger Stromkabel-Kreuzung" }
+            ], options: [
+                "Schützt wirksam vor elektromagnetischen Feldern (EMI)",
+                "Reduziert gegenseitiges Übersprechen (Crosstalk)",
+                "Verringert Kopplungen bei notwendiger Stromkabel-Kreuzung"
+            ], exp: "Best Practices bei der Netzwerkverkabelung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "26. Was ist Crosstalk (Nebensprechen)?", options: ["Gegenseitige elektromagnetische Beeinflussung benachbarter Aderpaare", "Kommunikation zwischen Routern", "WLAN-Verschlüsselung", "VLAN-Routing"], answer: "Gegenseitige elektromagnetische Beeinflussung benachbarter Aderpaare", exp: "Signale eines Aderpaares strahlen in benachbarte Paare ein (Crosstalk). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "27. Ein Verlegekabel wurde extrem stark geknickt. Welche Folge tritt auf?", options: ["Impedanzsprung und Signalreflexionen", "Größerer DHCP-Pool", "Bessere Schirmung", "Automatische VLAN-Trennung"], answer: "Impedanzsprung und Signalreflexionen", exp: "Knicken zerstört die geometrische Adernstruktur, was zu Dämpfung und Reflexionen führt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "28. Wie funktioniert differentielle Signalübertragung bei Twisted-Pair?", options: ["Zwei Leitungen übertragen Signale mit entgegengesetzter Polarität", "Es wird nur eine Leitung gegen Erde genutzt", "Jedes Paket wird doppelt geroutet", "Es wird ohne Strom gearbeitet"], answer: "Zwei Leitungen übertragen Signale mit entgegengesetzter Polarität", exp: "Das Signal wird invertiert auf zwei Adern gesendet, um Störungen herauszufiltern. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "29. Welche Größe wertet der Empfänger bei differentieller Übertragung aus?", options: ["Die Spannungsdifferenz zwischen den beiden Adern", "Die Summe beider IP-Adressen", "Die Gesamtlänge des Kabels", "Die VLAN-ID"], answer: "Die Spannungsdifferenz zwischen den beiden Adern", exp: "Störungen wirken auf beide Adern gleich; die Differenzbildung blendet diese Gleichtaktstörungen aus. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "30. Leitung A führt +6 V, Leitung B führt -6 V. Wie groß ist die Spannungsdifferenz?", options: ["12 V", "0 V", "6 V", "-12 V"], answer: "12 V", exp: "Differenz: (+6 V) - (-6 V) = 12 V. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "31. Was ist eine Gleichtaktstörung (Common-Mode Noise)?", options: ["Eine Störung, die gleichartig auf beide Adern einer Leitung wirkt", "Eine falsche IP-Konfiguration", "Eine beschädigte DNS-Zone", "Ein Router-Loop"], answer: "Eine Störung, die gleichartig auf beide Adern einer Leitung wirkt", exp: "Äußere Felder induzieren in beide Adern dieselbe Störspannung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "32. Welche maximale Kanallänge gilt standardmäßig für Ethernet über Twisted-Pair (Channel Link)?", options: ["100 Meter", "10 Meter", "500 Meter", "1 Kilometer"], answer: "100 Meter", exp: "Die Maximallänge nach ISO/IEC 11801 beträgt 100 m (90m Verlegekabel + 10m Patchkabel). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "33. Was ist strukturierte Verkabelung?", options: ["Ein genormtes und anwendungsneutrales Verkabelungskonzept", "Ein herstellerspezifisches WLAN-Passwort", "Eine DNS-Struktur", "Eine NAT-Tabelle"], answer: "Ein genormtes und anwendungsneutrales Verkabelungskonzept", exp: "Strukturierte Verkabelung schafft eine langlebige, herstellerunabhängige Infrastruktur nach EN 50173. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "34. Zuordnung der Verkabelungsbereiche:", pairs: [
+                { item: "Primärbereich (Campus)", target: "Verbindung zwischen verschiedenen Gebäuden eines Standorts" },
+                { item: "Sekundärbereich (Vertikal)", target: "Verbindung zwischen Gebäudeverteiler und Etagenverteilern" },
+                { item: "Tertiärbereich (Horizontal)", target: "Verbindung zwischen Etagenverteiler und Arbeitsplatzdose" }
+            ], options: [
+                "Verbindung zwischen verschiedenen Gebäuden eines Standorts",
+                "Verbindung zwischen Gebäudeverteiler und Etagenverteilern",
+                "Verbindung zwischen Etagenverteiler und Arbeitsplatzdose"
+            ], exp: "Die 3 Bereiche der strukturierten Gebäude-Verkabelung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "35. Welche Topologie wird in der strukturierten Verkabelung zwingend verwendet?", options: ["Hierarchische Stern- bzw. Baumtopologie", "Einfacher Bus", "Unstrukturierter Ring", "Vollvermaschung"], answer: "Hierarchische Stern- bzw. Baumtopologie", exp: "Die Norm fordert strikt eine hierarchische Sterntopologie vom Verteiler zum Endgerät. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "36. Was ist ein Patchpanel?", options: ["Eine passive Anschluss- und Rangierkomponente", "Ein aktiver Router", "Ein DHCP-Server", "Ein WLAN-Access Point"], answer: "Eine passive Anschluss- und Rangierkomponente", exp: "Patchpanels sind passive Verteilerfelder, auf denen Verlegekabel aufgelegt werden. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "37. Ein 24-Port-Patchpanel ist voll belegt, aber nicht mit einem Switch verbunden. Geht Datenverkehr?", options: ["Nein, das Patchpanel ist passiv und schaltet keine Daten aktiv", "Ja, das Patchpanel routet automatisch", "Ja, über DNS", "Nur per APIPA"], answer: "Nein, das Patchpanel ist passiv und schaltet keine Daten aktiv", exp: "Da Patchpanels passiv sind, müssen sie zwingend mit aktiven Switch-Ports verbunden werden. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "38. Zuordnung der Verteiler-Abkürzungen:", pairs: [
+                { item: "SV", target: "Standortverteiler" },
+                { item: "GV", target: "Gebäudeverteiler" },
+                { item: "EV", target: "Etagenverteiler" },
+                { item: "AP", target: "Anschlussdose (Arbeitsplatz)" }
+            ], options: [
+                "Standortverteiler",
+                "Gebäudeverteiler",
+                "Etagenverteiler",
+                "Anschlussdose (Arbeitsplatz)"
+            ], exp: "Gängige Kürzel in der Rechenzentrum- und Gebäudeplanung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "39. Was beschreibt die Bandbreite in einem Netzwerk?", options: ["Die theoretische maximale Übertragungskapazität", "Die tatsächlich erreichte Leistung", "Die Anzahl der Benutzer", "Die Kabellänge in Metern"], answer: "Die theoretische maximale Übertragungskapazität", exp: "Bandbreite ist die Brutto-Maximalrate der Leitung (z.B. 1 Gbit/s). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "40. Was beschreibt der praktische Durchsatz (Throughput)?", options: ["Die unter realen Bedingungen erreichte Netto-Übertragungsleistung", "Die theoretische Obergrenze", "Den Kabelquerschnitt", "Die Spannung"], answer: "Die unter realen Bedingungen erreichte Netto-Übertragungsleistung", exp: "Der Durchsatz liegt wegen Protokoll-Overhead und Last immer unter der Bandbreite. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "41. Wie viele Bit entsprechen genau einem Byte?", options: ["8 Bit", "2 Bit", "4 Bit", "16 Bit"], answer: "8 Bit", exp: "1 Byte = 8 Bit. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "42. Wie lange dauert die Übertragung von 1 Gigabyte (GB) bei 1 Gbit/s theoretisch (dezimal)?", options: ["8 Sekunden", "1 Sekunde", "80 Sekunden", "800 Sekunden"], answer: "8 Sekunden", exp: "1 GB = 8 Gbit. 8 Gbit / 1 Gbit/s = 8 Sekunden. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "43. Welcher Standard ermöglicht 10 Gbit/s über Twisted-Pair-Kupfer bis 100 m?", options: ["10GBASE-T", "1000BASE-T", "10GBASE-SR", "IEEE 802.3af"], answer: "10GBASE-T", exp: "10GBASE-T überträgt 10 Gigabit über hochwertige Kupferkabel. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "44. Welcher Standard nutzt Singlemode-Glasfaser für 10 Gbit/s über große Distanzen?", options: ["10GBASE-LR", "10GBASE-T", "1000BASE-T", "802.11n"], answer: "10GBASE-LR", exp: "10GBASE-LR (Long Range) ist für Singlemode-Glasfaser optimiert. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "45. Wofür steht PoE (Power over Ethernet)?", options: ["Stromversorgung von Geräten direkt über das Netzwerkkabel", "Verschlüsselungsprotokoll", "Port-Optimierung", "Paketüberprüfung"], answer: "Stromversorgung von Geräten direkt über das Netzwerkkabel", exp: "PoE transportiert Gleichstrom über freie oder genutzte Adernpaare des LAN-Kabels. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "46. Zuordnung der PoE-Standards und Leistungen:", pairs: [
+                { item: "IEEE 802.3af (PoE)", target: "Bis zu 15,4 W am PSE-Port" },
+                { item: "IEEE 802.3at (PoE+)", target: "Bis zu 30 W am PSE-Port" },
+                { item: "IEEE 802.3bt (4PPoE)", target: "Bis zu 90 W über alle 4 Aderpaare" }
+            ], options: [
+                "Bis zu 15,4 W am PSE-Port",
+                "Bis zu 30 W am PSE-Port",
+                "Bis zu 90 W über alle 4 Aderpaare"
+            ], exp: "Entwicklung der PoE-Leistungsklassen von af zu bt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "47. Was ist das PSE (Power Sourcing Equipment)?", options: ["Das Gerät, das PoE-Leistung bereitstellt (z.B. PoE-Switch)", "Das mit Strom versorgte Endgerät", "Der DNS-Server", "Die Netzwerkkarte"], answer: "Das Gerät, das PoE-Leistung bereitstellt (z.B. PoE-Switch)", exp: "PSE speist den Strom ein, während das PD (Powered Device) ihn empfängt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "48. Was bedeutet PoE-Budget bei einem Switch?", options: ["Die Gesamtleistung, die der Switch für alle PoE-Ports maximal bereitstellen kann", "Die Anzahl der VLANs", "Die Switch-Kosten", "Die Kabellänge"], answer: "Die Gesamtleistung, die der Switch für alle PoE-Ports maximal bereitstellen kann", exp: "Das PoE-Budget limitiert die Summe der Leistung aller angeschlossenen PoE-Geräte. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "49. Ein PoE-Switch hat 150 W Budget. 6 Kameras benötigen je 20 W. Wie hoch ist die Reserve?", options: ["30 W", "10 W", "20 W", "50 W"], answer: "30 W", exp: "6 * 20 W = 120 W Verbrauch. 150 W - 120 W = 30 W Reserve. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "50. Welcher Standard wird für eine Kamera benötigt, die am Endgerät 25 W verbraucht?", options: ["IEEE 802.3at (PoE+)", "IEEE 802.3af", "IEEE 802.1Q", "IEEE 802.3i"], answer: "IEEE 802.3at (PoE+)", exp: "Da 802.3af nur ca. 13W liefert, wird für 25W zwingend PoE+ (802.3at) benötigt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." }
+        ]
+    },
+    {
+        id: 3,
+        title: "Tabelle 3: IP-Adressen, Subnetting, Routing & NAT",
+        desc: "IPv4, Subnetzmasken, CIDR, private Netze, Gateway, Routing, NAT und ARP (50 Fragen).",
+        questions: [
+            { type: "mc", q: "1. Welche primäre Aufgabe hat ein Router?", options: ["Pakete zwischen verschiedenen IP-Netzen (Schicht 3) weiterleiten", "Frames nur im LAN verteilen", "Kabel einspeisen", "IP-Adressen vergeben"], answer: "Pakete zwischen verschiedenen IP-Netzen (Schicht 3) weiterleiten", exp: "Router verbinden unterschiedliche IP-Subnetze und steuern das Routing. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "2. Wozu dient das Standardgateway (Default Gateway)?", options: ["Als erste Anlaufstelle für Datenpakete in fremde Subnetze", "Zur DNS-Auflösung", "Zur MAC-Ermittlung", "Für den lokalen Loopback"], answer: "Als erste Anlaufstelle für Datenpakete in fremde Subnetze", exp: "Ziele außerhalb des eigenen Netzes werden immer an das Gateway geschickt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "3. Welche vier Angaben gehören zu einer vollständigen IPv4-Grundkonfiguration?", options: ["IP-Adresse, Subnetzmaske, Standardgateway und DNS-Server", "MAC, OUI, FCS, MTU", "Benutzer, Passwort, Port 80, VLAN", "Hostname, RAM, CPU, BIOS"], answer: "IP-Adresse, Subnetzmaske, Standardgateway und DNS-Server", exp: "Diese 4 Parameter sind für die IP-Kommunikation und Internetnutzung zwingend. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "4. Wie groß ist eine IPv4-Adresse?", options: ["32 Bit", "16 Bit", "48 Bit", "128 Bit"], answer: "32 Bit", exp: "IPv4 nutzt 32 Bit, aufgeteilt in 4 Oktette. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "5. Zuordnung der privaten IPv4-Bereiche (RFC 1918):", pairs: [
+                { item: "Klasse A (privat)", target: "10.0.0.0 bis 10.255.255.255 (/8)" },
+                { item: "Klasse B (privat)", target: "172.16.0.0 bis 172.31.255.255 (/12)" },
+                { item: "Klasse C (privat)", target: "192.168.0.0 bis 192.168.255.255 (/16)" }
+            ], options: [
+                "10.0.0.0 bis 10.255.255.255 (/8)",
+                "172.16.0.0 bis 172.31.255.255 (/12)",
+                "192.168.0.0 bis 192.168.255.255 (/16)"
+            ], exp: "Offizielle private IP-Adressbereiche für lokale Netzwerke. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "6. Was macht NAT (Network Address Translation) am Router bei ausgehendem Verkehr?", options: ["Es ersetzt die private Quell-IP durch eine öffentliche Router-IP", "Es ändert die MAC-Adresse in einen DNS-Namen", "Es vergibt VLAN-Tags", "Es prüft die FCS"], answer: "Es ersetzt die private Quell-IP durch eine öffentliche Router-IP", exp: "NAT ermöglicht die gemeinsame Internetnutzung privater IPs über eine öffentliche IP. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "7. Zwei Geräte im Heimnetz zeigen im Web dieselbe öffentliche IP. Warum?", options: ["Der Router verwendet NAT.", "Beide haben dieselbe MAC.", "Beide nutzen APIPA.", "Der Switch ändert DNS."], answer: "Der Router verwendet NAT.", exp: "NAT übersetzt alle internen privaten IPs auf die eine öffentliche Router-IP. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "8. Zuordnung der Adressierungsarten:", pairs: [
+                { item: "Unicast", target: "Kommunikation von einem Sender zu genau einem Empfänger" },
+                { item: "Broadcast", target: "Kommunikation von einem Sender an alle Hosts im lokalen Netz" },
+                { item: "Multicast", target: "Kommunikation an eine definierte Empfängergruppe" },
+                { item: "Anycast", target: "Kommunikation an den nächstgelegenen Dienstknoten" }
+            ], options: [
+                "Kommunikation von einem Sender zu genau einem Empfänger",
+                "Kommunikation von einem Sender an alle Hosts im lokalen Netz",
+                "Kommunikation an eine definierte Empfängergruppe",
+                "Kommunikation an den nächstgelegenen Dienstknoten"
+            ], exp: "Grundlegende Kommunikationsmuster in IP-Netzwerken. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "9. Welches Verfahren nutzt ein DHCP-Client ohne IP-Adresse zu Beginn seiner Suche?", options: ["Broadcast", "Unicast", "Anycast", "Nur Multicast"], answer: "Broadcast", exp: "Da der Client den Server noch nicht kennt, sendet er DHCP Discover als Broadcast. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "10. Welche Aufgabe hat das Address Resolution Protocol (ARP)?", options: ["Ermittlung einer MAC-Adresse zu einer bekannten lokalen IP-Adresse", "Port-Zuordnung", "WLAN-Verschlüsselung", "TTL-Berechnung"], answer: "Ermittlung einer MAC-Adresse zu einer bekannten lokalen IP-Adresse", exp: "ARP schlägt die Brücke von Schicht 3 (IP) zu Schicht 2 (MAC). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "11. Das Ziel liegt im lokalen Netz. Wohin schickt der Client das Frame?", options: ["Direkt an die Ziel-MAC (ermittelt per ARP)", "Immer an das Gateway", "An den DNS-Server", "An Port 80"], answer: "Direkt an die Ziel-MAC (ermittelt per ARP)", exp: "Im lokalen Netz wird direkt ohne Router kommuniziert. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "12. Was ist ein Router-Hop?", options: ["Ein passierter Router auf dem Weg zum Ziel", "Ein Ethernet-Padding", "Eine DHCP-Lease", "Ein WLAN-Key"], answer: "Ein passierter Router auf dem Weg zum Ziel", exp: "Jeder Router auf dem Pfad stellt einen Hop dar. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "13. Was begrenzt die TTL (Time to Live) in einem IP-Paket?", options: ["Die maximale Anzahl erlaubter Router-Hops", "Die MAC-Tabelle", "Die PoE-Leistung", "Der DNS-Cache"], answer: "Die maximale Anzahl erlaubter Router-Hops", exp: "TTL verhindert endlose Routing-Schleifen durch Verringerung um 1 pro Router. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "14. Ein Paket erreicht TTL 0 an einem Router. Was passiert?", options: ["Der Router verwirft das Paket und sendet ICMP Time Exceeded", "Der Router erhöht TTL auf 255", "Der Router vergibt APIPA", "Das Paket wird zum Broadcast"], answer: "Der Router verwirft das Paket und sendet ICMP Time Exceeded", exp: "Abgelaufene Pakete werden verworfen und dem Absender gemeldet. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "15. Welchen typischen TTL-Startwert verwendet Windows standardmäßig?", options: ["128", "64", "32", "255"], answer: "128", exp: "Windows startet standardmäßig mit TTL 128. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "16. Welches Protokoll nutzt der Befehl 'ping'?", options: ["ICMP", "FTP", "SMTP", "ARP"], answer: "ICMP", exp: "Ping basiert auf ICMP Echo Request/Reply. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "17. Sinnvolle Reihenfolge für Ping-Tests (von lokal nach extern):", pairs: [
+                { item: "1. Schritt", target: "Eigene IP-Adresse / Loopback (127.0.0.1)" },
+                { item: "2. Schritt", target: "Standardgateway im lokalen Netz" },
+                { item: "3. Schritt", target: "Externe IP-Adresse im Internet (z.B. 8.8.8.8)" },
+                { item: "4. Schritt", target: "DNS-Name (z.B. www.gfn.de)" }
+            ], options: [
+                "Eigene IP-Adresse / Loopback (127.0.0.1)",
+                "Standardgateway im lokalen Netz",
+                "Externe IP-Adresse im Internet (z.B. 8.8.8.8)",
+                "DNS-Name (z.B. www.gfn.de)"
+            ], exp: "Logische Fehlersuche bei Verbindungsproblemen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "18. Was prüft 'ping 127.0.0.1' (Loopback) primär?", options: ["Den funktionierenden lokalen IP-Protokollstack", "Das Gateway", "Den Internet-DNS", "Den Switchport"], answer: "Den funktionierenden lokalen IP-Protokollstack", exp: "Loopback testet die netzwerkinternen Treiber des Betriebssystems. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "19. Welcher Windows-Befehl zeigt den Weg über mehrere Router?", options: ["tracert", "ipconfig", "hostname", "arp -d"], answer: "tracert", exp: "Tracert ermittelt alle Hops zum Ziel. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "20. Wie macht tracert die einzelnen Hops sichtbar?", options: ["Durch schrittweise Erhöhung des TTL-Wertes", "Durch MAC-Änderung", "Durch WPA3", "Durch VLAN-Tags"], answer: "Durch schrittweise Erhöhung des TTL-Wertes", exp: "Tracert sendet Pakete mit TTL 1, 2, 3 usw., um Router-Antworten zu triggern. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "21. In einer Tracert-Ausgabe erscheint bei einem Hop '* * *', aber spätere Hops antworten. Was bedeutet das?", options: ["Der betreffende Router antwortet schlicht nicht auf ICMP-Anfragen", "Die Route ist komplett zerstört", "Der Client hat keine IP", "NAT ist aus"], answer: "Der betreffende Router antwortet schlicht nicht auf ICMP-Anfragen", exp: "Manche Router verwerfen Diagnisepakete aus Sicherheitsgründen, leiten den Verkehr aber normal weiter. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "22. Welcher Hop ist im lokalen Netz normalerweise der erste?", options: ["Das Standardgateway", "Der Root-DNS", "Der Zielserver", "Der DHCP-Pool"], answer: "Das Standardgateway", exp: "Das Gateway ist der erste Router-Hop für den ausgehenden Verkehr. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "23. Welcher Befehl zeigt unter Windows die grundlegende IP-Konfiguration?", options: ["ipconfig", "ifconfig", "route print", "vlan show"], answer: "ipconfig", exp: "'ipconfig' zeigt IP, Subnetzmaske und Standardgateway. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "24. Welcher Befehl zeigt zusätzlich MAC-Adresse, DHCP-Status und DNS-Server?", options: ["ipconfig /all", "ping /all", "tracert /dns", "hostname /full"], answer: "ipconfig /all", exp: "Mit dem Parameter /all werden alle Detailinformationen angezeigt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "25. Welcher Befehl gibt die aktuelle DHCP-Lease unter Windows frei?", options: ["ipconfig /release", "ipconfig /renew", "arp -a", "route print"], answer: "ipconfig /release", exp: "Mit /release wird die IP-Adresse freigegeben. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "26. Welcher Befehl fordert eine neue DHCP-Konfiguration an?", options: ["ipconfig /renew", "ipconfig /release", "netstat -a", "hostname"], answer: "ipconfig /renew", exp: "Mit /renew wird ein neuer DHCP-Abruf gestartet. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "27. Zuordnung von CLI-Diagnosebefehlen:", pairs: [
+                { item: "nslookup", target: "DNS-Namensauflösung prüfen" },
+                { item: "arp -a", target: "Lokale IP-MAC-Tabelle anzeigen" },
+                { item: "route print", target: "Routing-Tabelle des PCs anzeigen" },
+                { item: "netstat", target: "Aktive Netzwerkverbindungen und Ports anzeigen" }
+            ], options: [
+                "DNS-Namensauflösung prüfen",
+                "Lokale IP-MAC-Tabelle anzeigen",
+                "Routing-Tabelle des PCs anzeigen",
+                "Aktive Netzwerkverbindungen und Ports anzeigen"
+            ], exp: "Wichtige Werkzeuge für Administratoren in der Windows-Eingabeaufforderung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "28. Was beschreibt Vertraulichkeit?", options: ["Informationen bleiben nur für Berechtigte zugänglich", "Informationen bleiben jederzeit vollständig erreichbar", "Informationen werden niemals technisch verändert", "Informationen stammen immer aus echter Quelle"], answer: "Informationen bleiben nur für Berechtigte zugänglich", exp: "Vertraulichkeit schützt Informationen vor unbefugter Einsicht und Nutzung. Typische Maßnahmen sind Zugriffsrechte, starke Authentifizierung und Verschlüsselung." },
+            { type: "mc", q: "29. Welches Schutzziel wird durch heimlich geänderte Noten primär verletzt?", options: ["Integrität der gespeicherten Informationen", "Verfügbarkeit des eingesetzten Systems", "Vertraulichkeit der Benutzerkonten", "Authentizität des Netzwerkgeräts"], answer: "Integrität der gespeicherten Informationen", exp: "Die Noten wurden unbefugt verändert und sind deshalb nicht mehr korrekt und unverfälscht. Genau diese Eigenschaft beschreibt die Integrität. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "30. Welches Schutzziel verletzt ein DDoS-bedingter Webshop-Ausfall primär?", options: ["Verfügbarkeit des angebotenen Dienstes", "Integrität der gespeicherten Kundendaten", "Authentizität des verwendeten Servers", "Verbindlichkeit der ausgeführten Aktion"], answer: "Verfügbarkeit des angebotenen Dienstes", exp: "Bei einem DDoS-Angriff steht die Nichterreichbarkeit im Mittelpunkt. Der Webshop kann von berechtigten Kunden nicht genutzt werden, deshalb ist primär die Verfügbarkeit betroffen." },
+            { type: "mc", q: "31. Welches Schutzziel betrifft ein verlorener unverschlüsselter USB-Stick mit Gehaltsdaten?", options: ["Vertraulichkeit der gespeicherten Daten", "Verfügbarkeit der zentralen Anwendung", "Integrität der Netzwerkverbindung", "Verbindlichkeit einer Transaktion"], answer: "Vertraulichkeit der gespeicherten Daten", exp: "Unbefugte könnten die sensiblen Gehaltsdaten lesen. Verschlüsselung des Datenträgers hätte die Vertraulichkeit auch bei Verlust geschützt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "32. Was bedeutet Authentizität in der Informationssicherheit?", options: ["Identität oder Herkunft ist echt und überprüfbar", "Ein Dienst steht dauerhaft ohne Ausfall bereit", "Daten können nicht unbemerkt verändert werden", "Eine Aktion wird automatisch rückgängig gemacht"], answer: "Identität oder Herkunft ist echt und überprüfbar", exp: "Authentizität beantwortet die Frage, ob eine Person, ein Gerät, ein Server oder eine Nachricht wirklich die angegebene Identität beziehungsweise Herkunft besitzt." },
+            { type: "mc", q: "33. Was beschreibt Verbindlichkeit beziehungsweise Nichtabstreitbarkeit?", options: ["Handlungen sind eindeutig zuordenbar und nachweisbar", "Dienste sind bei Bedarf durchgehend verfügbar", "Informationen sind nur verschlüsselt gespeichert", "Netzwerkgeräte besitzen eindeutige MAC-Adressen"], answer: "Handlungen sind eindeutig zuordenbar und nachweisbar", exp: "Verbindlichkeit sorgt dafür, dass Nachrichten, Transaktionen oder Aktionen einer Identität zugeordnet und später beweisbar nachvollzogen werden können." },
+            { type: "mc", q: "34. Welche Maßnahme unterstützt besonders die Authentizität eines Webservers?", options: ["Prüfung eines vertrauenswürdigen TLS-Zertifikats", "Speicherung täglicher Sicherungskopien", "Erweiterung des verfügbaren DHCP-Pools", "Bündelung mehrerer physischer Switchports"], answer: "Prüfung eines vertrauenswürdigen TLS-Zertifikats", exp: "Ein gültiges TLS-Zertifikat hilft dem Client zu prüfen, ob er tatsächlich mit dem erwarteten Server kommuniziert. Es unterstützt damit die Authentizität." },
+            { type: "mc", q: "35. Welche Maßnahme unterstützt besonders die Verbindlichkeit?", options: ["Digitale Signatur mit nachvollziehbarem Zeitstempel", "Redundanter Server mit automatischem Failover", "Verschlüsselter Datenträger ohne Protokollierung", "Kurze DHCP-Lease für wechselnde Endgeräte"], answer: "Digitale Signatur mit nachvollziehbarem Zeitstempel", exp: "Digitale Signaturen unterstützen den Nachweis von Urheber und unverändertem Inhalt. Ein vertrauenswürdiger Zeitstempel ergänzt den Nachweis um den Zeitpunkt." },
+            { type: "mc", q: "36. Was unterscheidet Safety grundsätzlich von Security?", options: ["Safety betrachtet unbeabsichtigte Fehler und Unfälle", "Safety betrachtet ausschließlich gezielte Cyberangriffe", "Safety schützt nur vertrauliche Unternehmensdaten", "Safety beschreibt ausschließlich verschlüsselte Netze"], answer: "Safety betrachtet unbeabsichtigte Fehler und Unfälle", exp: "Safety richtet sich auf sichere Funktionen und unbeabsichtigte Fehler. Security befasst sich dagegen mit absichtlichen Angriffen, Manipulation, Sabotage und Datendiebstahl." },
+            { type: "mc", q: "37. Ein fehlerhaftes Update legt ein Beatmungsgerät lahm. Wie wird der Vorfall eingeordnet?", options: ["Primär als Safety-Problem durch eine Fehlfunktion", "Primär als Security-Angriff durch einen Hacker", "Primär als DNS-Problem durch Namensauflösung", "Primär als VLAN-Problem durch falsches Tagging"], answer: "Primär als Safety-Problem durch eine Fehlfunktion", exp: "Im Szenario wird kein Angreifer beschrieben. Eine unbeabsichtigte technische Fehlfunktion gefährdet die sichere Funktion des Geräts und damit einen Menschen." },
+            { type: "mc", q: "38. Ein Angreifer stiehlt gezielt Patientenakten aus einem Kliniknetz. Wie wird der Vorfall eingeordnet?", options: ["Primär als Security-Vorfall durch Datendiebstahl", "Primär als Safety-Vorfall durch Materialverschleiß", "Primär als DHCP-Fehler durch einen leeren Pool", "Primär als Verkabelungsfehler durch starke Dämpfung"], answer: "Primär als Security-Vorfall durch Datendiebstahl", exp: "Der externe Akteur handelt absichtlich und nutzt eine Schwachstelle. Der gezielte Zugriff verletzt insbesondere den Schutz und die Vertraulichkeit der Patientendaten." },
+            { type: "mc", q: "39. Was bedeutet TOM im Datenschutz und in der IT-Sicherheit?", options: ["Technische und organisatorische Maßnahmen", "Temporäre und operative Netzwerkmethoden", "Transportorientierte und mobile Protokolle", "Teilautomatische und optionale Mechanismen"], answer: "Technische und organisatorische Maßnahmen", exp: "TOM verbindet technische Schutzmechanismen mit Regeln, Zuständigkeiten und Prozessen. Technik allein reicht nicht, wenn organisatorische Umsetzung und Kontrolle fehlen." },
+            { type: "mc", q: "40. Was ist ein Standardgateway in einem IP-Netzwerk?", options: ["Die IP-Adresse des Routers für den Weg in fremde Netze", "Ein DNS-Server", "Eine MAC-Adresse", "Ein Switchport"], answer: "Die IP-Adresse des Routers für den Weg in fremde Netze", exp: "Das Gateway ist die Router-Schnittstelle im lokalen LAN. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "41. Ein Client erreicht lokale Rechner, aber kein Internet. Was prüfen Sie zuerst?", options: ["Ob das Standardgateway korrekt konfiguriert ist", "Die Gehäusefarbe des Switches", "Die Kabelmarke", "Ob der Monitor an ist"], answer: "Ob das Standardgateway korrekt konfiguriert ist", exp: "Fehlt das Gateway oder ist es falsch, ist keine Kommunikation außerhalb des LANs möglich. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "42. Was ist NAT (Network Address Translation)?", options: ["Die Übersetzung von privaten IP-Adressen auf öffentliche IP-Adressen", "Ein WLAN-Verschlüsselungsstandard", "Ein DNS-Dienst", "Ein Kabeltyp"], answer: "Die Übersetzung von privaten IP-Adressen auf öffentliche IP-Adressen", exp: "NAT ermöglicht die weltweite Internetanbindung von Geräten mit privaten IP-Adressen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "43. Warum werden private IP-Adressen im Internet nicht geroutet?", options: ["Weil sie weltweit mehrfach in verschiedenen lokalen Netzen vergeben werden", "Weil sie zu lang sind", "Weil sie nur für Glasfaser gelten", "Weil Router sie blockieren müssen"], answer: "Weil sie weltweit mehrfach in verschiedenen lokalen Netzen vergeben werden", exp: "Öffentliche Router verwerfen private IPs, da diese nicht weltweit eindeutig sind. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "44. Welches Protokoll löst MAC-Adressen zu bekannten IPv4-Adressen auf?", options: ["ARP", "DNS", "DHCP", "ICMP"], answer: "ARP", exp: "Das Address Resolution Protocol ermittelt die MAC zur IP im lokalen Netz. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "45. Wie fragt ein Client nach einer MAC-Adresse per ARP?", options: ["Per Broadcast (Wer hat IP X?)", "Per Unicast an den Router", "Per DNS-Abfrage", "Per DHCP-Request"], answer: "Per Broadcast (Wer hat IP X?)", exp: "Der ARP Request wird als Broadcast an alle Hosts im LAN gesendet. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "46. Wie antwortet das gesuchte Gerät auf einen ARP Request?", options: ["Per Unicast mit seiner MAC-Adresse", "Per Broadcast an alle", "Gar nicht", "Über das Gateway"], answer: "Per Unicast mit seiner MAC-Adresse", exp: "Da der Fragende bekannt ist, antwortet das Ziel direkt per Unicast. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "47. Was ist der ARP-Cache?",options: ["Ein temporärer Zwischenspeicher für IP-zu-MAC-Zuordnungen im Betriebssystem", "Eine Firewall-Regel", "Ein DNS-Server", "Ein Switch-Port"], answer: "Ein temporärer Zwischenspeicher für IP-zu-MAC-Zuordnungen im Betriebssystem", exp: "Der ARP-Cache beschleunigt die Kommunikation, da MAC-Adressen nicht ständig neu erfragt werden müssen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "48. Was ist ARP-Spoofing?", options: ["Ein Angriff, bei dem ein Angreifer gefälschte ARP-Antworten sendet", "Ein DHCP-Fehler", "Eine Kabelstörung", "Ein VLAN-Tagging-Verfahren"], answer: "Ein Angriff, bei dem ein Angreifer gefälschte ARP-Antworten sendet", exp: "Beim ARP-Spoofing täuscht ein Angreifer eine falsche MAC-Adresse vor, um Datenverkehr umzuleiten (Man-in-the-Middle). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "49. Welche OSI-Schicht verarbeitet IP-Pakete und Router?", options: ["Schicht 3 (Vermittlungsschicht)", "Schicht 2", "Schicht 1", "Schicht 4"], answer: "Schicht 3 (Vermittlungsschicht)", exp: "IP, Routing und ICMP arbeiten auf Schicht 3. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "50. Ein Client hat eine statische IP, aber Subnetzmaske und Gateway passen nicht zusammen. Was passiert?", options: ["Kommunikation ins Internet und teilweise ins LAN schlägt fehl", "Alles funktioniert perfekt", "Die MAC-Adresse ändert sich", "Der Switch wird zerstört"], answer: "Kommunikation ins Internet und teilweise ins LAN schlägt fehl", exp: "Falsche Subnetzmasken führen dazu, dass der Client das lokale Netz falsch interpretiert und das Gateway nicht erreicht. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." }
+        ]
+    },
+    {
+        id: 4,
+        title: "Tabelle 4: VLAN, PoE, DHCP, DNS, CLI & Protokolle",
+        desc: "VLAN, 802.1Q, DHCP (DORA), DNS, TCP/UDP, Ports und CLI-Diagnosebefehle (50 Fragen).",
+        questions: [
+            { type: "mc", q: "1. Was ist ein VLAN (Virtual Local Area Network)?", options: ["Eine logische Trennung eines physischen Switch-Netzwerks in mehrere Broadcast-Domänen", "Eine physische Glasfaser", "Ein DNS-Eintrag", "Ein PoE-Standard"], answer: "Eine logische Trennung eines physischen Switch-Netzwerks in mehrere Broadcast-Domänen", exp: "VLANs teilen Switches logisch auf, ohne dass neue Hardware nötig ist. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "2. Welcher Standard definiert VLAN-Tags im Ethernet-Frame?", options: ["IEEE 802.1Q", "IEEE 802.3af", "IEEE 802.11ax", "RFC 1918"], answer: "IEEE 802.1Q", exp: "802.1Q fügt den 4-Byte VLAN-Tag hinzu. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "3. Wie groß ist ein 802.1Q-VLAN-Tag?", options: ["4 Byte", "2 Byte", "6 Byte", "8 Byte"], answer: "4 Byte", exp: "Der Tag hat exakt 4 Bytes (TPID + TCI). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "4. Wie viele VLANs sind über die 12-Bit-VID praktisch nutzbar?", options: ["4094", "256", "1024", "65535"], answer: "4094", exp: "2^12 = 4096 abzüglich 0 und 4095 = 4094 nutzbare VLANs. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "5. Zuordnung von Switch-Port-Typen:", pairs: [
+                { item: "Access Port", target: "Verbindung zu Endgeräten (überträgt ungetaggten Verkehr)" },
+                { item: "Trunk Port", target: "Verbindung zwischen Switches (überträgt mehrere getaggte VLANs)" }
+            ], options: [
+                "Verbindung zu Endgeräten (überträgt ungetaggten Verkehr)",
+                "Verbindung zwischen Switches (überträgt mehrere getaggte VLANs)"
+            ], exp: "Access Ports bedienen Endclients, Trunk Ports leiten VLAN-übergreifende Daten weiter. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "6. Was bedeutet PoE (Power over Ethernet)?", options: ["Stromversorgung von Netzwerkgeräten über das Datenkabel", "Port-Optimierung", "Verschlüsselung", "Paketüberprüfung"], answer: "Stromversorgung von Netzwerkgeräten über das Datenkabel", exp: "PoE transportiert Strom und Daten über dieselben Adern. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "7. Zuordnung von PoE-Standards:", pairs: [
+                { item: "IEEE 802.3af", target: "Bis zu 15,4 W" },
+                { item: "IEEE 802.3at (PoE+)", target: "Bis zu 30 W" },
+                { item: "IEEE 802.3bt (4PPoE)", target: "Bis zu 90 W über 4 Aderpaare" }
+            ], options: [
+                "Bis zu 15,4 W",
+                "Bis zu 30 W",
+                "Bis zu 90 W über 4 Aderpaare"
+            ], exp: "Steigende Leistungsklassen im PoE-Bereich. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "8. Was ist ein PSE (Power Sourcing Equipment)?", options: ["Das Gerät, das PoE-Strom bereitstellt (z.B. Switch)", "Das Endgerät", "Der DNS-Server", "Der Router"], answer: "Das Gerät, das PoE-Strom bereitstellt (z.B. Switch)", exp: "PSE speist ein, PD empfängt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "9. Wofür steht DHCP?", options: ["Dynamic Host Configuration Protocol", "Domain Host Control Port", "Data Handling Protocol", "Digital Hardware Control"], answer: "Dynamic Host Configuration Protocol", exp: "DHCP verteilt automatisiert IP-Konfigurationen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "10. Zuordnung der DORA-Schritte:", pairs: [
+                { item: "Discover", target: "Client sucht im Netz nach einem DHCP-Server (Broadcast)" },
+                { item: "Offer", target: "Server bietet dem Client eine IP-Konfiguration an" },
+                { item: "Request", target: "Client fordert die angebotene IP verbindlich an" },
+                { item: "Acknowledge", target: "Server bestätigt die Zuweisung endgültig" }
+            ], options: [
+                "Client sucht im Netz nach einem DHCP-Server (Broadcast)",
+                "Server bietet dem Client eine IP-Konfiguration an",
+                "Client fordert die angebotene IP verbindlich an",
+                "Server bestätigt die Zuweisung endgültig"
+            ], exp: "Vierphasiger DHCP-Vergabe-Prozess. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "11. Welche Parameter kann DHCP an einen Client übermitteln?", options: ["IP-Adresse, Subnetzmaske, Standardgateway und DNS-Server", "Nur die MAC-Adresse", "Nur den Port", "Nur den Hostnamen"], answer: "IP-Adresse, Subnetzmaske, Standardgateway und DNS-Server", exp: "DHCP liefert alle für die Netzwerkteilnahme notwendigen Parameter. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "12. Welche UDP-Ports verwendet DHCP?", options: ["67 und 68", "20 und 21", "53 und 54", "80 und 443"], answer: "67 und 68", exp: "DHCP Server lauscht auf Port 67, Client auf Port 68. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "13. Was ist eine DHCP-Lease?", options: ["Eine zeitlich befristete Ausleihe einer IP-Adresse", "Eine feste MAC-Adresse", "Ein VLAN-Trunk", "Ein WLAN-Schlüssel"], answer: "Eine zeitlich befristete Ausleihe einer IP-Adresse", exp: "IP-Adressen werden via Lease für eine bestimmte Zeit an Clients vergeben. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "14. Ein Client zeigt 169.254.x.x an. Was bedeutet das?", options: ["DHCP fehlgeschlagen, APIPA-Adresse aktiv", "Öffentliche IP", "DNS läuft", "VLAN 254 aktiv"], answer: "DHCP fehlgeschlagen, APIPA-Adresse aktiv", exp: "Ohne DHCP konfiguriert sich Windows selbst eine Link-Local-IP (APIPA). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "15. Warum ist mit APIPA normalerweise kein Internetzugriff möglich?", options: ["Weil APIPA nur lokal (Link-Local) gilt und kein gültiges Gateway liefert", "Weil APIPA TCP sperrt", "Weil die MAC gelöscht wird", "Weil Ports gesperrt sind"], answer: "Weil APIPA nur lokal (Link-Local) gilt und kein gültiges Gateway liefert", exp: "APIPA-Adressen werden von Routern nicht geroutet. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "16. Wofür steht DNS?", options: ["Domain Name System", "Dynamic Network Switch", "Data Naming Service", "Digital Node Security"], answer: "Domain Name System", exp: "DNS löst Namen in IP-Adressen auf. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "17. Was ist ein FQDN (Fully Qualified Domain Name)?", options: ["Der vollständige Name eines Hosts in der DNS-Hierarchie", "Nur der PC-Name", "Eine MAC-Adresse", "Ein Port"], answer: "Der vollständige Name eines Hosts in der DNS-Hierarchie", exp: "Beispiel: `client01.abteilung.firma.de` ist ein FQDN. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "18. Ping 8.8.8.8 klappt, aber Webseiten-Aufruf per Name scheitert. Was ist die Ursache?", options: ["Ein DNS-Problem", "Ein kaputter TCP-Stack", "Ein defektes Kabel", "Falsche MAC"], answer: "Ein DNS-Problem", exp: "Da IP-Ping klappt, ist das Netz ok; es scheitert nur die Namensauflösung (DNS). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "19. Wo liegt die lokale hosts-Datei unter Windows?", options: ["C:\\Windows\\System32\\drivers\\etc\\hosts", "C:\\DNS\\server.txt", "C:\\Temp\\hosts.ini", "C:\\Windows\\hosts.dat"], answer: "C:\\Windows\\System32\\drivers\\etc\\hosts", exp: "Die hosts-Datei dient der statischen, lokalen Namensauflösung vor dem DNS-Abruf. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "20. Welche Aussage zu TCP ist richtig?", options: ["TCP ist verbindungsorientiert und garantiert fehlerfreie Zustellung", "TCP ist verbindungslos", "TCP bestätigt keine Pakete", "TCP hat keine Ports"], answer: "TCP ist verbindungsorientiert und garantiert fehlerfreie Zustellung", exp: "TCP arbeitet zuverlässig mit Handshake, Sequenznummern und Bestätigungen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "21. Welche Aussage zu UDP ist richtig?", options: ["UDP ist verbindungslos und schnell ohne Bestätigung", "UDP bestätigt jedes Paket", "UDP garantiert die Reihenfolge", "UDP nutzt TCP-Ports"], answer: "UDP ist verbindungslos und schnell ohne Bestätigung", exp: "UDP verzichtet auf Overhead und eignet sich für Echtzeitdaten. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "22. Zuordnung des TCP 3-Way-Handshakes:", pairs: [
+                { item: "1. Schritt", target: "SYN (Synchronize)" },
+                { item: "2. Schritt", target: "SYN-ACK (Synchronize-Acknowledge)" },
+                { item: "3. Schritt", target: "ACK (Acknowledge)" }
+            ], options: [
+                "SYN (Synchronize)",
+                "SYN-ACK (Synchronize-Acknowledge)",
+                "ACK (Acknowledge)"
+            ], exp: "Logischer Ablauf des Verbindungsaufbaus bei TCP. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "23. Zuordnung von Diensten und Standard-Ports:", pairs: [
+                { item: "HTTP", target: "Port 80" },
+                { item: "HTTPS", target: "Port 443" },
+                { item: "SSH", target: "Port 22" },
+                { item: "DNS", target: "Port 53" },
+                { item: "RDP", target: "Port 3389" }
+            ], options: [
+                "Port 80",
+                "Port 443",
+                "Port 22",
+                "Port 53",
+                "Port 3389"
+            ], exp: "Bekannte Standardports (Well-Known Ports) für gängige Protokolle. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "24. Welcher Portbereich wird als Well-Known Ports bezeichnet?", options: ["0 bis 1023", "1024 bis 49151", "49152 bis 65535", "65536+"], answer: "0 bis 1023", exp: "Die ersten 1024 Ports sind international für Standarddienste reserviert. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "25. Welchen Zweck haben Ephemeral Ports (flüchtige Ports)?", options: ["Sie werden von Clients temporär für ausgehende Verbindungen genutzt", "Sie sind für HTTP reserviert", "Sie speichern MACs", "Sie liefern PoE"], answer: "Sie werden von Clients temporär für ausgehende Verbindungen genutzt", exp: "Clients nutzen hohe Portnummern (1024+) als temporäre Quellports. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "26. Was bedeutet GUI?", options: ["Graphical User Interface", "General User Internet", "Gateway Update Interface", "Global Unicast Identifier"], answer: "Graphical User Interface", exp: "Grafische Benutzeroberfläche mit Fenstern und Mausbedienung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "27. Was beschreibt eine TUI?", options: ["Eine textbasierte, meist menügeführte Benutzeroberfläche", "Eine grafische Oberfläche", "Eine Topologie", "Ein Port"], answer: "Eine textbasierte, meist menügeführte Benutzeroberfläche", exp: "Text User Interface (z.B. Konsolenmenüs mit Rahmen). Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "28. Warum bevorzugen Administratoren für die Netzwerkdiagnose oft die CLI?", options: ["Befehle und Ausgaben sind präzise dokumentierbar und automatisierbar", "Weil es bunte Bilder gibt", "Weil man keine Tastatur braucht", "Weil sie langsamer ist"], answer: "Befehle und Ausgaben sind präzise dokumentierbar und automatisierbar", exp: "Die CLI bietet exakte, skriptfähige und ressourcenschonende Diagnosemöglichkeiten. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "29. Mit welchem Befehl wird die IP-Konfiguration unter Windows angezeigt?", options: ["ipconfig", "ifconfig", "ping", "route"], answer: "ipconfig", exp: "ipconfig ist der klassische Windows-Befehl für IP-Einstellungen. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "30. Welcher Befehl zeigt die IP-Konfiguration unter Linux?", options: ["ip a oder ifconfig", "ipconfig", "winipcfg", "route show"], answer: "ip a oder ifconfig", exp: "Linux nutzt ip (iproute2) oder ifconfig. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "31. Was ist ein Managed Switch?", options: ["Ein über Software (CLI, GUI, SNMP) konfigurierbarer Switch", "Ein Switch ohne Strom", "Ein Hub", "Ein Patchpanel"], answer: "Ein über Software (CLI, GUI, SNMP) konfigurierbarer Switch", exp: "Managed Switches erlauben VLANs, STP, Port-Security und Monitoring. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "32. Was ist ein Unmanaged Switch?", options: ["Ein reiner Plug-and-Play Switch ohne Konfigurationsmöglichkeiten", "Ein Router", "Ein Server", "Ein Kabel"], answer: "Ein reiner Plug-and-Play Switch ohne Konfigurationsmöglichkeiten", exp: "Unmanaged Switches arbeiten vollautomatisch ohne Management-Interface. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "match", q: "33. Zuordnung der Switch-Typen und Einsatzbereiche:", pairs: [
+                { item: "Unmanaged Switch", target: "Kleine Heimnetzwerke ohne Sicherheitsanforderungen" },
+                { item: "Managed Switch", target: "Unternehmensnetze mit VLANs, Redundanz und Monitoring" }
+            ], options: [
+                "Kleine Heimnetzwerke ohne Sicherheitsanforderungen",
+                "Unternehmensnetze mit VLANs, Redundanz und Monitoring"
+            ], exp: "Unterscheidung nach Administrierbarkeit und Komplexität. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "34. Welche Authentifizierung nutzt WPA2/3-Enterprise?", options: ["Individuelle Identitäten über 802.1X und RADIUS", "Gemeinsames Kennwort über einen einfachen PSK", "Automatische Adressen über DHCP und APIPA", "Lokale Namen über DNS und die hosts-Datei"], answer: "Individuelle Identitäten über 802.1X und RADIUS", exp: "Enterprise-WLAN verwendet IEEE 802.1X. Der Access Point arbeitet als Authenticator und leitet die Anmeldung an einen RADIUS-Server zur Prüfung weiter." },
+            { type: "mc", q: "35. Was ist ein wesentlicher Nachteil von WPA2/3-Personal im Unternehmen?", options: ["Alle Nutzer teilen sich dasselbe WLAN-Kennwort", "Jedes Gerät benötigt ein eigenes Zertifikat", "Der Access Point kann keine Frames übertragen", "Der DHCP-Server vergibt keine IP-Adressen"], answer: "Alle Nutzer teilen sich dasselbe WLAN-Kennwort", exp: "Bei Personal teilen alle Beteiligten denselben PSK. Wird er bekannt oder soll einer Person der Zugang entzogen werden, muss das gemeinsame Kennwort für alle geändert werden." },
+            { type: "mc", q: "36. Welche Rolle übernimmt der Access Point bei 802.1X?", options: ["Authenticator zwischen Client und RADIUS-Server", "Supplicant mit persönlicher Benutzeridentität", "DHCP-Server für die automatische Adressierung", "DNS-Resolver für die lokale Namensauflösung"], answer: "Authenticator zwischen Client und RADIUS-Server", exp: "Der Client ist der Supplicant, der Access Point der Authenticator und der RADIUS-Server der Authentication Server. Der Access Point vermittelt die Anmeldedaten." },
+            { type: "mc", q: "37. Welche Verbesserung bietet WPA3-Personal gegenüber WPA2-Personal?", options: ["SAE erschwert aufgezeichnete Offline-Angriffe", "WEP ersetzt die bisherige AES-Verschlüsselung", "DHCP wird direkt in den Access Point integriert", "VLAN-Tags werden grundsätzlich nicht mehr benötigt"], answer: "SAE erschwert aufgezeichnete Offline-Angriffe", exp: "WPA3-Personal verwendet SAE statt des klassischen PSK-Verfahrens. Dadurch lässt sich ein aufgezeichneter Handshake nicht wie bei schwachen WPA2-Passwörtern einfach offline testen." },
+            { type: "mc", q: "38. Warum sind Protected Management Frames bei WPA3 wichtig?", options: ["Sie erschweren gefälschte Deauthentifizierungsangriffe", "Sie erhöhen automatisch das gesamte PoE-Budget", "Sie ersetzen die Anmeldung über RADIUS vollständig", "Sie verteilen DNS-Server an alle WLAN-Clients"], answer: "Sie erschweren gefälschte Deauthentifizierungsangriffe", exp: "Management-Frames steuern unter anderem Verbindungsaufbau und Trennung. Ihr Schutz erschwert Angriffe, die Clients mit gefälschten Deauthentication-Frames aus dem WLAN werfen." },
+            { type: "mc", q: "39. Was ist ein Asset in der IT-Sicherheit?", options: ["Ein schützenswerter Wert wie Daten oder Systeme", "Eine bekannte technische oder organisatorische Lücke", "Ein konkretes Werkzeug zur Ausnutzung einer Lücke", "Die Kombination aus Wahrscheinlichkeit und Schaden"], answer: "Ein schützenswerter Wert wie Daten oder Systeme", exp: "Assets sind alle Werte, die für eine Organisation wichtig sind. Dazu zählen nicht nur Geräte, sondern auch Daten, Geschäftsprozesse und Reputation." },
+            { type: "mc", q: "40. Was ist eine Vulnerability?", options: ["Eine ausnutzbare technische oder organisatorische Schwachstelle", "Ein schützenswerter Wert innerhalb einer Organisation", "Ein Angreifer oder Ereignis mit möglichem Schadenspotenzial", "Die endgültige Bewertung aus Schaden und Wahrscheinlichkeit"], answer: "Eine ausnutzbare technische oder organisatorische Schwachstelle", exp: "Eine Vulnerability ist eine Lücke, ein Fehler oder eine unzureichende Schutzmaßnahme. Sie schafft den Ansatzpunkt für eine mögliche Ausnutzung. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "41. Was beschreibt eine Threat?", options: ["Eine mögliche Gefahr oder einen schädigenden Akteur", "Eine ausschließlich materielle Unternehmensressource", "Ein Programm zur konkreten Ausnutzung einer Lücke", "Eine mathematisch berechnete DHCP-Lease-Dauer"], answer: "Eine mögliche Gefahr oder einen schädigenden Akteur", exp: "Eine Threat ist die mögliche Gefahr. Das kann ein krimineller Angreifer, Schadsoftware, Feuer oder ein anderes Ereignis sein, das ein Asset schädigen könnte." },
+            { type: "mc", q: "42. Was ist ein Exploit?", options: ["Ein konkretes Mittel zur Ausnutzung einer Schwachstelle", "Ein Wert, der von einem Unternehmen geschützt wird", "Eine allgemeine Gefahr ohne konkretes Vorgehen", "Eine Bewertung aus Eintrittswahrscheinlichkeit und Schaden"], answer: "Ein konkretes Mittel zur Ausnutzung einer Schwachstelle", exp: "Ein Exploit ist beispielsweise Schadcode, ein Skript oder eine konkrete Vorgehensweise, die eine vorhandene Schwachstelle tatsächlich ausnutzt. Diese Einordnung ist für die systematische Netzwerkplanung und Fehlersuche wichtig, weil sie Ursache, betroffene Schicht und passende Maßnahme voneinander trennt." },
+            { type: "mc", q: "43. Was beschreibt ein Risiko?", options: ["Eintrittswahrscheinlichkeit zusammen mit möglichem Schaden", "Nur das eingesetzte Werkzeug eines Angreifers", "Nur die vorhandene Schwachstelle eines Systems", "Nur den materiellen Wert eines Netzwerkgeräts"], answer: "Eintrittswahrscheinlichkeit zusammen mit möglichem Schaden", exp: "Ein Risiko besteht nicht nur aus dem Schaden. Es berücksichtigt zusätzlich, wie wahrscheinlich das schädigende Ereignis unter den gegebenen Bedingungen eintritt." },
+            { type: "mc", q: "44. Welche technische Maßnahme schützt Patientendaten auf dem Transportweg?", options: ["Verschlüsselte Übertragung mit TLS und Zertifikatsprüfung", "Längere DHCP-Leases für dauerhaft verbundene Clients", "Größere Broadcast-Domänen ohne Netzsegmentierung", "Ungeschirmte Leitungen direkt neben Stromleitungen"], answer: "Verschlüsselte Übertragung mit TLS und Zertifikatsprüfung", exp: "TLS schützt die Vertraulichkeit während der Übertragung. Die Zertifikatsprüfung unterstützt zusätzlich die Authentizität des angesprochenen Servers." },
+            { type: "mc", q: "45. Welche Maßnahme unterstützt die Integrität medizinischer Befunde?", options: ["Manipulationsgeschützte Protokollierung jeder Änderung", "Kurze Lease-Zeiten für alle medizinischen Server", "Ein unverwalteter Switch ohne Überwachungsfunktion", "Gemeinsame Benutzerkonten für alle Beschäftigten"], answer: "Manipulationsgeschützte Protokollierung jeder Änderung", exp: "Audit-Logs erfassen Benutzerkonto, Zeitpunkt und Änderung. Zusammen mit Rollenrechten und regelmäßiger Kontrolle werden unberechtigte Veränderungen erkennbar." },
+            { type: "mc", q: "46. Welche Maßnahme erhöht die Verfügbarkeit einer Datenbank?", options: ["Redundanter Server mit Replikation und Failover", "Ein einzelner Server ohne getestete Sicherung", "Gemeinsamer WLAN-Schlüssel für alle Beschäftigten", "Deaktivierte Überwachung zur Verringerung der Netzlast"], answer: "Redundanter Server mit Replikation und Failover", exp: "Redundanz verhindert, dass ein einzelner Hardwaredefekt den gesamten Dienst stoppt. Replikation, Failover, Monitoring und getestete Backups ergänzen den Schutz." },
+            { type: "mc", q: "47. Welche Maßnahme ist organisatorisch?", options: ["Verbindlicher Notfallplan mit klaren Zuständigkeiten", "Verschlüsselung einer Verbindung mit TLS", "Redundanter Datenbankserver mit Replikation", "Firewall mit technisch definierten Filterregeln"], answer: "Verbindlicher Notfallplan mit klaren Zuständigkeiten", exp: "Organisatorische Maßnahmen regeln Menschen, Verantwortlichkeiten und Abläufe. Ein Notfallplan legt fest, wer bei einer Störung welche Schritte ausführt." },
+            { type: "mc", q: "48. Warum müssen TOM regelmäßig überprüft werden?", options: ["Damit ihre Wirksamkeit bewertet und angepasst wird", "Damit alle Schutzmaßnahmen dauerhaft unverändert bleiben", "Damit technische Maßnahmen organisatorische Regeln ersetzen", "Damit auf Dokumentation vollständig verzichtet werden kann"], answer: "Damit ihre Wirksamkeit bewertet und angepasst wird", exp: "Schutzmaßnahmen müssen zur tatsächlichen Risikolage passen. Regelmäßige Kontrollen zeigen, ob sie funktionieren oder aufgrund neuer Risiken und Systeme angepasst werden müssen." },
+            { type: "mc", q: "49. Welche Diagnose ist bei einer APIPA-Adresse zuerst sinnvoll?", options: ["Physische Verbindung und Erreichbarkeit von DHCP prüfen", "Sofort alle DNS-Einträge des Unternehmens löschen", "Den Client dauerhaft in ein zufälliges VLAN verschieben", "Die Netzwerkkarte ohne Dokumentation ersetzen"], answer: "Physische Verbindung und Erreichbarkeit von DHCP prüfen", exp: "APIPA ist ein Diagnosehinweis auf fehlende DHCP-Kommunikation. Deshalb werden zuerst Kabel, WLAN, Switch-Port, DHCP-Dienst, Pool, VLAN, Relay und Filter geprüft." },
+            { type: "mc", q: "50. Was kennzeichnet eine fachgerechte Client-Integration?", options: ["Verbindung, gültige Konfiguration, Tests und Dokumentation", "Nur ein eingestecktes Kabel ohne Funktionskontrolle", "Nur eine statische IP ohne Subnetzmaske und Gateway", "Nur ein erfolgreicher Ping auf die Loopback-Adresse"], answer: "Verbindung, gültige Konfiguration, Tests und Dokumentation", exp: "Eine vollständige Integration umfasst die physische Anbindung, passende IP-Parameter, erfolgreiche Tests von Gateway, DNS und Diensten sowie eine nachvollziehbare Dokumentation." }
+        ]
     }
-    return matrix[b.length][a.length];
+];
+
+let currentTabelle = null;
+let currentQ = 0;
+let score = 0;
+let userAnswers = {};
+
+function showMenu() {
+    const card = document.getElementById("quiz-card");
+    let html = `
+        <h1>LERNZIELKONTROLLE LF03</h1>
+        <div class="subtitle">Wähle eine der 4 Tabellen (je 50 Fragen) aus!</div>
+        <div class="menu-grid">
+    `;
+    tabellen.forEach(t => {
+        html += `
+            <button class="menu-btn" onclick="startQuiz(${t.id})">
+                <strong>${t.title}</strong>
+                <span>${t.desc}</span>
+            </button>
+        `;
+    });
+    html += `</div>`;
+    card.innerHTML = html;
+}
+
+function startQuiz(id) {
+    currentTabelle = tabellen.find(t => t.id === id);
+    currentQ = 0;
+    score = 0;
+    userAnswers = {};
+    showQuestion();
 }
 
 function shuffleArray(array) {
@@ -80,199 +532,136 @@ function shuffleArray(array) {
     return arr;
 }
 
-const correctMemes = [
-    "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7qE2VAxuXWeyvJIY/giphy.webp",
-    "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/11sBLVxNs7v6WA/100.webp",
-    "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/UAIg3J4OzepmYxQeAT/giphy.webp",
-    "https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dXpmczNxaWNlZWg5cjh0MTNrMGlqamkxdmRzbnk5bmMyMnB2dGppMyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Q66ZEIpjEQddUOOKGW/200.webp",
-    "https://media0.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NDl4eXlzcXY3Z3BpMmVkcWJkeDh3N3hpaG9zNTdrOW9scWhja2xoYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/rjkJD1v80CjYs/giphy.webp",
-    "https://media2.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OWRmaWxqbmk5Y2xzdDlneGFxeGRicGowZWVzMWU2YnFlOTZoNWsxbiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/okfvUCpgArv3y/200.webp"
-];
-
-const incorrectMemes = [
-    "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzgxbGplZnkzdnFhanE2M3d5bDIybTZiN2J1Zm1qbzk4OHppdGdudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9u3TZfpmeDLkD6/giphy.gif",
-    "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWhsazE0eW56OGRkNXk1MzVzeTNsMGYxOGNmcWZmYmswaGJxamJpMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MLhIi4DoxeUjC/giphy.gif",
-    "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDM5YWlpdHYwc3BhMTZjZ2NzcTdhbGp4YW9odjByMnRvdXhlY3RycyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4qx6IRdg26uZ3MTtRn/giphy.gif",
-    "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMG15d2p6M2s3eXY2MzVmaWt6anIwYXU5OGt6M3VqbHNkdmtuYjlhdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/10ECejNtM1GyRy/giphy.gif",
-    "https://media0.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2p4NTJ1Y3A4NTllMjVsbnZpYm0ybWhqcmgyNjcxZ2x5dDluZDFocSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/hNFCbBi0lzodujjg8l/giphy.webp",
-    "https://media3.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MWYwZzI0ZDFheXM4eGNvcWo0ZGM0djkzMGs0Z3owaXRqbzJvcXJoNiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/hHPStl3w2ZU41qjKq2/giphy.webp"
-];
-
-const svgOSI = `<svg width="320" height="220" xmlns="http://www.w3.org/2000/svg"><style>.box{fill:#f8f9fa;stroke:#333;stroke-width:1.5;}.txt{font-family:sans-serif;font-size:13px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;}.num{font-family:sans-serif;font-size:13px;font-weight:bold;fill:#003366;text-anchor:middle;dominant-baseline:middle;}</style><rect x="10" y="5" width="40" height="26" class="box"/><text x="30" y="18" class="num">7</text><rect x="55" y="5" width="160" height="26" class="box"/><text x="135" y="18" class="txt">Anwendung</text><rect x="10" y="34" width="40" height="26" class="box"/><text x="30" y="47" class="num">6</text><rect x="55" y="34" width="160" height="26" class="box"/><text x="135" y="47" class="txt">Darstellung</text><rect x="10" y="63" width="40" height="26" class="box"/><text x="30" y="76" class="num">5</text><rect x="55" y="63" width="160" height="26" class="box"/><text x="135" y="76" class="txt">Sitzung</text><rect x="10" y="92" width="40" height="26" class="box"/><text x="30" y="105" class="num">4</text><rect x="55" y="92" width="160" height="26" class="box"/><text x="135" y="105" class="txt">Transport</text><rect x="10" y="121" width="40" height="26" class="box"/><text x="30" y="134" class="num">3</text><rect x="55" y="121" width="160" height="26" class="box"/><text x="135" y="134" class="txt">Vermittlung</text><rect x="10" y="150" width="40" height="26" class="box"/><text x="30" y="163" class="num">2</text><rect x="55" y="150" width="160" height="26" class="box"/><text x="135" y="163" class="txt">Sicherung</text><rect x="10" y="179" width="40" height="26" class="box"/><text x="30" y="192" class="num">1</text><rect x="55" y="179" width="160" height="26" class="box"/><text x="135" y="192" class="txt">Bitübertragung</text></svg>`;
-const svgCable = `<svg width="350" height="180" xmlns="http://www.w3.org/2000/svg"><ellipse cx="120" cy="90" rx="90" ry="70" fill="#e0e0e0" stroke="#333" stroke-width="2"/><ellipse cx="120" cy="90" rx="82" ry="62" fill="none" stroke="#888" stroke-width="2" stroke-dasharray="4,3"/><circle cx="85" cy="65" r="22" fill="#d0e0ff" stroke="#333"/><circle cx="155" cy="65" r="22" fill="#d0ffd0" stroke="#333"/><circle cx="85" cy="115" r="22" fill="#ffe0d0" stroke="#333"/><circle cx="155" cy="115" r="22" fill="#fff0d0" stroke="#333"/><circle cx="78" cy="60" r="6" fill="#ff9933"/><circle cx="92" cy="70" r="6" fill="#ffffff" stroke="#333"/><circle cx="148" cy="60" r="6" fill="#33cc33"/><circle cx="162" cy="70" r="6" fill="#ffffff" stroke="#333"/><circle cx="78" cy="110" r="6" fill="#3366cc"/><circle cx="92" cy="120" r="6" fill="#ffffff" stroke="#333"/><circle cx="148" cy="110" r="6" fill="#996633"/><circle cx="162" cy="120" r="6" fill="#ffffff" stroke="#333"/><line x1="120" y1="20" x2="230" y2="30" stroke="#333" stroke-width="1.5"/><circle cx="230" cy="30" r="10" fill="#fff" stroke="#333"/><text x="230" y="34" font-family="sans-serif" font-size="12" text-anchor="middle">1</text><line x1="180" y1="35" x2="230" y2="65" stroke="#333" stroke-width="1.5"/><circle cx="230" cy="65" r="10" fill="#fff" stroke="#333"/><text x="230" y="69" font-family="sans-serif" font-size="12" text-anchor="middle">2</text><line x1="105" y1="65" x2="230" y2="100" stroke="#333" stroke-width="1.5"/><circle cx="230" cy="100" r="10" fill="#fff" stroke="#333"/><text x="230" y="104" font-family="sans-serif" font-size="12" text-anchor="middle">3</text><line x1="85" y1="115" x2="230" y2="135" stroke="#333" stroke-width="1.5"/><circle cx="230" cy="135" r="10" fill="#fff" stroke="#333"/><text x="230" y="139" font-family="sans-serif" font-size="12" text-anchor="middle">2</text><line x1="155" y1="115" x2="230" y2="160" stroke="#333" stroke-width="1.5"/><circle cx="230" cy="160" r="10" fill="#fff" stroke="#333"/><text x="230" y="164" font-family="sans-serif" font-size="12" text-anchor="middle">3</text></svg>`;
-
-const questions = [
-    // 1-10
-    { type: "mc", q: "1. Was ist die Hauptaufgabe eines Clients?", options: ["Dienste anfordern", "Dienste bereitstellen", "Netzwerke verbinden", "IP-Adressen vergeben"], answer: "Dienste anfordern", exp: "Erklärung: Im Client-Server-Modell initiiert der Client die Kommunikation und fordert gezielt Ressourcen oder Dienste (z. B. Webseiten, E-Mails) von einem Server an." },
-    { type: "mc", q: "2. Welche Aussage über einen Server ist richtig?", options: ["Ein Server stellt mindestens einen Dienst bereit.", "Nur spezielle Serverhardware kann Server sein.", "Ein Server kann nie ein Client sein.", "Ein Server vergibt MAC-Adressen."], answer: "Ein Server stellt mindestens einen Dienst bereit.", exp: "Erklärung: Ein Server ist funktional durch das Bereitstellen von Diensten (Services) definiert. Auch gewöhnliche PC-Hardware kann als Server agieren." },
-    { type: "mc", q: "3. Was ist ein typisches Beispiel für ein PAN (Personal Area Network)?", options: ["Verbindung Smartphone – Bluetooth-Kopfhörer", "Firmennetzwerk", "Netzwerk eines Bürogebäudes", "Verbindung zweier Standorte über Glasfaser"], answer: "Verbindung Smartphone – Bluetooth-Kopfhörer", exp: "Erklärung: Ein Personal Area Network (PAN) erstreckt sich über wenige Meter im unmittelbaren persönlichen Nahbereich, typischerweise per Bluetooth." },
-    { type: "mc", q: "4. Welche Abkürzung steht für „Wide Area Network“?", options: ["WAN", "LAN", "MAN", "PAN"], answer: "WAN", exp: "Erklärung: WAN steht für Wide Area Network. Es verbindet Rechnernetze über sehr große geografische Räume (z. B. länder- oder weltweit)." },
-    { type: "mc", q: "5. Welches Protokoll übersetzt Namen in IP-Adressen?", options: ["DNS", "DHCP", "HTTP", "FTP"], answer: "DNS", exp: "Erklärung: Das Domain Name System (DNS) löst menschenlesbare Rechnernamen (z. B. www.ihk.de) in die zugehörigen IP-Adressen auf." },
-    { type: "mc", q: "6. Welches Protokoll vergibt IP-Konfigurationen?", options: ["DHCP", "DNS", "ARP", "ICMP"], answer: "DHCP", exp: "Erklärung: Dynamic Host Configuration Protocol (DHCP) weist Netzwerkteilnehmern automatisch IP-Adresse, Subnetzmaske, Gateway und DNS-Server zu." },
-    { type: "mc", q: "7. Was ist der Hauptunterschied zwischen MAC- und IP-Adresse?", options: ["MAC ist hardwarebasiert (lokal), IP ist logisch (netzwerkweit).", "MAC ist logisch, IP ist physisch.", "MAC wird vom DHCP-Server vergeben.", "IP ist fest im BIOS gespeichert."], answer: "MAC ist hardwarebasiert (lokal), IP ist logisch (netzwerkweit).", exp: "Erklärung: Die MAC-Adresse ist die physikalische Schicht-2-Adresse der Netzwerkkarte. Die IP-Adresse ist eine logische Schicht-3-Adresse für das globale Routing." },
-    { type: "mc", q: "8. Auf welcher OSI-Schicht arbeitet ein Switch hauptsächlich?", options: ["Schicht 2", "Schicht 1", "Schicht 3", "Schicht 4"], answer: "Schicht 2", exp: "Erklärung: Ein klassischer Layer-2-Switch verarbeitet Ethernet-Frames anhand der MAC-Adressen auf der Sicherungsschicht (Data Link Layer)." },
-    { type: "mc", q: "9. Auf welcher OSI-Schicht arbeitet ein Router hauptsächlich?", options: ["Schicht 3", "Schicht 1", "Schicht 2", "Schicht 7"], answer: "Schicht 3", exp: "Erklärung: Router arbeiten auf der Vermittlungsschicht (Network Layer) und leiten Datenpakete logisch anhand von IP-Adressen zwischen Subnetzen weiter." },
-    { type: "mc", q: "10. Wie viele Schichten besitzt das OSI-Modell?", options: ["7", "4", "5", "6"], answer: "7", exp: "Erklärung: Das ISO/IEC 7498-1 OSI-Referenzmodell ist strukturiert in exakt 7 Schichten (von Bitübertragung bis Anwendung)." },
-
-    // 11-18
-    { type: "mc", q: "11. Welche Schichten werden im TCP/IP-Modell zur Anwendungsschicht zusammengefasst?", options: ["OSI 5, 6 und 7", "OSI 1 und 2", "OSI 2 und 3", "OSI 3 und 4"], answer: "OSI 5, 6 und 7", exp: "Erklärung: Die OSI-Schichten 5 (Sitzung), 6 (Darstellung) und 7 (Anwendung) werden im vereinfachten TCP/IP-Schichtenmodell direkt als Anwendungsschicht (Application Layer) zusammengefasst." },
-    { type: "mc", q: "12. Welches Protokoll gehört zur Transportschicht?", options: ["TCP", "IP", "Ethernet", "ARP"], answer: "TCP", exp: "Erklärung: Transmission Control Protocol (TCP) stellt die Ende-zu-Ende-Kommunikation auf der OSI-Transportschicht (Schicht 4) bereit." },
-    { type: "mc", q: "13. Welche Aussage über TCP ist richtig?", options: ["TCP garantiert die Reihenfolge der Daten.", "TCP ist verbindungslos.", "TCP verwendet keine Bestätigungen.", "TCP ist langsamer als UDP, weil es keine Header hat."], answer: "TCP garantiert die Reihenfolge der Daten.", exp: "Erklärung: TCP ist verbindungsorientiert und nutzt Sequenznummern sowie Bestätigungen (ACKs), um Datenverlust auszuschließen und korrekte Reihenfolge zu garantieren." },
-    { type: "mc", q: "14. Welche Anwendung nutzt typischerweise UDP?", options: ["Video-Streaming in Echtzeit", "Sicherer Datei-Download", "E-Mail-Versand (SMTP)", "Webzugriff (HTTP)"], answer: "Video-Streaming in Echtzeit", exp: "Erklärung: User Datagram Protocol (UDP) ist verbindungslos und hat minimale Latenzzeiten, weshalb es perfekt für zeitsensitive Daten wie Sprach- und Videostreams ist." },
-    { type: "mc", q: "15. Welche Reihenfolge ist korrekt beim TCP 3-Way-Handshake?", options: ["SYN – SYN-ACK – ACK", "ACK – SYN – SYN-ACK", "SYN – SYN-ACK – ACK – ACK", "SYN-ACK – ACK – SYN"], answer: "SYN – SYN-ACK – ACK", exp: "Erklärung: Der logische Verbindungsaufbau bei TCP erfolgt streng sequenziell über Synchronize (SYN), Synchronize-Acknowledge (SYN-ACK) und Acknowledge (ACK)." },
-    { type: "mc", q: "16. Welche OSI-Schicht ist für die logische Adressierung (IP) und das Routing zuständig?", img: svgOSI, options: ["Schicht 3", "Schicht 1", "Schicht 2", "Schicht 4"], answer: "Schicht 3", exp: "Erklärung: Schicht 3 (Vermittlungsschicht / Network Layer) ermöglicht die netzwerkweite Adressierung (IP) und Wegfindung (Routing)." },
-    { type: "mc", q: "17. Welche Bezeichnung passt zu dem in der Abbildung gezeigten Kabel?", img: svgCable, options: ["S/FTP", "U/UTP", "F/UTP", "U/FTP"], answer: "S/FTP", exp: "Erklärung: S/FTP (Screened Foiled Twisted Pair) beschreibt ein Kabel mit Kupfergeflecht-Gesamtschirm (S) und foliengeschirmten einzelnen Adernpaaren (FTP)." },
-    { type: "mc", q: "18. Welche Funktion hat die Schirmung bei Twisted-Pair-Kabeln?", options: ["Schutz vor elektromagnetischen Störungen", "Erhöhung der Kabellänge", "Erhöhung der Datenrate", "Verringerung der Anzahl der Adern"], answer: "Schutz vor elektromagnetischen Störungen", exp: "Erklärung: Die metallische Schirmung schützt die übertragenen Datensignale vor externer elektromagnetischer Einstrahlung (EMI) sowie Nahnebensprechen (Crosstalk)." },
-
-    // NEUE FRAGEN 19 UND 20
-    { type: "mc", q: "19. Welcher Stecker-Typ wird typischerweise für Glasfaserverbindungen (LWL) in modernen Switch- und Patchpanel-Umgebungen als Small-Form-Factor-Stecker verwendet?", options: ["LC-Stecker", "RJ45-Stecker", "BNC-Stecker", "D-Sub-Stecker"], answer: "LC-Stecker", exp: "Erklärung: Der LC-Stecker (Lucent Connector) ist der gängigste SFF-Glasfaserstecker in modernen Rechenzentren und Switches, da er durch seine kompakte Bauform eine hohe Portdichte erlaubt." },
-    { type: "mc", q: "20. Was unterscheidet eine Singlemode-Glasfaser (OS2) grundlegend von einer Multimode-Glasfaser (OM4)?", options: ["Singlemode hat einen sehr dünnen Kern, nutzt Laser und eignet sich für sehr lange Strecken.", "Multimode nutzt Laserlicht für Strecken bis zu 40 Kilometern.", "Singlemode-Fasern sind aus Kupfer gefertigt.", "Multimode-Fasern besitzen überhaupt keinen Glaskern."], answer: "Singlemode hat einen sehr dünnen Kern, nutzt Laser und eignet sich für sehr lange Strecken.", exp: "Erklärung: Singlemode (OS2) hat einen extrem dünnen Kerndurchmesser (~9 µm), nutzt präzise Halbleiterlaser und vermeidet Modendispersion, weshalb es Reichweiten von vielen Kilometern ohne Signalverlust erreicht." },
-
-    // 21-24
-    { type: "mc", q: "21. Welche Wirkung hat die Erhöhung einer Subnetzmaske von /24 (255.255.255.0) auf /26 (255.255.255.192)?", options: ["Das Netzwerk wird in 4 kleinere Subnetze mit weniger Hosts unterteilt.", "Die Anzahl der verfügbaren Hosts pro Subnetz vervierfacht sich.", "Der Router wird nicht mehr für das Netzwerkgateway benötigt.", "Die MAC-Adressen der Clients ändern sich automatisch."], answer: "Das Netzwerk wird in 4 kleinere Subnetze mit weniger Hosts unterteilt.", exp: "Erklärung: Bei Subnetting mit /26 verbleiben 6 Bits für den Hostanteil (2^6 - 2 = 62 Hosts). Das ursprüngliche /24 Netz wird in 4 gleich große Subnetze getrennt." },
-    { type: "mc", q: "22. Welche Funktion hat die Schirmung bei Twisted-Pair-Kabeln?", options: ["Schutz vor elektromagnetischen Störungen", "Erhöhung der Kabellänge", "Erhöhung der Datenrate", "Verringerung der Anzahl der Adern"], answer: "Schutz vor elektromagnetischen Störungen", exp: "Erklärung: Schirmfaktoren verringern die Signalverfälschung durch Fremdfelder." },
-    { type: "mc", q: "23. Warum wird bei der Gebäudeverkabelung zwischen Primär-, Sekundär- und Tertiärbereich unterschieder?", options: ["Um strukturierte und erweiterbare Netzwerkarchitekturen zu gewährleisten.", "Weil Kupferkabel nur im Primärbereich zugelassen sind.", "Weil Router ausschließlich im Tertiärbereich eingesetzt werden.", "Um die Anzahl der benötigten IP-Adressen zu reduzieren."], answer: "Um strukturierte und erweiterbare Netzwerkarchitekturen zu gewährleisten.", exp: "Erklärung: Die Trennung in 3 Bereiche laut EN 50173 schafft eine übersichtliche, herstellerneutrale und skalierbare Verkabelungsstruktur." },
-    { type: "mc", q: "24. Welche Aufgabe hat der Sekundärbereich (Gebäudebereich/Risewiring) in der strukturierten Verkabelung?", options: ["Verbindung zwischen dem Gebäudeverteiler (GV) und den Etagenverteilern (EV).", "Anbindung der einzelnen Arbeitsplatzdosen an den Etagenverteiler.", "Verbindung zwischen verschiedenen Standorten über das Internet.", "Direkte Stromversorgung der Serverräume."], answer: "Verbindung zwischen dem Gebäudeverteiler (GV) und den Etagenverteilern (EV).", exp: "Erklärung: Der Sekundärbereich verbindet vertikal innerhalb eines Gebäudes den zentralen Gebäudeverteiler mit den einzelnen Etagenverteilern (meist über Glasfaser)." },
-
-    // 25
-    { type: "mc", q: "25. Wie verhält sich ein Layer-2-Switch, wenn er ein Unicast-Frame empfängt, dessen Ziel-MAC-Adresse nicht in seiner MAC-Adresstabelle eingetragen ist?", options: ["Er sendet das Frame an alle aktiven Ports außer dem Empfangsport (Flooding).", "Er verwirft das Paket sofort und sendet eine ICMP-Fehlermeldung.", "Er leitet das Frame direkt an das Standard-Gateway weiter.", "Er fordert den Client zur Neueingabe der IP-Adresse auf."], answer: "Er sendet das Frame an alle aktiven Ports außer dem Empfangsport (Flooding).", exp: "Erklärung: Ist der Ziel-Port unbekannt (Unknown Unicast), nutzt der Switch temporär Flooding an alle Ports, um den Empfänger zu finden." },
-
-    // 26-29
-    { type: "mc", q: "26. Ein PC hat keine Verbindung zum Netzwerk. Die Link-LED der Netzwerkkarte leuchtet nicht. Was prüfen Sie zuerst?", options: ["Netzwerkkabel und phys. Verbindung", "IP-Konfiguration", "DNS-Server", "Firewall-Regeln"], answer: "Netzwerkkabel und phys. Verbindung", exp: "Erklärung: Eine erloschene Link-LED bedeutet, dass auf Schicht 1 (Bitübertragungs- und Steckverbindung) kein elektrisches/optisches Trägersignal anliegt." },
-    { type: "mc", q: "27. Ein Benutzer kann das Gateway pingen, aber keine Webseite aufrufen. Was ist am wahrscheinlichsten defekt?", options: ["DNS-Konfiguration", "Netzwerkkarte", "Netzteil", "RAM-Modul"], answer: "DNS-Konfiguration", exp: "Erklärung: Da der Ping auf die IP-Adresse des Gateways funktioniert, steht das Routing auf Layer 3. Es fehlt die Umsetzung der Webseiten-Namen durch DNS." },
-    { type: "mc", q: "28. Nach einem Umbau funktionieren alle PCs in einem Raum außer einem. Die Kabel und Ports sind korrekt. Was ist die wahrscheinlichste Ursache?", options: ["Falsche VLAN-Konfiguration", "Falsche IP-Adresse", "Defektes Patchpanel", "VLAN-Tagging am Endgerät deaktiviert"], answer: "Falsche VLAN-Konfiguration", exp: "Erklärung: Ist der entsprechende Switch-Port im falschen VLAN eingeteilt, verbleibt der Client isoliert in einer falschen Broadcast-Domäne." },
-    { type: "mc", q: "29. Ein Unternehmen überträgt eine 50 GB große Datei über eine 1 Gbit/s Verbindung. Wie lange dauert die Übertragung theoretisch? (1 Byte = 8 Bit)", options: ["ca. 6 Minuten 40 Sekunden", "ca. 5 Minuten", "ca. 11 Minuten", "ca. 50 Minuten"], answer: "ca. 6 Minuten 40 Sekunden", exp: "Erklärung: 50 GB * 8 = 400 Gbit. 400 Gbit / 1 Gbit/s = 400 Sekunden. 400 Sekunden / 60 = 6 Minuten und 40 Sekunden." },
-
-    // 30
-    { type: "mc", q: "30. Ein Access Point soll per Netzwerkkabel mit Strom versorgt werden. Welches Verfahren wird eingesetzt?", options: ["PoE", "DHCP", "DNS", "ARP"], answer: "PoE", exp: "Erklärung: Power over Ethernet (PoE nach IEEE 802.3af/at/bt) führt die Versorgungsspannung direkt über die verdrillten Adern des Ethernet-Kabels zu." },
-
-    // 31-34
-    { type: "mc", q: "31. Zwischen zwei Gebäuden (300 m Entfernung) soll eine stabile, störsichere Verbindung mit 10 Gbit/s realisiert werden. Welches Medium ist am besten geeignet?", options: ["Singlemode-Glasfaser", "U/UTP-Kupferkabel", "Koaxialkabel", "Multimode-Glasfaser"], answer: "Singlemode-Glasfaser", exp: "Erklärung: Singlemode-Glasfaser bietet maximale Reichweite ohne Signaldämpfung und garantiert die notwendige galvanische Trennung zur Vermeidung von Potenzialausgleichsströmen zwischen Gebäuden." },
-    { type: "mc", q: "32. Ein Switch leitet Daten an alle Ports weiter, auch wenn der Empfänger bekannt ist. Woran liegt das?", options: ["Der Switch arbeitet wie ein Hub", "Loop im Netzwerk", "Falsches VLAN", "MAC-Adresstabelle ist leer"], answer: "Der Switch arbeitet wie ein Hub", exp: "Erklärung: Wenn der Switch seine MAC-Table leert oder durch Angriffe (MAC-Flooding) überlastet ist, verhält er sich wie ein robuster Hub und flutet alle Frames." },
-    { type: "mc", q: "33. Ein Client erhält keine IP-Adresse. Wo sollten Sie zuerst prüfen?", options: ["DHCP-Server ist erreichbar", "Eintrag im DNS-Server", "MAC-Adresse des Clients", "Subnetzmaske des Routers"], answer: "DHCP-Server ist erreichbar", exp: "Erklärung: Erhält ein Client keine IP-Zuweisung, schlägt die automatisierte Bereitstellung fehl. Der DHCP-Server oder die Verbindung zu ihm ist unterbrochen." },
-    { type: "mc", q: "34. Ein Twisted-Pair-Kabel ist direkt parallel zu einer 230V-Stromleitung verlegt. Welche Auswirkung kann das haben?", options: ["Elektromagnetische Störungen (EMI)", "Erhöhte Bandbreite", "Kürzere Laufzeit", "Keine Auswirkung"], answer: "Elektromagnetische Störungen (EMI)", exp: "Erklärung: Wechselstromfelder induzieren Störspannungen in parallele Datenkabel, was zu massiven Paketverlusten führt." },
-
-    // 35
-    { type: "mc", q: "35. Der Download einer Datei ist sehr langsam, obwohl die Leitung 1 Gbit/s hat. Viele Kollegen nutzen gleichzeitig das Netzwerk. Was ist am wahrscheinlichsten?", options: ["Überlastung der Bandbreite", "Defekte Festplatte am Client", "Falscher Kabeltyp", "Falsche MAC-Adresse"], answer: "Überlastung der Bandbreite", exp: "Erklärung: Bandbreite beschreibt das Maximum der Leitung. Teilen sich viele Clients das Netz, sinkt der tatsächlich nutzbare Durchsatz pro User enorm." },
-
-    // 36-41
-    { type: "mc", q: "36. Ein Netzwerkkabel ist 85 m lang. Ist das zulässig laut Ethernet-Standard?", options: ["Ja, bis max. 100 m zulässig", "Nein, maximal 50 m erlaubt", "Nein, maximal 75 m erlaubt", "Ja, bis maximal 500 m zulässig"], answer: "Ja, bis max. 100 m zulässig", exp: "Erklärung: Die Gesamtlänge eines Channel-Links bei Twisted-Pair-Kabeln darf laut ISO/IEC 11801 maximal 100 m betragen (90 m Verlegekabel + 10 m Patchkabel)." },
-    { type: "mc", q: "37. Wie viele nutzbare Host-IP-Adressen stehen in einem IPv4 Subnetz /24 zur Verfügung?", options: ["254", "256", "255", "512"], answer: "254", exp: "Erklärung: Ein /24 Netz hat 8 Host-Bits (2^8 = 256 Adressen). Davon werden die Netz-ID (erste) und die Broadcast-Adresse (letzte) abgezogen -> 254 nutzbare Host-IPs." },
-    { type: "mc", q: "38. Sie planen 3 Etagen mit je 24 Arbeitsplätzen (je 2 Ports). Wie viele Ports benötigt das Patchpanel pro Etage mindestens?", options: ["48 Ports", "24 Ports", "72 Ports", "96 Ports"], answer: "48 Ports", exp: "Erklärung: 24 Arbeitsplätze * 2 Ports = 48 Netzwerk-Dosen-Ports pro Etage." },
-    { type: "mc", q: "39. Wie viele Höheneinheiten (HE) belegt ein 48-Port Patchpanel typischerweise im 19-Zoll-Schrank?", options: ["1 HE", "2 HE", "4 HE", "6 HE"], answer: "1 HE", exp: "Erklärung: Standard-Patchpanels im 19-Zoll-Format bringen 48 Ports bei kompakter Bauweise auf 1 Höheneinheit (1,75 Zoll / 44,45 mm) unter." },
-    { type: "mc", q: "40. Welche Übertragungsrate bietet der Standard 10GBASE-T?", options: ["10 Gbit/s", "1 Gbit/s", "100 Mbit/s", "100 Gbit/s"], answer: "10 Gbit/s", exp: "Erklärung: Die Nomenklatur beschreibt es direkt: 10G = 10 Gigabit pro Sekunde über Baseband Twisted Pair (-T)." },
-    { type: "mc", q: "41. Sie planen 3 Etagen mit 24 Arbeitsplätzen. Wie viele Patchpanels (à 24 Ports, 2 Ports/Platz) benötigen Sie insgesamt?", options: ["6", "3", "12", "24"], answer: "6", exp: "Erklärung: 3 Etagen * 48 Ports = 144 Ports gesamt. 144 Ports / 24 Ports pro Panel = 6 Patchpanels." },
-
-    // 42-45
-    { type: "mc", q: "42. Welche Aufgabe hat ein VLAN-Trunk (Tagged Port nach IEEE 802.1Q) zwischen zwei Switches?", options: ["Er überträgt Daten mehrerer VLANs über eine gemeinsame physische Leitung.", "Er erhöht die elektrische Stromstärke für PoE-Geräte.", "Er verbindet den Switch direkt mit dem Internet-Provider.", "Er wandelt Kupfer-Signale automatisch in Glasfaser um."], answer: "Er überträgt Daten mehrerer VLANs über eine gemeinsame physische Leitung.", exp: "Erklärung: Auf einem Trunk-Port fügt der Switch jedem Frame einen 4-Byte 802.1Q Tag hinzu, um Daten verschiedener VLANs über ein einziges Kabel getrennt zu transportieren." },
-    { type: "mc", q: "43. Welche Wellenlänge wird häufig bei Singlemode-Glasfasern (OS2) verwendet?", options: ["1310 nm / 1550 nm", "850 nm", "650 nm", "400 nm"], answer: "1310 nm / 1550 nm", exp: "Erklärung: Singlemode-Fasern sind für langwelliges Infrarotlicht im Dämpfungsminimum bei 1310 nm und 1550 nm optimiert." },
-    { type: "mc", q: "44. Ein Kupferkabel hat einen Widerstand von ca. 8,4 Ω pro 100m. Wie hoch ist der Widerstand für 90m?", options: ["ca. 7,56 Ω", "ca. 8,4 Ω", "ca. 75,6 Ω", "ca. 9,0 Ω"], answer: "ca. 7,56 Ω", exp: "Erklärung: Dreisatz: 8,4 Ω / 100 m = 0,084 Ω/m. 0,084 Ω/m * 90 m = 7,56 Ω." },
-    { type: "mc", q: "45. Welche Aussage zu VLANs ist richtig?", options: ["VLANs trennen Broadcast-Domänen logisch auf Layer 2.", "VLANs erhöhen die physikalische Bandbreite.", "VLANs ersetzen den Router vollständig.", "VLANs funktionieren nur ohne Switches."], answer: "VLANs trennen Broadcast-Domänen logisch auf Layer 2.", exp: "Erklärung: Ein Virtual LAN unterteilt ein physisches Switched-Netzwerk in mehrere unabhängige logische Broadcast-Segmente." },
-
-    // 46-50
-    { type: "mc", q: "46. Was passiert mit einem ungetaggten Ethernet-Frame, wenn es an einem Switch-Port eintrifft, der als Access-Port für VLAN 10 konfiguriert ist?", options: ["Der Switch weist dem Frame intern das VLAN 10 zu.", "Das Frame wird sofort als fehlerhaft verworfen.", "Der Switch leitet das Paket an alle VLANs weiter.", "Das Paket wird automatisch im Router verschlüsselt."], answer: "Der Switch weist dem Frame intern das VLAN 10 zu.", exp: "Erklärung: Ein Access-Port nimmt ungetaggte Frames von Endgeräten entgegen und ordnet sie intern fest der hinterlegten VLAN-ID (z. B. VLAN 10) zu." },
-    { type: "mc", q: "47. Welche Funktion hat Wake-on-LAN (WoL)?", options: ["Einschalten eines ausgeschalteten PCs per Magic Packet", "Backup über das Netzwerk", "Neustart eines Routers", "Verschlüsselung von Daten"], answer: "Einschalten eines ausgeschalteten PCs per Magic Packet", exp: "Erklärung: WoL horcht über die Standby-Stromversorgung der Netzwerkkarte auf ein 'Magic Packet' (6x FF + 12x Ziel-MAC) und startet den Hauptprozessor." },
-    { type: "mc", q: "48. Welche Norm beschreibt die strukturierte Verkabelung in Europa?", options: ["EN 50173 / ISO/IEC 11801", "TIA/EIA-568", "DIN VDE 0888", "IEEE 802.3"], answer: "EN 50173 / ISO/IEC 11801", exp: "Erklärung: Die europäische Norm EN 50173 definiert herstellerneutrale Vorgaben für Anwendungs- und Standortverkabelung." },
-    { type: "mc", q: "49. Wie lautet die messtechnische Größe bei Abnahme einer Glasfaserstrecke?", options: ["Dämpfungsmessung in dB", "Widerstandsmessung in Ohm", "Spannungsmessung in Volt", "Frequenzmessung in Hz"], answer: "Dämpfungsmessung in dB", exp: "Erklärung: Dämpfung (gemessen in Dezibel) beschreibt den Verlust an Lichtleistung über die Glasfaserstrecke inklusive Steckverbindungen und Spleiße." },
-    { type: "mc", q: "50. Welche Adernpaare werden bei 100BASE-TX (Fast Ethernet) zur Übertragung genutzt?", options: ["Adernpaare 1-2 und 3-6", "Adernpaare 4-5 und 7-8", "Alle 4 Adernpaare", "Nur Adernpaar 1-2"], answer: "Adernpaare 1-2 und 3-6", exp: "Erklärung: Fast Ethernet mit 100 Mbit/s benötigt lediglich 2 Adernpaare (Pins 1, 2 für TX und Pins 3, 6 für RX). Erst Gigabit nutzt alle 4 Paare." },
-
-    // 51-80
-    { type: "mc", q: " 51: Welche Aussage beschreibt den Unterschied zwischen Bandbreite und Durchsatz am besten?", options: ["Beide Begriffe haben dieselbe Bedeutung.", "Bandbreite ist die theoretische Kapazität, Durchsatz die tatsächlich erreichte Leistung.", "Durchsatz ist immer größer als die Bandbreite.", "Bandbreite wird nur bei WLAN verwendet."], answer: "Bandbreite ist die theoretische Kapazität, Durchsatz die tatsächlich erreichte Leistung.", exp: "Erklärung: Bandbreite bezeichnet das theoretische Maximum der Leitung (z. B. 1 Gbit/s). Der Durchsatz (Throughput) misst die tatsächliche Netto-Datenrate im Betrieb unter Berücksichtigung von Overhead und Auslastung." },
-    { type: "mc", q: " 52: Ein Netzwerk hat eine Bandbreite von 1 Gbit/s. Gemessen werden 850 Mbit/s. Welche Aussage trifft zu?", options: ["Der Durchsatz beträgt 1 Gbit/s.", "Die Bandbreite beträgt 850 Mbit/s.", "Der Durchsatz beträgt 850 Mbit/s.", "Das Netzwerk ist defekt."], answer: "Der Durchsatz beträgt 850 Mbit/s.", exp: "Erklärung: Der real gemessene Wert im Betrieb entspricht dem Durchsatz (850 Mbit/s), während die nominale Kapazität (1 Gbit/s) die Bandbreite ist." },
-    { type: "mc", q: " 53: Welche Einheit wird normalerweise für Netzwerkgeschwindigkeiten verwendet?", options: ["Byte", "Volt", "Bit pro Sekunde", "Hertz"], answer: "Bit pro Sekunde", exp: "Erklärung: Datenübertragungsraten in Netzwerken werden standardmäßig in Bit pro Sekunde (bit/s, Mbit/s, Gbit/s) gemessen. Speicherkapazitäten dagegen in Byte." },
-    { type: "mc", q: " 54: Eine Datei ist 8 GB groß. Wie viele Gigabit entsprechen diesem Wert?", options: ["8 Gbit", "16 Gbit", "32 Gbit", "64 Gbit"], answer: "64 Gbit", exp: "Erklärung: 1 Byte besteht aus 8 Bits. Rechnungsansatz: 8 Gigabyte * 8 Bit = 64 Gigabit." },
-    { type: "mc", q: " 55: Welche Aussage über Ethernet stimmt?", options: ["Ethernet verwendet MAC-Adressen.", "Ethernet arbeitet auf OSI-Schicht 7.", "Ethernet nutzt ausschließlich Glasfaser.", "Ethernet verwendet keine Frames."], answer: "Ethernet verwendet MAC-Adressen.", exp: "Erklärung: Ethernet ist die dominierende Schicht-2-Technologie und nutzt physikalische 48-Bit MAC-Adressen zur Adressierung von Datenpaketen (Frames)." },
-    { type: "mc", q: " 56: Welche Komponente prüft die Ziel-MAC-Adresse eines Ethernet-Frames?", options: ["Switch", "Patchpanel", "Netzteil", "USV"], answer: "Switch", exp: "Erklärung: Ein Layer-2-Switch bewertet die Ziel-MAC im Ethernet-Header, um das Paket gezielt an den richtigen Port weiterzuleiten." },
-    { type: "mc", q: " 57: Welches Feld eines Ethernet-Frames enthält die eigentlichen Nutzdaten?", options: ["FCS", "Payload", "SFD", "EtherType"], answer: "Payload", exp: "Erklärung: Der Payload-Bereich trägt die Nutzdaten der höheren Schichten (z. B. das IP-Paket). Er umfasst zwischen 46 und 1500 Bytes." },
-    { type: "mc", q: " 58: Welche Aufgabe besitzt die FCS im Ethernet-Frame?", options: ["Verschlüsselung", "Fehlererkennung", "Komprimierung", "Routing"], answer: "Fehlererkennung", exp: "Erklärung: Die Frame Check Sequence (FCS) beinhaltet einen 32-Bit CRC-Prüfwert, mit dem der Empfänger prüft, ob Übertragungsfehler vorliegen." },
-    { type: "mc", q: " 59: Welche maximale Standard-MTU wird bei Ethernet normalerweise verwendet?", options: ["512 Byte", "1024 Byte", "1500 Byte", "9000 Byte"], answer: "1500 Byte", exp: "Erklärung: Die Maximum Transmission Unit (MTU) für Standard-Ethernet beträgt 1500 Bytes Payload (ohne Ethernet-Header)." },
-    { type: "mc", q: " 60: Eine Datei wird in viele kleinere Ethernet-Frames zerlegt. Warum geschieht das?", options: ["Weil die MTU begrenzt ist", "Weil MAC-Adressen zu kurz sind", "Weil Ethernet keine Nutzdaten übertragen kann", "Weil Switches keine großen Dateien unterstützen"], answer: "Weil die MTU begrenzt ist", exp: "Erklärung: Da ein Ethernet-Frame maximal 1500 Byte Nutzlast transportieren kann, müssen größere Datensätze (z. B. Dateien) in viele kleinere Segmente/Pakete fragmentiert werden." },
-    { type: "mc", q: " 61: Ein Benutzer erhält nach dem Einschalten des PCs automatisch eine gültige IP-Adresse. Welcher Dienst war dafür verantwortlich?", options: ["DNS", "DHCP", "HTTP", "FTP"], answer: "DHCP", exp: "Erklärung: Dynamic Host Configuration Protocol (DHCP) verteilt automatisiert IP-Adressen, Subnetzmasken und Standard-Gateways an Clients." },
-    { type: "mc", q: " 62: Ein Benutzer kennt nur den Namen eines Servers. Welcher Dienst hilft bei der Ermittlung der IP-Adresse?", options: ["DNS", "DHCP", "ARP", "TCP"], answer: "DNS", exp: "Erklärung: Das Domain Name System (DNS) löst Hostnamen in die dazugehörigen IP-Adressen auf." },
-    { type: "mc", q: " 63: Ein Administrator möchte einen ausgeschalteten PC über das Netzwerk starten. Welche Technik wird verwendet?", options: ["VLAN", "Wake-on-LAN", "DHCP", "NAT"], answer: "Wake-on-LAN", exp: "Erklärung: Wake-on-LAN (WoL) sendet ein spezielles Aufweck-Paket (Magic Packet) an die Netzwerkarte des ausgeschalteten PCs." },
-    { type: "mc", q: " 64: Warum wird bei Wake-on-LAN die MAC-Adresse verwendet?", options: ["Der ausgeschaltete PC besitzt keine aktive IP-Kommunikation.", "Die MAC-Adresse ist schneller.", "Die IP-Adresse ist zu lang.", "DHCP funktioniert sonst nicht."], answer: "Der ausgeschaltete PC besitzt keine aktive IP-Kommunikation.", exp: "Erklärung: Da das Betriebssystem heruntergefahren ist, ist kein IP-Stapel aktiv. Nur die Netzwerkkarte verarbeitet auf Schicht 2 Daten anhand ihrer festen MAC-Adresse." },
-    { type: "mc", q: " 65: Ein Unternehmen möchte mehrere Access Points mit Strom versorgen, ohne zusätzliche Steckdosen zu installieren. Welche Technik eignet sich dafür?", options: ["DNS", "TCP", "PoE", "OSPF"], answer: "PoE", exp: "Erklärung: Power over Ethernet (PoE) führt Gleichstrom direkt über das RJ45-Netzwerkkabel zu den Endgeräten." },
-    { type: "mc", q: " 66: Nach Installation eines neuen Access Points startet das Gerät nicht. Welche Ursache ist am wahrscheinlichsten?", options: ["DNS-Eintrag fehlt", "PoE wird nicht bereitgestellt", "Browser nicht aktuell", "DHCP deaktiviert"], answer: "PoE wird nicht bereitgestellt", exp: "Erklärung: Startet ein PoE-Gerät ohne separates Netzteil überhaupt nicht, liefert der Switch-Port keine PoE-Versorgungsspannung." },
-    { type: "mc", q: " 67: Ein Netzwerk verwendet Cat 5e. Welche Datenrate ist typischerweise möglich?", options: ["1 Gbit/s", "10 Gbit/s über 100 m", "40 Gbit/s", "100 Gbit/s"], answer: "1 Gbit/s", exp: "Erklärung: Kategorie 5e (Cat 5e) ist für Übertragungsfrequenzen bis 100 MHz spezifiziert und unterstützt Gigabit-Ethernet (1 Gbit/s) bis 100 m." },
-    { type: "mc", q: " 68: Ein Unternehmen möchte 10 Gbit/s über 100 m Kupfer übertragen. Welche Kabelkategorie eignet sich am besten?", options: ["Cat 5", "Cat 5e", "Cat 6a", "Cat 3"], answer: "Cat 6a", exp: "Erklärung: Kategorie 6a (Cat 6a) ist bis 500 MHz spezifiziert und sichert den Betrieb von 10GBASE-T über die volle Distanz von 100 Metern." },
-    { type: "mc", q: " 69: Ein Netzwerktechniker entdeckt ein U/UTP-Kabel. Welche Aussage trifft zu?", options: ["Gesamtschirm vorhanden", "Paarschirm vorhanden", "Keine Schirmung vorhanden", "Glasfaserkabel"], answer: "Keine Schirmung vorhanden", exp: "Erklärung: U/UTP steht für Unshielded / Unshielded Twisted Pair – weder der Gesamtmantel noch die einzelnen Adernpaare besitzen eine Metallschirmung." },
-    { type: "mc", q: " 70: Ein Mitarbeiter knickt ein Netzwerkkabel sehr stark. Welche Folge kann auftreten?", options: ["Verbesserter Durchsatz", "Erhöhte Signalstörungen", "Höhere Bandbreite", "Kürzere MAC-Adresse"], answer: "Erhöhte Signalstörungen", exp: "Erklärung: Starkes Knicken verändert die Verdrillung und Geometrie der Adern, was zu Wellenwiderstandsänderungen, Signalreflexionen und hoher Dämpfung führt." },
-    { type: "mc", q: " 71: Welche Abkürzung steht für Gebäudeverteiler?", options: ["EV", "SV", "GV", "AP"], answer: "GV", exp: "Erklärung: In der strukturierten Verkabelung steht GV für Gebäudeverteiler (Primärbereich)." },
-    { type: "mc", q: " 72: Welche Abkürzung steht für Etagenverteiler?", options: ["EV", "GV", "SV", "AP"], answer: "EV", exp: "Erklärung: EV steht für Etagenverteiler (Tertiärbereich). SV steht für Standortverteiler." },
-    { type: "mc", q: " 73: Wo befindet sich typischerweise ein Patchpanel?", options: ["Arbeitsplatz", "Etagenverteiler", "Monitor", "Drucker"], answer: "Etagenverteiler", exp: "Erklärung: Das Patchpanel ist im Verteilerschrank des Etagenverteilers (EV) eingebaut und schließt die Verlegekabel ab." },
-    { type: "mc", q: " 74: Welche Aussage über ein Patchpanel ist richtig?", options: ["Es verteilt aktiv Daten.", "Es benötigt eine eigene IP-Adresse.", "Es ist eine passive Komponente.", "Es arbeitet als Router."], answer: "Es ist eine passive Komponente.", exp: "Erklärung: Ein Patchpanel benötigt keinen elektrischen Strom und ist ein rein passives Verbindungselement zum Auflegen fester Verlegekabel." },
-    { type: "mc", q: " 75: Welche Topologie wird bei der strukturierten Verkabelung verwendet?", options: ["Bus", "Ring", "Hierarchischer Stern", "Full Mesh"], answer: "Hierarchischer Stern", exp: "Erklärung: Die Norm EN 50173 fordert eine hierarchische Sterntopologie (Standortverteiler -> Gebäudeverteiler -> Etagenverteiler -> Endgerät)." },
-    { type: "mc", q: " 76: Was bedeutet SNR?", options: ["Signal-to-Noise Ratio", "Server Network Routing", "Secure Network Range", "Switch Node Response"], answer: "Signal-to-Noise Ratio", exp: "Erklärung: Signal-to-Noise Ratio (SNR) bezeichnet den Signal-Rausch-Abstand zwischen dem Nutzsignal und den Störgeräuschen." },
-    { type: "mc", q: " 77: Welcher SNR-Wert ist grundsätzlich besser?", options: ["Niedriger SNR", "Hoher SNR", "Beide gleich", "Nicht relevant"], answer: "Hoher SNR", exp: "Erklärung: Ein hoher SNR-Wert bedeutet, dass das Nutzsignal deutlich stärke ist als das Hintergrundrauschen, was zu fehlerfreier Übertragung führt." },
-    { type: "mc", q: " 78: Welche Maßnahme reduziert EMI besonders wirksam?", options: ["Netzwerkkabel direkt neben Stromleitungen verlegen", "Größeren Abstand zu Stromleitungen einhalten", "Kabel stärker knicken", "DHCP deaktivieren"], answer: "Größeren Abstand zu Stromleitungen einhalten", exp: "Erklärung: Physische Distanz schwächt elektromagnetische Felder (EMI) ab. Mindestabstände zu Starkstromleitungen verhindern Induktion." },
-    { type: "mc", q: " 79: Welche Ursache führt typischerweise zu Crosstalk?", options: ["Übersprechen zwischen benachbarten Aderpaaren", "Falsche DNS-Einstellungen", "Fehlerhafte IP-Adresse", "Defekte Festplatte"], answer: "Übersprechen zwischen benachbarten Aderpaaren", exp: "Erklärung: Crosstalk (Nah-/Fernnebensprechen) entsteht durch kapazitive/induktive Kopplung zwischen nebeneinanderliegenden Aderpaaren im Kabel." },
-    { type: "mc", q: " 80: Welcher Vorteil entsteht durch differentielle Signalübertragung?", options: ["Größere Bildschirme", "Höhere Auflösung", "Bessere Unterdrückung elektromagnetischer Störungen", "Schnellere Prozessoren"], answer: "Bessere Unterdrückung elektromagnetischer Störungen", exp: "Erklärung: Bei differentieller Übertragung (Twisted Pair) werden invertierte Signale gesendet. Störungen treffen beide Adern gleich und löschen sich bei der Differenzbildung am Empfänger aus (Gleichtaktausblendung)." },
-
-    // NEU HINZUGEFÜGTE AUFGABEN 81 - 95
-    { type: "mc", q: " 81: Ein Netzwerk verwendet die Subnetzmaske 255.255.255.0. Welche CIDR-Schreibweise gehört dazu?", options: ["/8", "/16", "/24", "/32"], answer: "/24", exp: "Erklärung: 255.255.255.0 entspricht 24 gesetzten Bits (8+8+8+0) im Präfix." },
-    { type: "mc", q: " 82: Ein PC besitzt die IP-Adresse 192.168.1.50/24. Wie lautet die Netzwerkadresse?", options: ["192.168.1.0", "192.168.1.50", "192.168.1.255", "255.255.255.0"], answer: "192.168.1.0", exp: "Erklärung: Bei /24 ist der Hostanteil im letzten Oktett. Für die Netzadresse wird das letzte Oktett auf 0 gesetzt -> 192.168.1.0." },
-    { type: "mc", q: " 83: Ein PC hat die Adresse 192.168.10.100/24. Wie lautet die Broadcast-Adresse?", options: ["192.168.10.0", "192.168.10.1", "192.168.10.255", "192.168.10.100"], answer: "192.168.10.255", exp: "Erklärung: Die Broadcast-Adresse verwendet alle Hostbits auf 1 gesetzt (im /24-Netz das vierte Oktett als 255) -> 192.168.10.255." },
-    { type: "mc", q: " 84: Wie viele nutzbare Host-Adressen besitzt ein Netzwerk mit /24?", options: ["128", "254", "255", "256"], answer: "254", exp: "Erklärung: 2^8 = 256 Gesamt-IPs abzüglich Netzadresse (.0) und Broadcast (.255) ergibt 254 nutzbare Hosts." },
-    { type: "mc", q: " 85: Welche Subnetzmaske gehört zu /25?", options: ["255.255.255.0", "255.255.255.128", "255.255.255.192", "255.255.255.224"], answer: "255.255.255.128", exp: "Erklärung: 24 Bits erbeuten 255.255.255.0. Das 25. Bit setzt das höchstwertige Bit des vierten Oktetts (128) -> 255.255.255.128." },
-    { type: "mc", q: " 86: Zwei PCs besitzen folgende Adressen: PC1: 192.168.1.20/24 und PC2: 192.168.1.200/24. Welche Aussage ist richtig?", options: ["Beide befinden sich im selben Netzwerk.", "Beide befinden sich in unterschiedlichen Netzwerken.", "PC2 ist die Broadcast-Adresse.", "PC1 ist die Netzwerkadresse."], answer: "Beide befinden sich im selben Netzwerk.", exp: "Erklärung: Beide Rechner teilen sich den identischen Netzanteil (192.168.1.x) im gleichen /24-Subnetz." },
-    { type: "mc", q: " 87: Welches Netzwerk bietet mehr nutzbare Hosts?", options: ["/28", "/27", "/29", "/30"], answer: "/27", exp: "Erklärung: Je kleiner der Präfix, desto mehr Bits verbleiben für den Hostanteil. /27 bietet 30 Hosts, /28 bietet 14, /29 bietet 6, /30 bietet 2." },
-    { type: "mc", q: " 88: Ein kleines Büro benötigt 10 Host-Adressen. Welches Subnetz reicht aus?", options: ["/30", "/29", "/28", "/32"], answer: "/28", exp: "Erklärung: /28 erlaubt 14 nutzbare Hosts (2^4 - 2). /29 bietet nur 6 (zu wenig)." },
-    { type: "mc", q: " 89: Eine Adresse endet auf .255 und befindet sich in einem /24-Netz. Welche Funktion hat diese Adresse normalerweise?", options: ["Host-Adresse", "Netzwerkadresse", "Broadcast-Adresse", "Gateway-Adresse"], answer: "Broadcast-Adresse", exp: "Erklärung: Die höchste Adresse im Subnetz (alle Host-Bits auf 1) dient als Broadcast-Adresse." },
-    { type: "mc", q: " 90: Welche Adresse kann einem Client im Netzwerk 192.168.5.0/24 zugewiesen werden?", options: ["192.168.5.0", "192.168.5.255", "192.168.5.100", "255.255.255.0"], answer: "192.168.5.100", exp: "Erklärung: 192.168.5.0 ist die Netz-ID, .255 die Broadcast. 192.168.5.100 ist eine reguläre, nutzbare Host-IP." },
-    { type: "mc", q: " 91: Ein Netzwerk besitzt die Adresse 10.0.0.0/24. Wie lautet die erste nutzbare Host-Adresse?", options: ["10.0.0.0", "10.0.0.1", "10.0.0.254", "10.0.0.255"], answer: "10.0.0.1", exp: "Erklärung: Die erste nutzbare Host-Adresse folgt direkt auf die Netzadresse (.0) und lautet .1." },
-    { type: "mc", q: " 92: Ein Netzwerk besitzt die Adresse 10.0.0.0/24. Wie lautet die letzte nutzbare Host-Adresse?", options: ["10.0.0.254", "10.0.0.255", "10.0.0.1", "10.0.0.253"], answer: "10.0.0.254", exp: "Erklärung: Die letzte nutzbare Host-IP liegt direkt vor der Broadcast-Adresse (.255) -> 10.0.0.254." },
-    { type: "mc", q: " 93: Welche CIDR-Schreibweise bietet die meisten Host-Adressen?", options: ["/30", "/29", "/28", "/24"], answer: "/24", exp: "Erklärung: /24 lässt 8 Bits für den Hostanteil (254 Hosts). Das ist deutlich mehr als bei /28 (14), /29 (6) oder /30 (2)." },
-    { type: "mc", q: " 94: Ein Administrator teilt ein /24-Netz in zwei gleich große Netze auf. Welcher Präfix entsteht?", options: ["/25", "/26", "/27", "/28"], answer: "/25", exp: "Erklärung: Das Borgen von 1 Bit teilt das Netzwerk exakt in 2 Hälften. Aus /24 wird somit /25." },
-    { type: "mc", q: " 95: Ein Netzwerk verwendet die Adresse 172.16.1.0/24. Welche Adresse gehört sicher zu diesem Netzwerk?", options: ["172.16.1.50", "172.16.2.50", "172.17.1.50", "10.16.1.50"], answer: "172.16.1.50", exp: "Erklärung: Nur 172.16.1.50 hat denselben Netzanteil 172.16.1.x bei einer /24 Subnetzmaske." }
-];
-
-let currentQ = 0;
-let score = 0;
-let currentShuffledOptions = [];
-
 function showQuestion() {
-    const q = questions[currentQ];
-    document.getElementById("progress").innerText = `Frage ${currentQ + 1} von ${questions.length}`;
-    const container = document.getElementById("question-content");
-    const feedback = document.getElementById("feedback-area");
-    feedback.innerHTML = "";
-    document.getElementById("next-btn").style.display = "none";
+    const qList = currentTabelle.questions;
+    const q = qList[currentQ];
+    
+    const card = document.getElementById("quiz-card");
+    card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <button class="back-btn" onclick="showMenu()" style="margin:0;">⬅ Tabellen-Auswahl</button>
+            <div id="progress" class="progress" style="margin:0;">Frage ${currentQ + 1} von ${qList.length}</div>
+        </div>
+        <h1>${currentTabelle.title}</h1>
+        <div class="question-text" style="margin-top:15px;">${q.q}</div>
+        <div id="question-body"></div>
+        <div id="feedback-area"></div>
+        <div style="display:flex; justify-content:space-between; margin-top:20px;">
+            <button class="prev-btn" id="prev-btn" onclick="prevQuestion()" ${currentQ === 0 ? 'style="display:none;"' : ''}>⬅ Vorherige Frage</button>
+            <button id="next-btn" onclick="nextQuestion()">Nächste Frage ➡</button>
+        </div>
+    `;
 
-    let html = `<div class="question-text">${q.q}</div>`;
+    const bodyContainer = document.getElementById("question-body");
 
-    if (q.img) {
-        html += `<div class="q-image-container">${q.img}</div>`;
+    if (q.type === "match") {
+        let matchHtml = `<div class="matching-container">`;
+        q.pairs.forEach((pair, idx) => {
+            let shuffledOpts = userAnswers[currentQ]?.shuffledOpts || shuffleArray(q.options);
+            if (!userAnswers[currentQ]) {
+                if (!userAnswers.shuffledMap) userAnswers.shuffledMap = {};
+                userAnswers[currentQ] = { shuffledOpts: shuffledOpts, selected: {} };
+            }
+            matchHtml += `
+                <div class="matching-row">
+                    <span><strong>${pair.item}</strong></span>
+                    <select id="match-select-${idx}" onchange="selectMatch(${idx})">
+                        <option value="">-- Bitte wählen --</option>
+            `;
+            shuffledOpts.forEach(opt => {
+                let sel = userAnswers[currentQ].selected[idx] === opt ? 'selected' : '';
+                matchHtml += `<option value="${opt}" ${sel}>${opt}</option>`;
+            });
+            matchHtml += `</select></div>`;
+        });
+        matchHtml += `</div><button class="submit-btn" onclick="checkMatch()">Antworten prüfen</button>`;
+        bodyContainer.innerHTML = matchHtml;
+    } else {
+        let shuffledOpts = userAnswers[currentQ]?.shuffledOpts || shuffleArray(q.options);
+        if (!userAnswers[currentQ]) {
+            userAnswers[currentQ] = { shuffledOpts: shuffledOpts, answered: false };
+        }
+        let html = `<div id="options-container">`;
+        shuffledOpts.forEach((opt, idx) => {
+            let extraClass = "";
+            let disabled = userAnswers[currentQ].answered ? 'disabled' : '';
+            if (userAnswers[currentQ].answered) {
+                if (opt === q.answer) extraClass = " correct";
+                else if (userAnswers[currentQ].selectedIndex === idx) extraClass = " incorrect";
+            }
+            html += `<button class="option${extraClass}" ${disabled} onclick="checkMC(${idx})">${opt}</button>`;
+        });
+        html += `</div>`;
+        bodyContainer.innerHTML = html;
+
+        if (userAnswers[currentQ].answered) {
+            showFeedback(userAnswers[currentQ].isCorrect, userAnswers[currentQ].feedbackText);
+            document.getElementById("next-btn").style.display = "inline-block";
+        }
     }
-
-    currentShuffledOptions = shuffleArray(q.options);
-    html += `<div id="options-container">`;
-    currentShuffledOptions.forEach((opt, idx) => {
-        html += `<button class="option" onclick="checkMC(${idx})">${opt}</button>`;
-    });
-    html += `</div>`;
-
-    container.innerHTML = html;
 }
 
 function checkMC(selectedIndex) {
-    const q = questions[currentQ];
-    const selectedOption = currentShuffledOptions[selectedIndex];
+    if (userAnswers[currentQ].answered) return;
+    const qList = currentTabelle.questions;
+    const q = qList[currentQ];
+    const selectedOption = userAnswers[currentQ].shuffledOpts[selectedIndex];
     const optionsBtns = document.querySelectorAll(".option");
+    
+    userAnswers[currentQ].answered = true;
+    userAnswers[currentQ].selectedIndex = selectedIndex;
+
     optionsBtns.forEach(btn => btn.disabled = true);
 
-    if (selectedOption === q.answer) {
+    let isCorrect = (selectedOption === q.answer);
+    userAnswers[currentQ].isCorrect = isCorrect;
+
+    if (isCorrect) {
         optionsBtns[selectedIndex].classList.add("correct");
         score++;
-        showFeedback(true, `Richtig!\n\n${q.exp}`);
+        userAnswers[currentQ].feedbackText = `Richtig!\n\n${q.exp}`;
     } else {
         optionsBtns[selectedIndex].classList.add("incorrect");
-        currentShuffledOptions.forEach((opt, idx) => {
+        userAnswers[currentQ].shuffledOpts.forEach((opt, idx) => {
             if (opt === q.answer) {
                 optionsBtns[idx].classList.add("correct");
             }
         });
-        showFeedback(false, `Falsch! Richtige Antwort: ${q.answer}\n\n${q.exp}`);
+        userAnswers[currentQ].feedbackText = `Falsch! Richtige Antwort: ${q.answer}\n\n${q.exp}`;
     }
+    showFeedback(isCorrect, userAnswers[currentQ].feedbackText);
+    document.getElementById("next-btn").style.display = "inline-block";
+}
+
+function selectMatch(idx) {
+    const sel = document.getElementById(`match-select-${idx}`);
+    userAnswers[currentQ].selected[idx] = sel.value;
+}
+
+function checkMatch() {
+    if (userAnswers[currentQ].answered) return;
+    const qList = currentTabelle.questions;
+    const q = qList[currentQ];
+    
+    let allCorrect = true;
+    q.pairs.forEach((pair, idx) => {
+        if (userAnswers[currentQ].selected[idx] !== pair.target) {
+            allCorrect = false;
+        }
+    });
+
+    userAnswers[currentQ].answered = true;
+    userAnswers[currentQ].isCorrect = allCorrect;
+
+    if (allCorrect) {
+        score++;
+        userAnswers[currentQ].feedbackText = `Perfekt! Alle Zuordnungen sind korrekt.\n\n${q.exp}`;
+    } else {
+        let correctText = q.pairs.map(p => `• ${p.item} ➔ ${p.target}`).join("\n");
+        userAnswers[currentQ].feedbackText = `Nicht ganz richtig. Die korrekte Zuordnung lautet:\n${correctText}\n\n${q.exp}`;
+    }
+
+    showFeedback(allCorrect, userAnswers[currentQ].feedbackText);
     document.getElementById("next-btn").style.display = "inline-block";
 }
 
@@ -281,123 +670,54 @@ function showFeedback(isCorrect, text) {
     feedback.className = `feedback ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`;
     
     const memeArray = isCorrect ? correctMemes : incorrectMemes;
-    const randomMeme = memeArray[Math.floor(Math.random() * memeArray.length)];
+    const randomMeme = memeArray[Math.floor(Math.random() * memeArray.length)] || "";
 
     feedback.innerHTML = `
         <div style="white-space: pre-line;">${text}</div>
         <div class="feedback-img">
-            <img src="${randomMeme}" alt="Reaktion Bild">
+            <img src="${randomMeme}" alt="Feedback GIF">
         </div>
     `;
 }
 
+function prevQuestion() {
+    if (currentQ > 0) {
+        currentQ--;
+        showQuestion();
+    }
+}
+
 function nextQuestion() {
     currentQ++;
-    if (currentQ < questions.length) {
+    if (currentQ < currentTabelle.questions.length) {
         showQuestion();
     } else {
         finishQuiz();
     }
 }
 
-function getRangliste() {
-    const data = localStorage.getItem(`lf03_rangliste_95_v1`);
-    if (data) {
-        return JSON.parse(data);
-    }
-    return [
-        { name: "Netzwerk-Profi", score: 91, max: 95, date: "17.09.2026" },
-        { name: "SysAdmin_2026", score: 83, max: 95, date: "17.09.2026" }
-    ];
-}
-
-function saveRanglisteEntry(name) {
-    if (!name || name.trim() === "") return;
-    let list = getRangliste();
-    const today = new Date().toLocaleDateString('de-DE');
-    list.push({
-        name: name.trim(),
-        score: score,
-        max: questions.length,
-        date: today
-    });
-    list.sort((a, b) => b.score - a.score);
-    list = list.slice(0, 10);
-    localStorage.setItem(`lf03_rangliste_95_v1`, JSON.stringify(list));
-    renderRangliste(name.trim());
-}
-
-function renderRangliste(highlightName = null) {
-    const list = getRangliste();
-    let html = `
-        <table class="rangliste-table">
-            <tr>
-                <th>Rang</th>
-                <th>Name</th>
-                <th>Punkte</th>
-                <th>Prozent</th>
-                <th>Datum</th>
-            </tr>
-    `;
-    list.forEach((item, index) => {
-        const isCurrent = highlightName && item.name === highlightName && item.score === score;
-        const rowClass = isCurrent ? 'class="highlight-row"' : '';
-        const pct = Math.round((item.score / item.max) * 100);
-        html += `
-            <tr ${rowClass}>
-                <td><strong>#${index + 1}</strong></td>
-                <td>${item.name}</td>
-                <td>${item.score} / ${item.max}</td>
-                <td>${pct}%</td>
-                <td>${item.date}</td>
-            </tr>
-        `;
-    });
-    html += `</table>`;
-    document.getElementById("rangliste-table-container").innerHTML = html;
-}
-
 function finishQuiz() {
-    const passed = score >= (questions.length / 2);
-    
-    const imgSrc = passed 
-        ? "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTg2NGxudjlweDQzaWV0a3ljdmQwaDhwbWVpM250MTRqb3dpdDRjciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7qE2VAxuXWeyvJIY/giphy.webp"
-        : "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzgxbGplZnkzdnFhanE2M3d5bDIybTZiN2J1Zm1qbzk4OHppdGdudyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9u3TZfpmeDLkD6/giphy.gif";
+    const qList = currentTabelle.questions;
+    const passed = score >= (qList.length / 2);
+    const imgSrc = passed ? correctMemes[0] : incorrectMemes[0];
 
-    document.getElementById("quiz-card").innerHTML = `
+    const card = document.getElementById("quiz-card");
+    card.innerHTML = `
         <div id="score-board">
-            <h2>Lernzielkontrolle LF03 Beendet!</h2>
-            <p style="font-size: 1.3em;">Ergebnis: <strong>${score}</strong> von <strong>${questions.length}</strong> Punkten (${Math.round(score/questions.length*100)}%)</p>
+            <h2>Auswertung: ${currentTabelle.title}</h2>
+            <p style="font-size: 1.3em;">Ergebnis: <strong>${score}</strong> von <strong>${qList.length}</strong> Punkten (${Math.round(score/qList.length*100)}%)</p>
             <div class="img-container">
-                <img src="${imgSrc}" alt="Ergebnis Bild">
+                <img src="${imgSrc}" alt="Auswertungs-Bild">
             </div>
-            <div class="meme-text">${passed ? 'Herzlichen Glückwunsch! Du bist bestens auf die LF03 IHK-Prüfung vorbereitet! 🎉' : 'Das war leider noch nicht ausreichend. Geh die Themen noch einmal durch! 😭'}</div>
+            <div class="meme-text">${passed ? 'Starke Leistung! Du hast diesen Bereich bestens gemeistert! 🎉' : 'Da gibt es noch Lücken. Schau dir die Erklärungen noch einmal an! 💪'}</div>
             
-            <div class="rangliste-container">
-                <h3>🏆 Rangliste LF03 (95 Fragen)</h3>
-                <div class="rangliste-form" id="rangliste-form-box">
-                    <input type="text" id="player-name" placeholder="Deinen Namen eintragen..." autocomplete="off">
-                    <button class="submit-btn" style="margin-top:0;" onclick="submitScore()">In Rangliste eintragen</button>
-                </div>
-                <div id="rangliste-table-container"></div>
-            </div>
-            
-            <button class="submit-btn" onclick="location.reload()" style="margin-top:20px;">Test erneut starten</button>
+            <button class="submit-btn" onclick="startQuiz(${currentTabelle.id})" style="margin-top:15px;">Diese Tabelle wiederholen</button>
+            <button class="back-btn" onclick="showMenu()" style="margin-top:15px;">Zur Tabellen-Auswahl</button>
         </div>
     `;
-    
-    renderRangliste();
 }
 
-function submitScore() {
-    const nameInput = document.getElementById("player-name");
-    if (nameInput && nameInput.value.trim() !== "") {
-        saveRanglisteEntry(nameInput.value);
-        document.getElementById("rangliste-form-box").style.display = "none";
-    }
-}
-
-showQuestion();
+showMenu();
 </script>
 
 </body>
