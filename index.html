@@ -1110,7 +1110,7 @@ function showMenu(){stopMiniGame();campaignMode=false;const card=document.getEle
 <div class="stats"><div class="stat"><b>${totalQuestionCount()}</b><span>Originalfragen</span></div><div class="stat"><b>${xp}</b><span>Gesamt-XP</span></div><div class="stat"><b>${doneCount()}</b><span>Gelöste Aufgaben</span></div><div class="stat"><b>6</b><span Missionen</span></div></div>
 <button class="campaign-btn" onclick="startCampaign()">🚀 Große Netzwerk-Mission starten · alle Fragen</button>
 <div class="mission-grid">${tabellen.map((t,i)=>`<button class="mission" onclick="startQuiz(${t.id})"><span class="icon">${icons[i]}</span><strong>${t.title}</strong><small>${t.desc}</small></button>`).join('')}</div>
-<div style="margin-top:18px;text-align:center"><button class="submit-btn" onclick="startMiniGame()">🗺️ Network Quest starten</button><button class="submit-btn" onclick="startPacketSort()">🖱️ Packet Sort · Sürükle-bırak</button></div>`}
+<div style="margin-top:18px;text-align:center"><button class="submit-btn" onclick="startMiniGame()">🗺️ Network Quest starten</button><button class="submit-btn" onclick="startPacketSort()">🖱️ Packet Sort · Drag-Drop</button></div>`}
 function startCampaign(){campaignMode=true;campaignQuestions=[];tabellen.forEach(t=>t.questions.forEach(q=>campaignQuestions.push({...q,_table:t.title})));currentTabelle={id:99,title:'Große Netzwerk-Mission',desc:'Alle Themen',questions:campaignQuestions};currentQ=0;score=0;streak=0;hearts=3;userAnswers={};showQuestion()}
 const originalStartQuiz=startQuiz;
 startQuiz=function(id){campaignMode=false;streak=0;hearts=3;originalStartQuiz(id)}
