@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>LERNZIELKONTROLLE LF03 – CLIENTS IN NETZWERKE EINBINDEN (200 Fragen)</title>
+    <title>LERNZIELKONTROLLE LF03 – CLIENTS IN NETZWERKE EINBINDEN (250 Fragen)</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #eef2f5; color: #333; }
         .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 900px; margin: auto; }
@@ -48,7 +48,7 @@
 
 <div class="card" id="quiz-card">
     <h1>LERNZIELKONTROLLE LF03</h1>
-    <div class="subtitle">Wähle eine der 4 Tabellen oder starte das Mini-Spiel!</div>
+    <div class="subtitle">Wähle eine der Tabellen oder starte das Mini-Spiel!</div>
     <div id="menu-container"></div>
 </div>
 
@@ -505,6 +505,33 @@ const tabellen = [
             { type: "mc", q: "49. Welche Diagnose ist bei einer APIPA-Adresse zuerst sinnvoll?", options: ["Physische Verbindung und Erreichbarkeit von DHCP prüfen", "Sofort alle DNS-Einträge des Unternehmens löschen", "Den Client dauerhaft in ein zufälliges VLAN verschieben", "Die Netzwerkkarte ohne Dokumentation ersetzen"], answer: "Physische Verbindung und Erreichbarkeit von DHCP prüfen", exp: "APIPA ist ein Diagnosehinweis auf fehlende DHCP-Kommunikation. Deshalb werden zuerst Kabel, WLAN, Switch-Port, DHCP-Dienst, Pool, VLAN, Relay und Filter geprüft." },
             { type: "mc", q: "50. Was kennzeichnet eine fachgerechte Client-Integration?", options: ["Anbindung, gültige Konfiguration, Funktionstests und Dokumentation", "Nur die physische Verbindung ohne anschließende Funktionsprüfung", "Nur eine feste IP-Adresse ohne passende weitere Netzwerkparameter", "Nur ein erfolgreicher lokaler Test über die Loopback-Adresse"], answer: "Anbindung, gültige Konfiguration, Funktionstests und Dokumentation", exp: "Eine vollständige Integration umfasst die physische Anbindung, passende IP-Parameter, erfolgreiche Tests von Gateway, DNS und Diensten sowie eine nachvollziehbare Dokumentation." }
         ]
+    },
+    {
+        id: 5,
+        title: "Tabelle 5: Netzwerksicherheit, Firewalls, DMZ, VPN & BYOD",
+        desc: "Risiken, Stateful Firewalls, DMZ, VPN-Tunnel, BYOD & Endgerätesicherheit (Tag 11).",
+        questions: [
+            { type: "mc", q: "1. Wie setzt sich das Risiko in der IT-Sicherheit theoretisch zusammen?", options: ["Asset × Schwachstelle × Bedrohung", "Nur aus der Anzahl der offenen Ports", "Bandbreite geteilt durch Latenz", "Anzahl der Clients mal IP-Adresse"], answer: "Asset × Schwachstelle × Bedrohung", exp: "Das Risiko entsteht aus dem Zusammenspiel von schützenswertem Wert (Asset), vorhandener Schwachstelle und konkreter Bedrohung[cite: 58]." },
+            { type: "mc", q: "2. Welches Hauptschutzziel wird durch ein VPN primär gewahrt?", options: ["Vertraulichkeit (Schutz vor Mitlesen)", "Ausschließlich die Systemverfügbarkeit", "Die physische Stromversorgung im Rack", "Die automatische Vergabe von IP-Adressen"], answer: "Vertraulichkeit (Schutz vor Mitlesen)", exp: "Ein VPN schützt die Kommunikation in unsicheren Netzen primär durch Verschlüsselung vor dem Mitlesen[cite: 55]." },
+            { type: "mc", q: "3. Was unterscheidet einen Full Tunnel von einem Split Tunnel beim VPN?", options: ["Beim Full Tunnel läuft der gesamte Internet-Traffic durch den Tunnel.", "Der Split Tunnel verschlüsselt überhaupt keine Daten.", "Der Full Tunnel benötigt keine Authentifizierung.", "Es gibt keinen technischen Unterschied."], answer: "Beim Full Tunnel läuft der gesamte Internet-Traffic durch den Tunnel.", exp: "Full Tunnel bietet höchste Sicherheit durch Umleitung des gesamten Traffics, während beim Split Tunnel nur der Firmen-Traffic durch den Tunnel geleitet wird[cite: 55]." },
+            { type: "mc", q: "4. Wo ist eine DMZ (Demilitarisierte Zone) in einem Netzwerk architektonisch platziert?", options: ["Zwischen dem Internet und dem internen Unternehmensnetz", "Direkt im privaten Heimnetz ohne Firewall", "Auschließlich auf dem lokalen Client-PC", "Hinter der zweiten internen Firewall im geschützten Bereich"], answer: "Zwischen dem Internet und dem internen Unternehmensnetz", exp: "Die DMZ bildet eine Pufferzone zwischen dem unsicheren Internet und dem sensiblen internen Netz[cite: 56]." },
+            { type: "mc", q: "5. Warum sollten sensible Datenbanken nicht ungeschützt im selben Segment wie öffentliche Webserver in der DMZ stehen?", options: ["Damit ein Angreifer nach Kompromittierung des Webservers nicht sofort Zugriff auf die Datenbank hat", "Weil Datenbanken grundsätzlich keine IP-Adressen besitzen", "Weil Webserver zu viel Strom verbrauchen", "Weil Datenbanken nur über WLAN erreichbar sind"], answer: "Damit ein Angreifer nach Kompromittierung des Webservers nicht sofort Zugriff auf die Datenbank hat", exp: "Durch die Trennung muss ein Angreifer im Falle eines Webserver-Hacks zusätzlich die zweite Firewall überwinden[cite: 56]." },
+            { type: "mc", q: "6. Was ist die Hauptaufgabe einer Stateful Inspection Firewall im Vergleich zu einem einfachen Paketfilter?", options: ["Sie merkt sich den Zustand einer Verbindung und lässt passende Antworten zu.", "Sie verschlüsselt alle Datenpakete automatisch mit AES.", "Sie ersetzt vollständig den DHCP-Server im Netzwerk.", "Sie blockiert sämtlichen ausgehenden Web-Traffic."], answer: "Sie merkt sich den Zustand einer Verbindung und lässt passende Antworten zu.", exp: "Stateful Firewalls prüfen den Verbindungskontext und lassen vom Client angeforderte Antworten automatisch durch, während unerwartete Einbrüche geblockt werden[cite: 59]." },
+            { type: "mc", q: "7. Was bedeutet die Abkürzung BYOD in modernen Arbeitswelten?", options: ["Bring Your Own Device", "Build Your Own Domain", "Backup Your Own Data", "Binary Yield Operation Device"], answer: "Bring Your Own Device", exp: "BYOD beschreibt die Nutzung privater Geräte (Smartphones, Laptops) für dienstliche Zwecke[cite: 57]." },
+            { type: "mc", q: "8. Wozu dient MDM (Mobile Device Management)?", options: ["Zur zentralen Verwaltung, Absicherung und Remote-Löschung von Firmendaten auf mobilen Geräten", "Zur manuellen Verkabelung von Patchpanels im Serverraum", "Zur Erhöhung des PoE-Budgets am Switch", "Zur statischen IP-Adressvergabe per Hosts-Datei"], answer: "Zur zentralen Verwaltung, Absicherung und Remote-Löschung von Firmendaten auf mobilen Geräten", exp: "MDM kontrolliert mobile Endgeräte und ermöglicht u.a. das ferngesteuerte Löschen von Firmendaten bei Verlust[cite: 57]." },
+            { type: "match", q: "9. Zuordnung der VPN- und Netzwerk-Begriffe:", pairs: [
+                { item: "Site-to-Site-VPN", target: "Verbindet ganze Unternehmensstandorte miteinander" },
+                { item: "Client-to-Site-VPN", target: "Bindet einzelne externe Geräte an das Firmennetz an" },
+                { item: "DMZ", target: "Zone für öffentlich erreichbare Server wie Webserver" },
+                { item: "VLAN", target: "Logische Trennung von Netzwerken auf Switch-Ebene" }
+            ], options: [
+                "Verbindet ganze Unternehmensstandorte miteinander",
+                "Bindet einzelne externe Geräte an das Firmennetz an",
+                "Zone für öffentlich erreichbare Server wie Webserver",
+                "Logische Trennung von Netzwerken auf Switch-Ebene"
+            ], exp: "Klassische Architektur- und Verbindungstypen in der Netzwerksicherheit[cite: 55, 56]." },
+            { type: "mc", q: "10. Was versteht man unter Containerisierung im Kontext von BYOD?", options: ["Die technische Trennung von privaten und dienstlichen Daten auf demselben Gerät", "Das physische Einschmelzen defekter Festplatten", "Das Verpacken von Netzwerkabeln in Kabelschächten", "Die Komprimierung von Ethernet-Frames"], answer: "Die technische Trennung von privaten und dienstlichen Daten auf demselben Gerät", exp: "Containerisierung trennt geschäftliche Anwendungen und Daten sicher von privaten Inhalten auf einem BYOD-Gerät[cite: 57]." }
+        ]
     }
 ];
 
@@ -517,7 +544,7 @@ function showMenu() {
     const card = document.getElementById("quiz-card");
     let html = `
         <h1>LERNZIELKONTROLLE LF03</h1>
-        <div class="subtitle">Wähle eine der 4 Tabellen oder das Mini-Spiel aus!</div>
+        <div class="subtitle">Wähle eine der Tabellen oder das Mini-Spiel aus!</div>
         <div class="menu-grid">
     `;
     tabellen.forEach(t => {
@@ -769,7 +796,7 @@ function startMiniGame() {
             <button class="back-btn" onclick="stopMiniGame(); showMenu();" style="margin:0;">⬅ Zurück zum Menü</button>
             <h2 style="margin:0; color:#003366;">Mini-Spiel: IP-Paket Catcher 🕹️</h2>
         </div>
-        <div class="subtitle" style="margin-bottom:10px;">Steuerung: ⬅️ ➡️ Pfeiltasten oder Maus. Fange gute Pakete, meide Fehler!</div>
+        <div class="subtitle" style="margin-bottom:10px;">Steuerung: ⬅️ ➡️️ Pfeiltasten oder Maus. Fange gute Pakete, meide Fehler!</div>
         <div id="game-container">
             <div class="game-info">
                 <span id="game-score">Punkte: 0</span>
