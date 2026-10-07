@@ -639,6 +639,21 @@ let currentQ = 0;
 let score = 0;
 let userAnswers = {};
 
+const LF03_RESUME_KEY = "lf03ResumeV3";
+function readResumeStore(){try{return JSON.parse(localStorage.getItem(LF03_RESUME_KEY)||"{}")}catch(e){return {}}}
+function resumeKey(){if(!currentTabelle)return null;return (typeof campaignMode!=="undefined"&&campaignMode)?"campaign":"table_"+currentTabelle.id}
+function saveCurrentProgress(){
+ const key=resumeKey(); if(!key||!currentTabelle)return;
+ const store=readResumeStore();
+ store[key]={currentQ,score,userAnswers,savedAt:Date.now()};
+ localStorage.setItem(LF03_RESUME_KEY,JSON.stringify(store));
+}
+function restoreCurrentProgress(key,max){
+ const x=readResumeStore()[key]; if(!x)return false;
+ currentQ=Math.max(0,Math.min(Number(x.currentQ)||0,max-1));score=Number(x.score)||0;userAnswers=x.userAnswers||{};return true;
+}
+function clearCurrentProgress(key){const store=readResumeStore();delete store[key];localStorage.setItem(LF03_RESUME_KEY,JSON.stringify(store))}
+function goToMenu(){saveCurrentProgress();showMenu()}
 function showMenu() {
     const card = document.getElementById("quiz-card");
     let html = `
@@ -665,11 +680,9 @@ function showMenu() {
 }
 
 function startQuiz(id) {
-    currentTabelle = tabellen.find(t => t.id === id);
-    currentQ = 0;
-    score = 0;
-    userAnswers = {};
-    showQuestion();
+ currentTabelle=tabellen.find(t=>t.id===id);
+ if(!restoreCurrentProgress("table_"+id,currentTabelle.questions.length)){currentQ=0;score=0;userAnswers={}}
+ saveCurrentProgress();showQuestion();
 }
 
 function shuffleArray(array) {
@@ -688,7 +701,7 @@ function showQuestion() {
     const card = document.getElementById("quiz-card");
     card.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <button class="back-btn" onclick="showMenu()" style="margin:0;">⬅ Tabellen-Auswahl</button>
+            <button class="back-btn" onclick="goToMenu()" style="margin:0;">⬅ Tabellen-Auswahl</button>
             <div id="progress" class="progress" style="margin:0;">Frage ${currentQ + 1} von ${qList.length}</div>
         </div>
         <h1>${currentTabelle.title}</h1>
@@ -847,21 +860,9 @@ function showFeedback(isCorrect, text) {
     `;
 }
 
-function prevQuestion() {
-    if (currentQ > 0) {
-        currentQ--;
-        showQuestion();
-    }
-}
+function prevQuestion(){if(currentQ>0){currentQ--;saveCurrentProgress();showQuestion()}}
 
-function nextQuestion() {
-    currentQ++;
-    if (currentQ < currentTabelle.questions.length) {
-        showQuestion();
-    } else {
-        finishQuiz();
-    }
-}
+function nextQuestion(){currentQ++;if(currentQ<currentTabelle.questions.length){saveCurrentProgress();showQuestion()}else{finishQuiz()}}
 
 function finishQuiz() {
     const qList = currentTabelle.questions;
@@ -878,7 +879,7 @@ function finishQuiz() {
             </div>
             <div class="meme-text">${passed ? 'Starke Leistung! Du hast diesen Bereich bestens gemeistert! 🎉' : 'Da gibt es noch Lücken. Schau dir die Erklärungen noch einmal an! 💪'}</div>
             
-            <button class="submit-btn" onclick="startQuiz(${currentTabelle.id})" style="margin-top:15px;">Diese Tabelle wiederholen</button>
+            <button class="submit-btn" onclick="clearCurrentProgress('table_'+currentTabelle.id);startQuiz(currentTabelle.id)" style="margin-top:15px;">Diese Tabelle wiederholen</button>
             <button class="back-btn" onclick="showMenu()" style="margin-top:15px;">Zur Tabellen-Auswahl</button>
         </div>
     `;
@@ -1116,19 +1117,19 @@ function showMenu(){stopMiniGame();campaignMode=false;const card=document.getEle
 <button class="campaign-btn" onclick="startCampaign()">🚀 Große Netzwerk-Mission starten · alle Fragen</button>
 <div class="mission-grid">${tabellen.map((t,i)=>`<button class="mission" onclick="startQuiz(${t.id})"><span class="icon">${icons[i]}</span><strong>${t.title}</strong><small>${t.desc}</small></button>`).join('')}</div>
 <div style="margin-top:18px;text-align:center"><button class="submit-btn" onclick="startMiniGame()">🗺️ Network Quest starten</button><button class="submit-btn" onclick="startPacketSort()">🖱️ Packet Sort · Drag-Drop</button></div>`}
-function startCampaign(){campaignMode=true;campaignQuestions=[];tabellen.forEach(t=>t.questions.forEach(q=>campaignQuestions.push({...q,_table:t.title})));currentTabelle={id:99,title:'Große Netzwerk-Mission',desc:'Alle Themen',questions:campaignQuestions};currentQ=0;score=0;streak=0;hearts=3;userAnswers={};showQuestion()}
+function startCampaign(){campaignMode=true;campaignQuestions=[];tabellen.forEach(t=>t.questions.forEach(q=>campaignQuestions.push({...q,_table:t.title})));currentTabelle={id:99,title:'Große Netzwerk-Mission',desc:'Alle Themen',questions:campaignQuestions};if(!restoreCurrentProgress('campaign',campaignQuestions.length)){currentQ=0;score=0;streak=0;hearts=3;userAnswers={}}saveCurrentProgress();showQuestion()}
 const originalStartQuiz=startQuiz;
-startQuiz=function(id){campaignMode=false;streak=0;hearts=3;originalStartQuiz(id)}
+startQuiz=function(id){campaignMode=false;currentTabelle=tabellen.find(t=>t.id===id);if(!restoreCurrentProgress('table_'+id,currentTabelle.questions.length)){currentQ=0;score=0;userAnswers={};streak=0;hearts=3}saveCurrentProgress();showQuestion()}
 const originalShowQuestion=showQuestion;
-showQuestion=function(){originalShowQuestion();const q=currentTabelle.questions[currentQ];const card=document.getElementById('quiz-card');const progress=Math.round((currentQ/currentTabelle.questions.length)*100);const top=card.querySelector('div[style*="justify-content:space-between"]');if(top)top.outerHTML=`<div class="hud"><button class="back-btn" onclick="showMenu()" style="margin:0">⬅ Menü</button><span class="hud-pill">⭐ ${xp} XP · 🔥 ${streak}</span><span class="hud-pill">${campaignMode?'❤️'.repeat(hearts):'Mission'}</span><div class="xpbar"><i style="width:${progress}%"></i></div></div>`;const title=card.querySelector('h1');if(title)title.style.display='none';const qt=card.querySelector('.question-text');if(qt){qt.classList.add('scene');qt.innerHTML=`<div class="scene-icon">${icons[Math.min(5,currentTabelle.id-1)]||'🌐'}</div><div><small style="color:#47718f">${q._table||currentTabelle.title} · Aufgabe ${currentQ+1}/${currentTabelle.questions.length}</small><div style="margin-top:6px">${q.q}</div></div>`}document.querySelectorAll('.option').forEach((b,i)=>b.setAttribute('data-letter',String.fromCharCode(65+i)));if(q.type==='mc'&&!userAnswers[currentQ].answered){const body=document.getElementById('question-body');body.insertAdjacentHTML('afterend',`<div class="lifelines"><button class="life-btn" onclick="useFifty(this)">50:50</button><button class="life-btn" onclick="showHint(this)">💡 Hinweis</button></div>`)} }
+showQuestion=function(){originalShowQuestion();saveCurrentProgress();const q=currentTabelle.questions[currentQ];const card=document.getElementById('quiz-card');const progress=Math.round((currentQ/currentTabelle.questions.length)*100);const top=card.querySelector('div[style*="justify-content:space-between"]');if(top)top.outerHTML=`<div class="hud"><button class="back-btn" onclick="goToMenu()" style="margin:0">⬅ Menü</button><span class="hud-pill">⭐ ${xp} XP · 🔥 ${streak}</span><span class="hud-pill">${campaignMode?'❤️'.repeat(hearts):'Mission'}</span><div class="xpbar"><i style="width:${progress}%"></i></div></div>`;const title=card.querySelector('h1');if(title)title.style.display='none';const qt=card.querySelector('.question-text');if(qt){qt.classList.add('scene');qt.innerHTML=`<div class="scene-icon">${icons[Math.min(5,currentTabelle.id-1)]||'🌐'}</div><div><small style="color:#47718f">${q._table||currentTabelle.title} · Aufgabe ${currentQ+1}/${currentTabelle.questions.length}</small><div style="margin-top:6px">${q.q}</div></div>`}document.querySelectorAll('.option').forEach((b,i)=>b.setAttribute('data-letter',String.fromCharCode(65+i)));if(q.type==='mc'&&!userAnswers[currentQ].answered){const body=document.getElementById('question-body');body.insertAdjacentHTML('afterend',`<div class="lifelines"><button class="life-btn" onclick="useFifty(this)">50:50</button><button class="life-btn" onclick="showHint(this)">💡 Hinweis</button></div>`)} }
 function useFifty(btn){const q=currentTabelle.questions[currentQ];const a=userAnswers[currentQ].shuffledOpts;let removed=0;document.querySelectorAll('.option').forEach((b,i)=>{if(a[i]!==q.answer&&removed<2){b.disabled=true;b.style.opacity=.22;removed++}});btn.disabled=true;toast('Zwei falsche Antworten wurden deaktiviert.')}
 function showHint(btn){const q=currentTabelle.questions[currentQ];const hint=(q.exp||'').split(/[.!?]/)[0];toast('Hinweis: '+hint);btn.disabled=true}
 const originalCheckMC=checkMC;
-checkMC=function(i){const was=userAnswers[currentQ]?.answered;originalCheckMC(i);if(was)return;const ok=userAnswers[currentQ].isCorrect;if(ok){streak++;const gain=10+Math.min(streak,5)*2;xp+=gain;toast(`Richtig! +${gain} XP`)}else{streak=0;if(campaignMode)hearts=Math.max(0,hearts-1)}localStorage.setItem('lf03xp',xp);localStorage.setItem('lf03done',doneCount()+1)}
+checkMC=function(i){const was=userAnswers[currentQ]?.answered;originalCheckMC(i);if(was)return;const ok=userAnswers[currentQ].isCorrect;if(ok){streak++;const gain=10+Math.min(streak,5)*2;xp+=gain;toast(`Richtig! +${gain} XP`)}else{streak=0;if(campaignMode)hearts=Math.max(0,hearts-1)}localStorage.setItem('lf03xp',xp);localStorage.setItem('lf03done',doneCount()+1);saveCurrentProgress()}
 const originalCheckMatch=checkMatch;
-checkMatch=function(){const was=userAnswers[currentQ]?.answered;originalCheckMatch();if(was)return;const ok=userAnswers[currentQ].isCorrect;if(ok){streak++;xp+=20;toast('Perfekte Zuordnung! +20 XP')}else{streak=0;if(campaignMode)hearts=Math.max(0,hearts-1)}localStorage.setItem('lf03xp',xp);localStorage.setItem('lf03done',doneCount()+1)}
+checkMatch=function(){const was=userAnswers[currentQ]?.answered;originalCheckMatch();if(was)return;const ok=userAnswers[currentQ].isCorrect;if(ok){streak++;xp+=20;toast('Perfekte Zuordnung! +20 XP')}else{streak=0;if(campaignMode)hearts=Math.max(0,hearts-1)}localStorage.setItem('lf03xp',xp);localStorage.setItem('lf03done',doneCount()+1);saveCurrentProgress()}
 const originalFinishQuiz=finishQuiz;
-finishQuiz=function(){originalFinishQuiz();const board=document.getElementById('score-board');if(board){const pct=Math.round(score/currentTabelle.questions.length*100);let badges=[];if(pct>=50)badges.push('🔧 Netzwerk-Techniker');if(pct>=75)badges.push('🛡️ Security-Profi');if(pct>=90)badges.push('🏆 LF03-Master');board.insertAdjacentHTML('beforeend',`<div class="badge-row">${badges.map(b=>`<span class="badge">${b}</span>`).join('')}</div>`)}}
+finishQuiz=function(){const k=resumeKey();clearCurrentProgress(k);originalFinishQuiz();const board=document.getElementById('score-board');if(board){const pct=Math.round(score/currentTabelle.questions.length*100);let badges=[];if(pct>=50)badges.push('🔧 Netzwerk-Techniker');if(pct>=75)badges.push('🛡️ Security-Profi');if(pct>=90)badges.push('🏆 LF03-Master');board.insertAdjacentHTML('beforeend',`<div class="badge-row">${badges.map(b=>`<span class="badge">${b}</span>`).join('')}</div>`)}}
 
 
 /* ==================== NETWORK QUEST ==================== */
@@ -1205,6 +1206,9 @@ function checkSortDrop(cat){const x=sortDeck[sortIndex],f=document.getElementByI
 function finishPacketSort(){const h=document.getElementById('packetHolder'),f=document.getElementById('sortFeedback'),pct=Math.round(sortScore/100*100);h.innerHTML=`<div class="packet-card" style="cursor:default"><span class="packet-icon">${pct>=80?'🏆':'👍'}</span><b>Spiel beendet</b><small>${sortScore} von 100 Punkten</small></div>`;f.className='sort-feedback ok';f.innerHTML=`<b>${pct>=80?'Sehr gut!':'Gut gemacht!'}</b><br>Du hast 10 Begriffe den drei Netzwerkbereichen zugeordnet. Mit „Neu mischen“ erscheinen andere Karten.`;document.getElementById('sortProgress').textContent='10/10'}
 
 showMenu();
+
+window.addEventListener("beforeunload", saveCurrentProgress);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") saveCurrentProgress(); });
 </script>
 
 </body>
