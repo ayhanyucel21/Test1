@@ -1112,7 +1112,7 @@ function doneCount(){return Number(localStorage.getItem('lf03done')||0)}
 function toast(msg){const d=document.createElement('div');d.className='toast';d.textContent=msg;document.body.appendChild(d);setTimeout(()=>d.remove(),1800)}
 function showMenu(){stopMiniGame();campaignMode=false;const card=document.getElementById('quiz-card');card.innerHTML=`
 <div class="hero"><h1>🌐 LF03 Network Academy</h1><p>Baue dein Netzwerk auf, löse Störungen und sichere die Infrastruktur. Alle ${totalQuestionCount()} Originalfragen bleiben vollständig erhalten.</p></div>
-<div class="stats"><div class="stat"><b>${totalQuestionCount()}</b><span>Originalfragen</span></div><div class="stat"><b>${xp}</b><span>Gesamt-XP</span></div><div class="stat"><b>${doneCount()}</b><span>Gelöste Aufgaben</span></div><div class="stat"><b>6</b><span Missionen</span></div></div>
+<div class="stats"><div class="stat"><b>${totalQuestionCount()}</b><span>Originalfragen</span></div><div class="stat"><b>${xp}</b><span>Gesamt-XP</span></div><div class="stat"><b>${doneCount()}</b><span>Gelöste Aufgaben</span></div><div class="stat"><b>6</b><span>Verfügbare Tabellen</span></div></div>
 <button class="campaign-btn" onclick="startCampaign()">🚀 Große Netzwerk-Mission starten · alle Fragen</button>
 <div class="mission-grid">${tabellen.map((t,i)=>`<button class="mission" onclick="startQuiz(${t.id})"><span class="icon">${icons[i]}</span><strong>${t.title}</strong><small>${t.desc}</small></button>`).join('')}</div>
 <div style="margin-top:18px;text-align:center"><button class="submit-btn" onclick="startMiniGame()">🗺️ Network Quest starten</button><button class="submit-btn" onclick="startPacketSort()">🖱️ Packet Sort · Drag-Drop</button></div>`}
