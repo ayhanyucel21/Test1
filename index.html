@@ -649,7 +649,16 @@ let currentQ = 0;
 let score = 0;
 let userAnswers = {};
 
-const LF03_RESUME_KEY = "lf03ResumeV3";
+const LF03_RESUME_KEY = "lf03ResumeV4";
+const LF03_MIGRATION_KEY = "lf03ProgressResetTag12Tag13V1";
+
+// Einmalige Migration nach der Erweiterung um Tabelle 6 und den IHK-Szenario-Trainer.
+// Nur alte Lernfortschritte werden gelöscht. XP, gelöste Aufgaben und Quest-Daten bleiben erhalten.
+if (!localStorage.getItem(LF03_MIGRATION_KEY)) {
+    localStorage.removeItem("lf03ResumeV3");
+    localStorage.removeItem("lf03ResumeV4");
+    localStorage.setItem(LF03_MIGRATION_KEY, "abgeschlossen");
+}
 function readResumeStore(){try{return JSON.parse(localStorage.getItem(LF03_RESUME_KEY)||"{}")}catch(e){return {}}}
 function resumeKey(){if(!currentTabelle)return null;return (typeof campaignMode!=="undefined"&&campaignMode)?"campaign":"table_"+currentTabelle.id}
 function saveCurrentProgress(){
